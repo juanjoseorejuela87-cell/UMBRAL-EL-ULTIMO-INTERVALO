@@ -1,0 +1,10 @@
+# Caché e importaciones de Godot 4
+.godot/
+/android/
+
+# Builds exportadas
+/builds/
+
+# Sistema operativo
+Thumbs.db
+desktop.ini

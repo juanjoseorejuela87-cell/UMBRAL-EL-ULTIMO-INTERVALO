@@ -1,0 +1,14 @@
+# Normaliza texto a LF en el repositorio
+* text=auto eol=lf
+
+# Binarios
+*.png binary
+*.jpg binary
+*.webp binary
+*.ogg binary
+*.wav binary
+*.mp3 binary
+*.ttf binary
+*.otf binary
+*.glb binary
+*.res binary
