@@ -95,6 +95,7 @@ func _aplicar(destino: GestorFase.Estado) -> void:
 	_fase.cambiar(destino)
 	_ajustar_colision(destino)
 	_transicion = duracion_transicion
+	GestorSonido.global().reproducir(&"desfase_entrar" if destino == GestorFase.Estado.DESFASE else &"desfase_salir", -3.0)
 	_preciso_usado = false
 
 
@@ -126,6 +127,7 @@ func _intentar_rechazo() -> void:
 	_bloqueo = bloqueo_tras_rechazo
 	_nereth.aturdir(aturdimiento_rechazo)
 	rechazo.emit()
+	GestorSonido.global().reproducir(&"rechazo")
 
 
 func _al_evitar_golpe(_info: InfoGolpe) -> void:

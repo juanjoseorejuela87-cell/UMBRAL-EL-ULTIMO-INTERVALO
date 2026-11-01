@@ -74,6 +74,7 @@ func sacudir(intensidad: float, duracion: float) -> void:
 
 
 func _impacto(tipo: StringName, posicion: Vector3, parada: float, temblor: Vector2) -> void:
+	GestorSonido.global().reproducir(tipo)
 	_parar(parada)
 	sacudir(temblor.x, temblor.y)
 	_crear_efecto(tipo, posicion)

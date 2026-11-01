@@ -87,6 +87,7 @@ func _intentar_desgarro() -> bool:
 	_resonancia.gastar(coste_desgarro)
 	_enfriamiento = enfriamiento_desgarro
 	var efecto: StringName = enemigo.desgarrar()
+	GestorSonido.global().reproducir(&"desgarro")
 	desgarro_realizado.emit(enemigo, efecto)
 	return true
 
@@ -119,6 +120,7 @@ func _completar() -> void:
 		while _puntadas.size() > puntadas_simultaneas:
 			_puntadas.pop_front().soltar()
 	elemento.coser()
+	GestorSonido.global().reproducir(&"coser")
 	_nereth.terminar_accion()
 	costura_completada.emit(elemento)
 

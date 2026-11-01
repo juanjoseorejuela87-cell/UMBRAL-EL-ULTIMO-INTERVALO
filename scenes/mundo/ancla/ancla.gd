@@ -69,6 +69,7 @@ func interactuar(nereth: Nereth) -> void:
 		_aplicar_estabilizacion()
 		estabilizada.emit()
 	GestorPartida.global().descansar(nereth, id, _punto.global_position)
+	GestorSonido.global().reproducir(&"ancla", -2.0, 0.0)
 	descanso.emit()
 
 

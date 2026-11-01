@@ -22,6 +22,7 @@ Fase="*res://scripts/core/fase/gestor_fase.gd"
 Partida="*res://scripts/core/partida/gestor_partida.gd"
 Salas="*res://scripts/core/mundo/gestor_salas.gd"
 Impactos="*res://scripts/core/efectos/director_impactos.gd"
+Sonido="*res://scripts/core/sonido/gestor_sonido.gd"
 
 [debug]
 

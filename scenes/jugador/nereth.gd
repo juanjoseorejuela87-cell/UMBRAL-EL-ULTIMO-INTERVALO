@@ -99,6 +99,8 @@ func _ready() -> void:
 	combate.golpe_conectado.connect(_al_conectar_golpe)
 	vida.agotada.connect(_al_agotar_vida)
 	_caja_dano.golpe_recibido.connect(_al_recibir_golpe)
+	salto_iniciado.connect(func() -> void: GestorSonido.global().reproducir(&"salto", -6.0))
+	esquiva_iniciada.connect(func() -> void: GestorSonido.global().reproducir(&"esquiva", -4.0))
 
 
 ## Deriva gravedad y velocidad inicial a partir de altura y tiempo hasta la cima.
@@ -242,6 +244,7 @@ func _al_recibir_golpe(info: InfoGolpe) -> void:
 				velocity.x = info.direccion * empuje_golpe * 0.5
 				golpe_bloqueado.emit(info)
 				DirectorImpactos.global().sacudir(0.08, 0.12)
+				GestorSonido.global().reproducir(&"bloqueo")
 				return
 			resistencia.consumir(resistencia.actual)
 			info.dano_aplicado = info.dano * 0.5

@@ -46,6 +46,7 @@ func _al_entrar(cuerpo: Node3D) -> void:
 	if not cuerpo is Nereth or not activo():
 		return
 	GestorPartida.global().registrar_fragmento(id)
+	GestorSonido.global().reproducir(&"fragmento", 0.0, 0.0)
 	_desactivar()
 	recogido.emit(id)
 
