@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://scripts/core/mundo/punto_entrada.gd" id="9_entrada"]
 [ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="10_transicion"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/fragmento/fragmento.tscn" id="11_fragmento"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pausa/menu_pausa.tscn" id="12_pausa"]
 
 [sub_resource type="BoxShape3D" id="Box_transicion"]
 size = Vector3(1, 5, 4)
@@ -201,6 +202,8 @@ objetivo = NodePath("../Nereth")
 
 [node name="HudJuego" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("4_hud")]
 objetivo = NodePath("../Nereth")
+
+[node name="MenuPausa" parent="." instance=ExtResource("12_pausa")]
 
 [node name="DesdeBarrio" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0.1, 0)

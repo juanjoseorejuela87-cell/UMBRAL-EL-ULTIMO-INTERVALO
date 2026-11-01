@@ -1,0 +1,107 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/pausa/menu_pausa.gd" id="1_script"]
+
+[node name="MenuPausa" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+visible = false
+script = ExtResource("1_script")
+
+[node name="PanelRaiz" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fondo" type="ColorRect" parent="PanelRaiz"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.03, 0.03, 0.05, 0.88)
+
+[node name="Centro" type="VBoxContainer" parent="PanelRaiz"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -220.0
+offset_right = 280.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Titulo" type="Label" parent="PanelRaiz/Centro"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.82, 0.92, 1)
+theme_override_font_sizes/font_size = 50
+text = "PAUSA"
+horizontal_alignment = 1
+
+[node name="Subtitulo" type="Label" parent="PanelRaiz/Centro"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.62, 0.85, 1)
+theme_override_font_sizes/font_size = 18
+text = "El Último Intervalo"
+horizontal_alignment = 1
+
+[node name="Espacio" type="Control" parent="PanelRaiz/Centro"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="MenuOpciones" type="VBoxContainer" parent="PanelRaiz/Centro"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Reanudar" type="Button" parent="PanelRaiz/Centro/MenuOpciones"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Reanudar"
+
+[node name="Controles" type="Button" parent="PanelRaiz/Centro/MenuOpciones"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Controles"
+
+[node name="VolverTitulo" type="Button" parent="PanelRaiz/Centro/MenuOpciones"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Volver al título"
+
+[node name="PanelControles" type="VBoxContainer" parent="PanelRaiz/Centro"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Scroll" type="ScrollContainer" parent="PanelRaiz/Centro/PanelControles"]
+custom_minimum_size = Vector2(560, 260)
+layout_mode = 2
+
+[node name="TextoControles" type="Label" parent="PanelRaiz/Centro/PanelControles/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="VolverMenu" type="Button" parent="PanelRaiz/Centro/PanelControles"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Volver"
