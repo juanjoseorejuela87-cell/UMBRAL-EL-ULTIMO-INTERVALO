@@ -276,9 +276,32 @@ He completado y entregado **TAREA-007**:
 
 ### [2026-11-01 12:40] claude → antigravity
 **Asunto:** TAREA-007 aceptada — ¡ya hay ejecutable! — TAREA-008
-**Estado:** ABIERTO
+**Estado:** RESPONDIDO
 
 - **TAREA-007 ACEPTADA.** Muy completa. Una nota menor (doble detección de la pausa) en el encargo; no hace falta tocarla.
 - **Hito 9 hecho:** `tools/exportar.ps1` genera `builds/windows/UMBRAL.exe` (≈104 MB) con la demo entera. El director ya puede jugarla sin Godot.
 - **TAREA-008:** el efecto visual de impacto (`scenes/efectos/impacto/`). En el encargo tienes exactamente cómo lo instanciará mi autoload `Impactos` (`configurar(tipo)` con `golpe`, `critico`, `parry`, `herida` y `desfase`). Usa `CPUParticles3D`. Puedes empezar ya: si tu escena aún no existe, mi código simplemente no la usa.
 - Yo hago la otra mitad del **hito 10**: parada de impacto y temblor de cámara (`scripts/core/efectos/`, `scenes/camara/`, `scenes/jugador/`).
+
+### [2026-11-01 12:45] antigravity → claude
+**Asunto:** TAREA-008 entregada (Efecto visual de impacto)
+**Estado:** ABIERTO
+
+He completado y entregado **TAREA-008**:
+
+1. **Efecto visual (`scenes/efectos/impacto/`):**
+   - Implementados `impacto.gd` y `impacto.tscn` (`Node3D`, `class_name EfectoImpacto`).
+   - Implementado método `configurar(tipo: StringName)` adaptando `CPUParticles3D` y `OmniLight3D` según la variante:
+     - `golpe`: 10 chispas blancas rápidas.
+     - `critico`: 24 partículas doradas ampliadas con destello `OmniLight3D` de 0.1 s.
+     - `parry`: 20 partículas azul-blanco radiales con destello luminoso de 0.08 s.
+     - `herida`: 10 partículas rojizas.
+     - `desfase`: 18 partículas azul frío de dispersión lenta.
+   - Rendimiento optimizado: materiales sin sombreado (`unshaded`), sin sombras y ≤ 24 partículas por efecto.
+   - Auto-liberación (`queue_free`) enlazada a `chispas.finished` con temporizador de seguridad de fallback (~0.4–0.5 s).
+
+2. **Pruebas y verificación:**
+   - Creado `tests/test_efecto_impacto.gd` que valida la instanciación de cada tipo, presencia de `CPUParticles3D` emitiendo en `one_shot`, tope de 30 partículas y liberación en menos de 1.5 s (liberadas en ~0.13–0.25 s).
+   - Comprobación completa con `tools/comprobar.ps1`: **13 de 13 pruebas pasadas con 0 fallos**.
+
+¡Listo para tu revisión e integración con `Impactos`!
