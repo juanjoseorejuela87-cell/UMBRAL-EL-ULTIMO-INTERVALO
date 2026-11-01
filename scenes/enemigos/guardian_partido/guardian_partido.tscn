@@ -9,25 +9,57 @@
 [ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="7_datos"]
 [ext_resource type="Resource" path="res://scenes/enemigos/guardian_partido/barrido.tres" id="8_barrido"]
 [ext_resource type="Resource" path="res://scenes/enemigos/guardian_partido/embestida.tres" id="9_embestida"]
+[ext_resource type="Script" path="res://scenes/enemigos/guardian_partido/figura_guardian_partido.gd" id="10_figura"]
 
 [sub_resource type="CapsuleShape3D" id="Forma_cuerpo"]
 radius = 0.6
 height = 2.4
 
-[sub_resource type="CapsuleMesh" id="Malla_cuerpo"]
-radius = 0.6
-height = 2.4
-
 [sub_resource type="StandardMaterial3D" id="Mat_cuerpo"]
 albedo_color = Color(0.35, 0.33, 0.45, 1)
+roughness = 0.75
 
-[sub_resource type="BoxMesh" id="Malla_frente"]
-size = Vector3(0.35, 0.15, 0.4)
-
-[sub_resource type="StandardMaterial3D" id="Mat_frente"]
-albedo_color = Color(0.6, 0.75, 1, 1)
+[sub_resource type="StandardMaterial3D" id="Mat_fractura"]
+albedo_color = Color(0.65, 0.8, 1, 1)
 emission_enabled = true
-emission = Color(0.4, 0.55, 1, 1)
+emission = Color(0.45, 0.7, 1, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="Malla_torso_delantero"]
+size = Vector3(0.48, 0.95, 0.65)
+
+[sub_resource type="BoxMesh" id="Malla_yelmo_delantero"]
+size = Vector3(0.38, 0.42, 0.38)
+
+[sub_resource type="BoxMesh" id="Malla_visor"]
+size = Vector3(0.1, 0.05, 0.22)
+
+[sub_resource type="BoxMesh" id="Malla_hombrera_frontal"]
+size = Vector3(0.45, 0.45, 0.38)
+
+[sub_resource type="BoxMesh" id="Malla_escudo"]
+size = Vector3(0.22, 1.15, 0.75)
+
+[sub_resource type="BoxMesh" id="Malla_greba"]
+size = Vector3(0.32, 0.82, 0.32)
+
+[sub_resource type="BoxMesh" id="Malla_espalda"]
+size = Vector3(0.44, 0.9, 0.58)
+
+[sub_resource type="BoxMesh" id="Malla_yelmo_trasero"]
+size = Vector3(0.34, 0.4, 0.35)
+
+[sub_resource type="CylinderMesh" id="Malla_brazo_maza"]
+top_radius = 0.11
+bottom_radius = 0.09
+height = 0.65
+radial_segments = 8
+
+[sub_resource type="BoxMesh" id="Malla_maza"]
+size = Vector3(0.38, 0.52, 0.38)
+
+[sub_resource type="BoxMesh" id="Malla_cristal_fractura"]
+size = Vector3(0.06, 0.14, 0.06)
 
 [sub_resource type="BoxShape3D" id="Forma_golpe"]
 size = Vector3(2.2, 1.4, 1)
@@ -52,14 +84,88 @@ shape = SubResource("Forma_cuerpo")
 [node name="Visual" type="Node3D" parent="."]
 
 [node name="Cuerpo" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
-mesh = SubResource("Malla_cuerpo")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 1.35, 0.08)
+mesh = SubResource("Malla_torso_delantero")
 surface_material_override/0 = SubResource("Mat_cuerpo")
 
-[node name="Frente" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.9, 0)
-mesh = SubResource("Malla_frente")
-surface_material_override/0 = SubResource("Mat_frente")
+[node name="MitadDelantera" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 0, 0.08)
+
+[node name="YelmoFrontal" type="MeshInstance3D" parent="Visual/MitadDelantera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.04, 1.95, 0)
+mesh = SubResource("Malla_yelmo_delantero")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="VisorFrontal" type="MeshInstance3D" parent="Visual/MitadDelantera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, 1.95, 0)
+mesh = SubResource("Malla_visor")
+surface_material_override/0 = SubResource("Mat_fractura")
+
+[node name="HombreraFrontal" type="MeshInstance3D" parent="Visual/MitadDelantera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 1.72, 0.38)
+mesh = SubResource("Malla_hombrera_frontal")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="BrazoEscudo" type="Node3D" parent="Visual/MitadDelantera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 1.45, 0.38)
+
+[node name="Escudo" type="MeshInstance3D" parent="Visual/MitadDelantera/BrazoEscudo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, -0.2, 0)
+mesh = SubResource("Malla_escudo")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="PiernaFrontal" type="Node3D" parent="Visual/MitadDelantera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08, 0.85, 0.22)
+
+[node name="Greba" type="MeshInstance3D" parent="Visual/MitadDelantera/PiernaFrontal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+mesh = SubResource("Malla_greba")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="MitadTrasera" type="Node3D" parent="Visual"]
+transform = Transform3D(0.975, 0, 0.218, 0, 1, 0, -0.218, 0, 0.975, -0.16, 0.04, -0.12)
+
+[node name="Espalda" type="MeshInstance3D" parent="Visual/MitadTrasera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 1.32, 0)
+mesh = SubResource("Malla_espalda")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="YelmoTrasero" type="MeshInstance3D" parent="Visual/MitadTrasera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, 1.92, 0)
+mesh = SubResource("Malla_yelmo_trasero")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="BrazoMaza" type="Node3D" parent="Visual/MitadTrasera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 1.4, -0.36)
+
+[node name="Brazo" type="MeshInstance3D" parent="Visual/MitadTrasera/BrazoMaza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+mesh = SubResource("Malla_brazo_maza")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Maza" type="MeshInstance3D" parent="Visual/MitadTrasera/BrazoMaza"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.22, -0.62, 0)
+mesh = SubResource("Malla_maza")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="PiernaTrasera" type="Node3D" parent="Visual/MitadTrasera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.85, -0.22)
+
+[node name="Greba" type="MeshInstance3D" parent="Visual/MitadTrasera/PiernaTrasera"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+mesh = SubResource("Malla_greba")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Fractura" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+
+[node name="Cristal" type="MeshInstance3D" parent="Visual/Fractura"]
+transform = Transform3D(0.9, 0, 0.43, 0, 1, 0, -0.43, 0, 0.9, 0, 0.25, 0)
+mesh = SubResource("Malla_cristal_fractura")
+surface_material_override/0 = SubResource("Mat_fractura")
+
+[node name="Animador" type="Node3D" parent="Visual"]
+script = ExtResource("10_figura")
 
 [node name="Vida" type="Node" parent="."]
 script = ExtResource("2_vida")

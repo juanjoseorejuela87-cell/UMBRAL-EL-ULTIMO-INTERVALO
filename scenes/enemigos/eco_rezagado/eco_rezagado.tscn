@@ -8,26 +8,45 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/barra_postura/barra_postura.tscn" id="6_barra"]
 [ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="7_datos"]
 [ext_resource type="Resource" path="res://scenes/enemigos/eco_rezagado/zarpazo.tres" id="8_zarpazo"]
+[ext_resource type="Script" path="res://scenes/enemigos/eco_rezagado/figura_eco_rezagado.gd" id="9_figura"]
 
 [sub_resource type="CapsuleShape3D" id="Forma_cuerpo"]
 radius = 0.32
 height = 1.6
 
-[sub_resource type="CapsuleMesh" id="Malla_cuerpo"]
-radius = 0.32
-height = 1.6
-
 [sub_resource type="StandardMaterial3D" id="Mat_cuerpo"]
 transparency = 1
-albedo_color = Color(0.55, 0.7, 1, 0.75)
+albedo_color = Color(0.55, 0.72, 1, 0.65)
+roughness = 0.4
 
-[sub_resource type="BoxMesh" id="Malla_frente"]
-size = Vector3(0.25, 0.1, 0.25)
+[sub_resource type="CapsuleMesh" id="Malla_torso"]
+radius = 0.16
+height = 0.65
+radial_segments = 10
 
-[sub_resource type="StandardMaterial3D" id="Mat_frente"]
-albedo_color = Color(0.9, 0.95, 1, 1)
-emission_enabled = true
-emission = Color(0.7, 0.85, 1, 1)
+[sub_resource type="SphereMesh" id="Malla_cabeza"]
+radius = 0.13
+height = 0.28
+radial_segments = 10
+rings = 5
+
+[sub_resource type="CylinderMesh" id="Malla_cola"]
+top_radius = 0.14
+bottom_radius = 0.04
+height = 0.52
+radial_segments = 8
+
+[sub_resource type="CylinderMesh" id="Malla_brazo"]
+top_radius = 0.048
+bottom_radius = 0.038
+height = 0.52
+radial_segments = 8
+
+[sub_resource type="BoxMesh" id="Malla_garra"]
+size = Vector3(0.02, 0.14, 0.02)
+
+[sub_resource type="BoxMesh" id="Malla_jiron"]
+size = Vector3(0.06, 0.18, 0.22)
 
 [sub_resource type="BoxShape3D" id="Forma_golpe"]
 size = Vector3(1.3, 1, 1)
@@ -48,14 +67,83 @@ shape = SubResource("Forma_cuerpo")
 [node name="Visual" type="Node3D" parent="."]
 
 [node name="Cuerpo" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-mesh = SubResource("Malla_cuerpo")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+mesh = SubResource("Malla_torso")
 surface_material_override/0 = SubResource("Mat_cuerpo")
 
-[node name="Frente" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, 1.25, 0)
-mesh = SubResource("Malla_frente")
-surface_material_override/0 = SubResource("Mat_frente")
+[node name="Cabeza" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02, 1.33, 0)
+mesh = SubResource("Malla_cabeza")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Piernas" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.37, 0)
+
+[node name="Cola" type="MeshInstance3D" parent="Visual/Piernas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 0, 0)
+mesh = SubResource("Malla_cola")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="BrazoDetras" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.11, -0.18)
+
+[node name="Malla" type="MeshInstance3D" parent="Visual/BrazoDetras"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.24, 0)
+mesh = SubResource("Malla_brazo")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="BrazoDelante" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.11, 0.18)
+
+[node name="Malla" type="MeshInstance3D" parent="Visual/BrazoDelante"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.24, 0)
+mesh = SubResource("Malla_brazo")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Garra1" type="MeshInstance3D" parent="Visual/BrazoDelante"]
+transform = Transform3D(0.98, -0.2, 0, 0.2, 0.98, 0, 0, 0, 1, 0.04, -0.52, -0.03)
+mesh = SubResource("Malla_garra")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Garra2" type="MeshInstance3D" parent="Visual/BrazoDelante"]
+transform = Transform3D(0.95, -0.3, 0, 0.3, 0.95, 0, 0, 0, 1, 0.06, -0.53, 0)
+mesh = SubResource("Malla_garra")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Garra3" type="MeshInstance3D" parent="Visual/BrazoDelante"]
+transform = Transform3D(0.98, -0.2, 0, 0.2, 0.98, 0, 0, 0, 1, 0.04, -0.52, 0.03)
+mesh = SubResource("Malla_garra")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Jirones" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14, 1.05, 0)
+
+[node name="Segmento1" type="Node3D" parent="Visual/Jirones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="Malla" type="MeshInstance3D" parent="Visual/Jirones/Segmento1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03, -0.08, 0)
+mesh = SubResource("Malla_jiron")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Segmento2" type="Node3D" parent="Visual/Jirones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.2, 0)
+
+[node name="Malla" type="MeshInstance3D" parent="Visual/Jirones/Segmento2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.04, -0.08, 0)
+mesh = SubResource("Malla_jiron")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Segmento3" type="Node3D" parent="Visual/Jirones"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.08, -0.4, 0)
+
+[node name="Malla" type="MeshInstance3D" parent="Visual/Jirones/Segmento3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.05, -0.08, 0)
+mesh = SubResource("Malla_jiron")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Animador" type="Node3D" parent="Visual"]
+script = ExtResource("9_figura")
 
 [node name="Vida" type="Node" parent="."]
 script = ExtResource("2_vida")
