@@ -274,7 +274,7 @@ No son finales «bueno, malo y neutral»: cada uno responde a una pregunta disti
 
 | # | Lo construido | La historia oficial | Ajuste propuesto | Estado |
 |---|---|---|---|---|
-| A1 | La demo empieza en el **Barrio Desprendido**, calles exteriores que se borran | Nereth **despierta en una estructura subterránea** y avanza por **ruinas** hasta la gran entrada | Reambientar el primer tramo como **Ruinas bajo Elyndor** y añadir antes una **Cámara del Despertar** corta (primera manifestación del Desfase, símbolos que reaccionan, voz de Maelis) | EN CURSO (Cámara hecha; Ruinas: TAREA-010) |
+| A1 | La demo empieza en el **Barrio Desprendido**, calles exteriores que se borran | Nereth **despierta en una estructura subterránea** y avanza por **ruinas** hasta la gran entrada | Reambientar el primer tramo como **Ruinas bajo Elyndor** y añadir antes una **Cámara del Despertar** corta (primera manifestación del Desfase, símbolos que reaccionan, voz de Maelis) | HECHO |
 | A2 | `LORE` §8.2 antiguo: el Prefecto «cierra el paso para que nada más se pierda» | Recibió la orden de impedir el acceso a las estructuras antiguas y olvidó que su función original era **permitir el paso** | Sustituido por la versión oficial (§3.3) | HECHO |
 | A3 | El Fragmento se llama genéricamente «Fragmento de Continuidad» (`fragmento_elyndor_prefecto`) | Es el **Fragmento de Memoria** | Mostrar el nombre «Fragmento de Memoria» y la frase de Maelis al recogerlo | HECHO |
 | A4 | La pantalla de fin de la demo usa un texto genérico | Frases oficiales: «Si has despertado, significa que el último intervalo no se ha cerrado» y «No recuperes los fragmentos sin comprender lo que estás devolviendo» | Usarlas en el recuerdo del Fragmento y al salir de Elyndor | HECHO |

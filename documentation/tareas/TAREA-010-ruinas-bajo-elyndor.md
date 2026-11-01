@@ -1,7 +1,7 @@
 # TAREA-010 — Reambientar el Barrio Desprendido como «Ruinas bajo Elyndor»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:** `scenes/niveles/elyndor/barrio_desprendido.tscn`, `tests/test_barrio_desprendido.gd`, y lo que crees dentro de `scenes/niveles/elyndor/ruinas/` (piezas propias de este nivel, si las necesitas).
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `scenes/mundo/` (el kit es compartido: si te falta una pieza, pídemela en el canal), `scenes/niveles/elyndor/camara_despertar.tscn` y `salon_prefecto.tscn`, `project.godot`.
 
@@ -90,3 +90,7 @@ Aplicados los cuatro puntos de pulido solicitados:
    - Identificada la causa: `PuenteRemiendoAtajo` no tenía `existe_en = 1` explícito en su `ElementoFase`, haciendo que existiera indebidamente en Realidad antes de confeccionar el Remiendo. Se ha fijado `existe_en = 1` tanto en el puente como en los velos y plataformas de Desfase. Adicionalmente, el `Rayo3` cenital sobre la plaza se ha enderezado verticalmente.
 5. **Pruebas:**
    - `tests/test_barrio_desprendido.gd` ampliado para validar materiales texturizados, ausencia del puente en Realidad previa, presencia de cimientos y siluetas con radio $\le 0.30\text{ u}$. Todas las pruebas pasan con 0 fallos.
+
+## Revisión 2 (Claude, 2026-11-01) — ACEPTADO
+
+Revisado con capturas (entrada, Ancla, plaza) en ambos estados: siluetas finas y en los bordes, cimientos de roca bajo el suelo, elementos del Desfase con `piedra_desfase` (los velos ya se leen como muros de otro estado), distorsión translúcida con textura y sin la franja dorada sobre la plaza. Las 16 pruebas pasan. Con esto las tres salas de la demo comparten la dirección visual de `GUIA_ARTE.md`.
