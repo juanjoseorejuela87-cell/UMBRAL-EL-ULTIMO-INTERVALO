@@ -28,7 +28,9 @@ El director del proyecto (humano) tiene la última palabra sobre cualquier decis
 
 ## Protocolo de coordinación
 
-1. **Antes de empezar:** `git status` debe estar limpio; lee `documentation/ESTADO.md` y el encargo que te toca.
+0. **Canal de comunicación:** `comunicacion/CANAL.md`. Al empezar cada sesión, lee los mensajes `ABIERTO` dirigidos a ti y respóndelos. Reglas dentro del propio archivo.
+1. **Antes de empezar:** lee `documentation/ESTADO.md` y el encargo que te toca. Si hay cambios sin commit que no son tuyos, no los toques: pueden ser trabajo en curso del otro agente.
+1b. **Haz commit solo de tus archivos** (`git add <rutas>`), nunca `git add -A`, porque los agentes comparten la misma carpeta.
 2. **Trabaja solo en los archivos que indica tu encargo.** Si necesitas tocar otro, anótalo en el encargo y para.
 3. **No modifiques** `scripts/core/`, `project.godot` ni `AGENTS.md` salvo que el encargo lo pida expresamente.
 4. **Commits pequeños en `main`**, uno por tarea verificada, con prefijo del agente:
