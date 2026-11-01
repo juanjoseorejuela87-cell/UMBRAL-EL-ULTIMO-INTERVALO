@@ -1,0 +1,18 @@
+# Registro de decisiones
+
+Estados: **CONFIRMADO** (director) · **PROPUESTA** (adoptada provisionalmente por Claude bajo el acuerdo de alta autonomía; revisable) · **REVERTIDA**.
+
+| ID | Fecha | Decisión | Motivo | Estado |
+|---|---|---|---|---|
+| D-001 | 2026-10-31 | Godot 4.7.2, GDScript tipado, PC Windows | Contexto maestro | CONFIRMADO |
+| D-002 | 2026-10-31 | Renderizador Compatibility | GPU Intel UHD 610 | CONFIRMADO |
+| D-003 | 2026-10-31 | Proyecto en `D:\UMBRAL`, Git en rama `main` | Contexto maestro | CONFIRMADO |
+| D-004 | 2026-10-31 | Alta autonomía: Claude decide e implementa, commits directos en `main`, solo para ante bloqueos | Indicación del director | CONFIRMADO |
+| D-005 | 2026-10-31 | Claude es programador principal; ChatGPT y Antigravity son ayudantes que trabajan por encargos (`documentation/tareas/`) | Indicación del director | CONFIRMADO |
+| D-006 | 2026-10-31 | 2.5D = mundo 3D con movimiento sobre el plano X/Y (Z fijo) y cambios de profundidad solo en puntos marcados | Lectura clara del combate, producción viable | PROPUESTA |
+| D-007 | 2026-10-31 | Resonancia con dos regímenes (Calma / Amenaza) | La exploración no debe ser una carrera contra el recurso | PROPUESTA |
+| D-008 | 2026-10-31 | Costura en tres usos: Puntada (temporal), Remiendo (permanente), Desgarro (combate) | Pedido del director: no todas iguales | PROPUESTA |
+| D-009 | 2026-10-31 | Seis habilidades de exploración (Paso Intervalo, Agarre de Grieta, Hilo Tensor, Huella, Caída de Ruptura, Travesía de Ceniza); Desfase y Costura son poderes base | Ver GAMEPLAY §7.3 | PROPUESTA |
+| D-010 | 2026-10-31 | Prioridad de producción: vertical slice de Elyndor | Indicación del director | CONFIRMADO |
+| D-011 | 2026-10-31 | Muerte sin pérdida de moneda; se pierden ecos no registrados | Castigo suave ligado a las Anclas | PROPUESTA |
+| D-012 | 2026-10-31 | Sin addons ni assets de terceros por ahora | Contexto maestro: no dependencias innecesarias | CONFIRMADO |
