@@ -1,0 +1,44 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materiales/piedra_castillo.tres" id="1_piedra"]
+[ext_resource type="Material" path="res://assets/materiales/sillares.tres" id="2_sillares"]
+
+[node name="ArcoApuntado" type="CSGCombiner3D"]
+use_collision = true
+
+[node name="Muro" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+size = Vector3(5, 8, 1)
+material = ExtResource("1_piedra")
+
+[node name="Jamba" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0.15)
+size = Vector3(3.2, 5.2, 1.1)
+material = ExtResource("2_sillares")
+
+[node name="Hueco" type="CSGCombiner3D" parent="."]
+operation = 2
+
+[node name="Recto" type="CSGBox3D" parent="Hueco"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
+size = Vector3(2.4, 3.4, 1.6)
+
+[node name="Ojiva" type="CSGCombiner3D" parent="Hueco"]
+
+[node name="CirculoA" type="CSGCylinder3D" parent="Hueco/Ojiva"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.9, 3.4, 0)
+radius = 2.1
+height = 1.6
+sides = 24
+
+[node name="CirculoB" type="CSGCylinder3D" parent="Hueco/Ojiva"]
+operation = 1
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.9, 3.4, 0)
+radius = 2.1
+height = 1.6
+sides = 24
+
+[node name="Base" type="CSGBox3D" parent="Hueco/Ojiva"]
+operation = 1
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.7, 0)
+size = Vector3(3, 2.6, 1.6)

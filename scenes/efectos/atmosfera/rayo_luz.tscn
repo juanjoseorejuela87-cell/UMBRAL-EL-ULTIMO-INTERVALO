@@ -1,0 +1,28 @@
+[gd_scene format=3]
+
+[sub_resource type="Gradient" id="Gradiente_rayo"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(0.2, 0.16, 0.1, 1, 0.08, 0.065, 0.04, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="Textura_rayo"]
+gradient = SubResource("Gradiente_rayo")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_rayo"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("Textura_rayo")
+disable_receive_shadows = true
+disable_fog = true
+
+[sub_resource type="QuadMesh" id="Malla_rayo"]
+material = SubResource("Mat_rayo")
+size = Vector2(1.6, 9)
+center_offset = Vector3(0, -4.5, 0)
+
+[node name="RayoLuz" type="MeshInstance3D"]
+cast_shadow = 0
+mesh = SubResource("Malla_rayo")

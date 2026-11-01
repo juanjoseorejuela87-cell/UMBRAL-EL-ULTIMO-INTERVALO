@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Mat_mota"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+disable_fog = true
+
+[sub_resource type="QuadMesh" id="Malla_mota"]
+material = SubResource("Mat_mota")
+size = Vector2(0.05, 0.05)
+
+[sub_resource type="Gradient" id="Gradiente_vida"]
+offsets = PackedFloat32Array(0, 0.2, 0.8, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.55, 0.45, 0.32, 1, 0.55, 0.45, 0.32, 1, 0, 0, 0, 1)
+
+[node name="Polvo" type="CPUParticles3D"]
+cast_shadow = 0
+amount = 60
+lifetime = 9.0
+preprocess = 9.0
+mesh = SubResource("Malla_mota")
+emission_shape = 3
+emission_box_extents = Vector3(16, 5, 3)
+direction = Vector3(0.3, -1, 0)
+spread = 25.0
+gravity = Vector3(0, -0.02, 0)
+initial_velocity_min = 0.05
+initial_velocity_max = 0.2
+color_ramp = SubResource("Gradiente_vida")

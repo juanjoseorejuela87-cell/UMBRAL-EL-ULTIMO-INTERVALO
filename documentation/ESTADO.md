@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor jugable de principio a fin. **Historia oficial integrada** en `LORE.md`. Siguiente hito: 12 (calidad gráfica escalable); después, 13 (ajustes narrativos de la demo). La demo se puede jugar con `builds/windows/UMBRAL.exe`.
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor jugable de principio a fin. **Historia oficial integrada** en `LORE.md`. Siguiente hito: **14 (rebanada visual)**, por decisión del director; después 12 (calidad escalable) y 13 (ajustes narrativos). La demo se puede jugar con `builds/windows/UMBRAL.exe`.
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -19,9 +19,9 @@
 | 9 | Ejecutable de Windows de la demo | Hecho — `tools/exportar.ps1` genera `builds/windows/UMBRAL.exe` (≈104 MB, todo incluido); arranque verificado |
 | 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Hecho — autoload `Impactos` (`tests/test_impactos.gd`, 10/10) + efecto de impacto (Antigravity, TAREA-008) |
 | 11 | Audio base (efectos provisionales y ambiente) | Hecho — autoload `Sonido` con 16 efectos sintetizados y 2 ambientes (`tests/test_sonido.gd`, 15/15); ambiente por sala, interfaz y volúmenes (Antigravity, TAREA-009) |
-| 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Siguiente (Claude) — D-017 |
+| 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Pendiente (tras el 14) — D-017 |
 | 13 | Ajustes narrativos de la demo según el canon (Cámara del Despertar, Ruinas bajo Elyndor, Fragmento de Memoria, frases de Maelis) | Pendiente — `LORE.md` §12.2 |
-| 14 | **Rebanada visual**: una sala con acabado de calidad final (guía de arte, kit gótico detallado, iluminación, niebla, posprocesado y un modelo real de Nereth) como referencia para todo el juego | Pendiente — el aspecto actual es provisional (greybox) |
+| 14 | **Rebanada visual**: una sala con acabado de calidad final (guía de arte, kit gótico detallado, iluminación, niebla, posprocesado y un modelo real de Nereth) como referencia para todo el juego | **En curso (Claude)** — hecho: `GUIA_ARTE.md`, atmósfera por estado (`AtmosferaFase`), kit detallado (columna rota, arco apuntado, ventanal, escombros, símbolos), polvo y rayos de luz baratos, sala de referencia `elyndor/camara_despertar.tscn`. Falta: modelo real de Nereth y enemigos, más piezas del kit, aplicar a todas las salas |
 
 ## Encargos a ayudantes
 
@@ -44,6 +44,7 @@
 - Salas: autoload `Salas` (`GestorSalas.global()`), `PuntoEntrada` y `TransicionSala` en `scripts/core/mundo/`.
 - Desfase: Q / I o LB. Autoload `Fase` (`GestorFase`); en código usar `GestorFase.global()`. Geometría de cada estado en capa 2 (Realidad) o 3 (Desfase) mediante un nodo hijo `ElementoFase`; Nereth solo cambia su `collision_mask`. Las cajas CSG con `ElementoFase` reciben automáticamente una colisión convexa.
 - Costura: F / O o gatillo derecho (mantener, desde el Desfase). `ElementoCosible` (hijo `Node3D` de un elemento con `ElementoFase`): Puntada (`tipo = 0`, temporal, 25 de Resonancia, una activa) o Remiendo (`tipo = 1`, permanente, `id` + `ancla_requerida`, se guarda en `Partida.remiendos`).
+- Atmósfera: `AtmosferaFase` (sustituye al WorldEnvironment de una sala) funde niebla, luz ambiental, brillo y saturación entre Realidad y Desfase. Efectos aditivos (rayos, polvo): en Compatibility la mezcla aditiva ignora la transparencia, así que la intensidad va en el color. Guía visual: `documentation/GUIA_ARTE.md`.
 - Arte (D-032): texturas CC0 de Poly Haven en `assets/texturas/` (1K), materiales PBR triplanares en `assets/materiales/` y kit gótico modular en `scenes/mundo/kit_gotico/` (muro, columna, arco). Muestra: `scenes/niveles/pruebas/sala_kit_gotico.tscn`. Todo recurso externo se anota en `assets/LICENCIAS.md`.
 - Sonido: autoload `Sonido` (`GestorSonido.global()`): `reproducir(nombre)`, `ambiente(pista)`, `fijar_volumen(bus, lineal)`. Efectos **sintetizados por código** (no hay archivos de audio); se sustituyen por grabaciones con `GestorSonido.archivos`. Escucha previa en `builds/sonidos_provisionales/`.
 - Impactos: autoload `Impactos` (`DirectorImpactos.global()`): `golpe()`, `parry()`, `herida()`, `sacudir()`. La parada de impacto se desactiva sin pantalla; `CamaraLateral.escala_temblor = 0` quita el temblor (accesibilidad).

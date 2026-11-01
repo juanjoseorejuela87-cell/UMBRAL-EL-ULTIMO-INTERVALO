@@ -3,7 +3,7 @@ extends CanvasLayer
 ## Tinte de pantalla del Desfase: multiplica la imagen por un color frío al
 ## entrar y vuelve al color neutro al salir. Muy barato (un solo rectángulo).
 
-@export var color_desfase: Color = Color(0.62, 0.72, 1.0)
+@export var color_desfase: Color = Color(0.82, 0.87, 1.0)
 @export var duracion_fundido: float = 0.3
 
 var _tween: Tween
