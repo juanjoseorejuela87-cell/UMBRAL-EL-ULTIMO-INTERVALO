@@ -1,0 +1,37 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/depuracion/panel_depuracion.gd" id="1_panel"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fondo"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+bg_color = Color(0, 0, 0, 0.65)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="PanelDepuracion" type="CanvasLayer"]
+script = ExtResource("1_panel")
+
+[node name="Margen" type="MarginContainer" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 240.0
+offset_bottom = 180.0
+
+[node name="PanelFondo" type="PanelContainer" parent="Margen"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fondo")
+
+[node name="EtiquetaInformacion" type="Label" parent="Margen/PanelFondo"]
+layout_mode = 2
+text = "FPS: 60
+Estado: SUELO
+Velocidad X: 0.00
+Velocidad Y: 0.00
+En suelo: Sí
+Invulnerable: No
+Mirando: Derecha (1.0)"

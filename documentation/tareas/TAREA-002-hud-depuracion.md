@@ -1,7 +1,7 @@
 # TAREA-002 — Panel de depuración del movimiento
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** `scenes/ui/depuracion/panel_depuracion.tscn`, `scenes/ui/depuracion/panel_depuracion.gd`, y añadir **una instancia** del panel en `scenes/niveles/pruebas/sala_movimiento.tscn`.
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `project.godot`.
 
@@ -31,4 +31,7 @@
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+- Creados `scenes/ui/depuracion/panel_depuracion.gd` y `scenes/ui/depuracion/panel_depuracion.tscn` (`CanvasLayer` tipado que monitorea FPS, estado, `velocity.x`, `velocity.y`, `is_on_floor()`, `invulnerable` y `mirando`).
+- Registrada la acción `depuracion_alternar` dinámicamente asignada a `KEY_F3`, respetando `OS.is_debug_build()` para la visibilidad inicial.
+- Instanciado en `scenes/niveles/pruebas/sala_movimiento.tscn` vinculado a `Nereth`.
+- Verificado con Godot 4.7.2 headless (`test_movimiento.gd`: RESULTADO: OK con 0 fallos; y `--quit-after 60`: 0 avisos o errores).

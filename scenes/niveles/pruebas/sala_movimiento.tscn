@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" path="res://scenes/jugador/nereth.tscn" id="1_nereth"]
 [ext_resource type="Script" path="res://scenes/camara/camara_lateral.gd" id="2_camara"]
+[ext_resource type="PackedScene" path="res://scenes/ui/depuracion/panel_depuracion.tscn" id="3_panel"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_piedra"]
 albedo_color = Color(0.34, 0.33, 0.38, 1)
@@ -81,4 +82,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0.2, 0)
 
 [node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
 script = ExtResource("2_camara")
+objetivo = NodePath("../Nereth")
+
+[node name="PanelDepuracion" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_panel")]
 objetivo = NodePath("../Nereth")
