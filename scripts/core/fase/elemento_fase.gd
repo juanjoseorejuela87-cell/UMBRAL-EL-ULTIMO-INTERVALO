@@ -58,6 +58,14 @@ func existe_en_estado(estado: GestorFase.Estado) -> bool:
 			return true
 
 
+## Cambia en tiempo de juego en qué estado existe (p. ej. el suelo que se
+## borra en la fase final de un jefe).
+func cambiar_existencia(nueva: Existencia) -> void:
+	existe_en = nueva
+	_actualizar_capa()
+	_aplicar(_fase.estado)
+
+
 ## Muestra u oculta el elemento en el estado actual sin cambiar su colisión
 ## (parpadeo de una Puntada a punto de soltarse).
 func parpadear(oculto: bool) -> void:

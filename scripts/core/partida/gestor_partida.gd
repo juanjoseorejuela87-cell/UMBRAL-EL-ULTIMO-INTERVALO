@@ -15,6 +15,8 @@ const GRUPO_REINICIO: StringName = &"reinicio_descanso"
 var ruta_guardado: String = "user://partida.json"
 var anclas_estabilizadas: Array[StringName] = []
 var remiendos: Array[StringName] = []
+## Acontecimientos únicos ya ocurridos (jefes derrotados, puertas abiertas...).
+var eventos: Array[StringName] = []
 var ancla_actual: StringName = &""
 var escena_ancla: String = ""
 var posicion_reaparicion: Vector3 = Vector3.ZERO
@@ -59,6 +61,17 @@ func registrar_remiendo(id: StringName) -> void:
 		guardar()
 
 
+func evento_ocurrido(id: StringName) -> bool:
+	return id in eventos
+
+
+## Registra un acontecimiento único y guarda en el acto.
+func registrar_evento(id: StringName) -> void:
+	if not evento_ocurrido(id):
+		eventos.append(id)
+		guardar()
+
+
 ## Descanso en un Ancla: restaura a Nereth, fija la reaparición, reinicia la
 ## zona y guarda.
 func descansar(nereth: Nereth, id: StringName, posicion: Vector3) -> void:
@@ -86,6 +99,7 @@ func guardar() -> bool:
 		"version": VERSION_GUARDADO,
 		"anclas_estabilizadas": anclas_estabilizadas.map(func(id: StringName) -> String: return String(id)),
 		"remiendos": remiendos.map(func(id: StringName) -> String: return String(id)),
+		"eventos": eventos.map(func(id: StringName) -> String: return String(id)),
 		"ancla_actual": String(ancla_actual),
 		"escena_ancla": escena_ancla,
 		"posicion_reaparicion": [posicion_reaparicion.x, posicion_reaparicion.y, posicion_reaparicion.z],
@@ -114,6 +128,8 @@ func cargar() -> bool:
 		anclas_estabilizadas.append(StringName(str(id)))
 	for id: Variant in d.get("remiendos", []):
 		remiendos.append(StringName(str(id)))
+	for id: Variant in d.get("eventos", []):
+		eventos.append(StringName(str(id)))
 	ancla_actual = StringName(str(d.get("ancla_actual", "")))
 	escena_ancla = str(d.get("escena_ancla", ""))
 	var p: Array = d.get("posicion_reaparicion", [0.0, 0.0, 0.0])
@@ -126,6 +142,7 @@ func cargar() -> bool:
 func borrar_memoria() -> void:
 	anclas_estabilizadas.clear()
 	remiendos.clear()
+	eventos.clear()
 	ancla_actual = &""
 	escena_ancla = ""
 	posicion_reaparicion = Vector3.ZERO

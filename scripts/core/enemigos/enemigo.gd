@@ -205,11 +205,32 @@ func _procesar_ataque(delta: float) -> void:
 			if _tiempo >= ataque_actual.recuperacion:
 				estado = Estado.PERSECUCION
 				_pausa = pausa_entre_ataques
+				_al_terminar_ataque()
 
 
 func _iniciar_ataque() -> void:
-	ataque_actual = ataques[_indice_ataque % ataques.size()]
+	_iniciar_ataque_con(_elegir_ataque())
+
+
+## Punto de extensión: qué ataque usar (por defecto, en orden cíclico).
+func _elegir_ataque() -> DatosAtaque:
+	var datos: DatosAtaque = ataques[_indice_ataque % ataques.size()]
 	_indice_ataque += 1
+	return datos
+
+
+## Punto de extensión: se llama al acabar la recuperación de un ataque.
+func _al_terminar_ataque() -> void:
+	pass
+
+
+## Punto de extensión: permite anular un golpe concreto (refugios, etc.).
+func _puede_golpear(_caja: CajaDano) -> bool:
+	return true
+
+
+func _iniciar_ataque_con(datos: DatosAtaque) -> void:
+	ataque_actual = datos
 	estado = Estado.ATAQUE
 	etapa = Etapa.PREPARACION
 	_tiempo = 0.0
@@ -237,6 +258,8 @@ func _detectar_golpes() -> void:
 		if caja == null or caja in _golpeados:
 			continue
 		_golpeados.append(caja)
+		if not _puede_golpear(caja):
+			continue
 		var info := InfoGolpe.new()
 		info.dano = ataque_actual.dano
 		info.dano_postura = ataque_actual.dano_postura

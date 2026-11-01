@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DatosAtaque" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="1_datos"]
+
+[resource]
+script = ExtResource("1_datos")
+nombre = &"prefecto_salida"
+fuerza = 1
+preparacion = 0.45
+activo = 0.15
+recuperacion = 0.6
+dano = 22.0
+dano_postura = 0.0
+impulso = 6.0
+tamano_caja = Vector3(1.8, 1.2, 1)
+desplazamiento_caja = Vector3(1, 1.1, 0)
