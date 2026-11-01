@@ -77,6 +77,11 @@ func salir() -> void:
 	en_desfase = false
 
 
+func restaurar() -> void:
+	actual = maximo
+	cambiada.emit(actual, maximo)
+
+
 func ganar(cantidad: float) -> void:
 	actual = minf(actual + cantidad, maximo)
 	cambiada.emit(actual, maximo)

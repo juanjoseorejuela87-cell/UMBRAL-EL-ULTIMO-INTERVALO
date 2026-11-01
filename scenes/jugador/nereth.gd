@@ -7,6 +7,7 @@ signal salto_iniciado
 signal aterrizado
 signal esquiva_iniciada
 signal esquiva_terminada
+signal derrotado
 
 enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO }
 
@@ -75,6 +76,7 @@ func _ready() -> void:
 	_plano_z = global_position.z
 	_recalcular_salto()
 	combate.golpe_conectado.connect(_al_conectar_golpe)
+	vida.agotada.connect(_al_agotar_vida)
 
 
 ## Deriva gravedad y velocidad inicial a partir de altura y tiempo hasta la cima.
@@ -116,6 +118,25 @@ func aturdir(duracion: float) -> void:
 func reaparecer(posicion: Vector3) -> void:
 	global_position = Vector3(posicion.x, posicion.y, _plano_z)
 	velocity = Vector3.ZERO
+
+
+## Vida, resistencia y Resonancia al máximo, de vuelta en la Realidad y con el
+## control libre (descanso en un Ancla, reaparición).
+func restaurar() -> void:
+	combate.interrumpir()
+	vida.restaurar()
+	resistencia.restaurar()
+	resonancia.restaurar()
+	fase.reiniciar()
+	invulnerable_esquiva = false
+	_aturdimiento = 0.0
+	velocity = Vector3.ZERO
+	estado = Estado.SUELO if is_on_floor() else Estado.AIRE
+
+
+func _al_agotar_vida() -> void:
+	derrotado.emit()
+	GestorPartida.global().reaparecer(self)
 
 
 ## Pasa al estado de acción (lo llama CombateNereth al empezar un ataque).

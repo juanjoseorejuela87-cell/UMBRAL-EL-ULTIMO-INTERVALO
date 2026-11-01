@@ -21,4 +21,6 @@ Estados: **CONFIRMADO** (director) · **PROPUESTA** (adoptada provisionalmente p
 | D-015 | 2026-11-01 | Golpear a un enemigo en Ruptura produce automáticamente el Golpe de Umbral (×2,5) | Simple de leer; sin botón extra | PROPUESTA |
 | D-016 | 2026-11-01 | La esquiva pulsada durante un ataque se guarda 0,15 s y sale al abrirse la ventana de cancelación | Respuesta de control: no se pierden pulsaciones | PROPUESTA |
 | D-017 | 2026-11-01 | El director pide modelos 3D y acabado visual "mínimo AAA". El código separa lógica y apariencia (nodo `Visual`) para sustituir las cápsulas por modelos sin tocar sistemas. Falta decidir: GPU dedicada + renderizador Forward+ para el acabado final, y origen de modelos/animaciones | Una UHD 610 con Compatibility no puede mostrar ni editar arte de nivel AAA | PENDIENTE (director) |
+| D-019 | 2026-11-01 | Estabilizar un Ancla también descansa en ella; al morir se reaparece en el último Ancla con todo restaurado (sin pérdida de recursos de momento) | Simple y coherente con D-011 | PROPUESTA |
+| D-020 | 2026-11-01 | Guardado en JSON legible (`user://partida.json`) con número de versión | Fácil de depurar y de migrar | PROPUESTA |
 | D-018 | 2026-11-01 | Desfase por capas de física (comunes 1, Realidad 2, Desfase 3); `GestorFase.global()` como acceso estático | Barato y robusto; funciona también en pruebas `-s` | PROPUESTA |

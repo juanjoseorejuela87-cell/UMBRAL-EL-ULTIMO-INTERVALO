@@ -1,0 +1,86 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/jugador/nereth.tscn" id="1_nereth"]
+[ext_resource type="Script" path="res://scenes/camara/camara_lateral.gd" id="2_camara"]
+[ext_resource type="PackedScene" path="res://scenes/ui/depuracion/panel_depuracion.tscn" id="3_panel"]
+[ext_resource type="PackedScene" path="res://scenes/enemigos/muneco_practica/muneco_practica.tscn" id="4_muneco"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/ancla/ancla.tscn" id="5_ancla"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="6_hud"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_piedra"]
+albedo_color = Color(0.34, 0.33, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_distorsion"]
+albedo_color = Color(0.3, 0.12, 0.35, 1)
+emission_enabled = true
+emission = Color(0.45, 0.1, 0.5, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="Environment" id="Entorno"]
+background_mode = 1
+background_color = Color(0.05, 0.05, 0.08, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.5, 0.5, 0.62, 1)
+ambient_light_energy = 0.6
+
+[node name="SalaAncla" type="Node3D"]
+
+[node name="Entorno" type="WorldEnvironment" parent="."]
+environment = SubResource("Entorno")
+
+[node name="Sol" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.643, -0.766, 0, 0.766, 0.643, 0, 10, 5)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Geometria" type="Node3D" parent="."]
+
+[node name="Suelo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(32, 1, 4)
+material = SubResource("Mat_piedra")
+
+[node name="MuroIzquierdo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.5, 5, 0)
+use_collision = true
+size = Vector3(1, 10, 4)
+material = SubResource("Mat_piedra")
+
+[node name="MuroDerecho" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 5, 0)
+use_collision = true
+size = Vector3(1, 10, 4)
+material = SubResource("Mat_piedra")
+
+[node name="Distorsion" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 2.5, 0)
+use_collision = true
+size = Vector3(0.8, 5, 4)
+material = SubResource("Mat_distorsion")
+
+[node name="AnclaA" parent="." node_paths=PackedStringArray("distorsiones") instance=ExtResource("5_ancla")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 0)
+id = &"pruebas_ancla_a"
+distorsiones = [NodePath("../Geometria/Distorsion")]
+
+[node name="AnclaB" parent="." instance=ExtResource("5_ancla")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+id = &"pruebas_ancla_b"
+requiere_reto = true
+
+[node name="Muneco" parent="." instance=ExtResource("4_muneco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+
+[node name="Nereth" parent="." instance=ExtResource("1_nereth")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0.2, 0)
+
+[node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
+script = ExtResource("2_camara")
+objetivo = NodePath("../Nereth")
+
+[node name="PanelDepuracion" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_panel")]
+objetivo = NodePath("../Nereth")
+
+[node name="HudJuego" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("6_hud")]
+objetivo = NodePath("../Nereth")

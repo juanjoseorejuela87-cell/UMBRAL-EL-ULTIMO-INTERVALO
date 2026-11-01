@@ -19,6 +19,12 @@ func _ready() -> void:
 	actual = maximo
 
 
+func restaurar() -> void:
+	actual = maximo
+	_espera = 0.0
+	cambiada.emit(actual, maximo)
+
+
 func puede_actuar() -> bool:
 	return actual > 0.0
 

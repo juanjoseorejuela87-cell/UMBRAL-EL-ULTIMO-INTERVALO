@@ -30,6 +30,7 @@ func _ready() -> void:
 	postura.rota.connect(_actualizar_color)
 	postura.recuperada.connect(_actualizar_color)
 	vida.agotada.connect(vida.restaurar)
+	add_to_group(GestorPartida.GRUPO_REINICIO)
 
 
 func _physics_process(delta: float) -> void:
