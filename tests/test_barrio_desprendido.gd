@@ -209,6 +209,51 @@ func _ejecutar() -> void:
 	await _esperar(40)
 	_comprobar(_nereth.global_position.y < 2.0 or not _nereth.is_on_floor(), "sin coser Puntada 2, Nereth no puede sostenerse en Realidad y cae al foso (y = %.1f)" % _nereth.global_position.y)
 
+	# 10. Conexión con el Salón del Prefecto (TAREA-006):
+	# A) Comprobar existencia y configuración de los PuntoEntrada
+	var puntos_entrada: Array[Node] = _sala.find_children("*", "PuntoEntrada", true, false)
+	var entrada_inicio: PuntoEntrada = null
+	var entrada_desde_salon: PuntoEntrada = null
+	for pe: Node in puntos_entrada:
+		var p: PuntoEntrada = pe as PuntoEntrada
+		if p.id == &"inicio":
+			entrada_inicio = p
+		elif p.id == &"desde_salon":
+			entrada_desde_salon = p
+
+	_comprobar(entrada_inicio != null, "existe el PuntoEntrada «inicio»")
+	if entrada_inicio:
+		_comprobar(absf(entrada_inicio.global_position.x - (-16.0)) < 1.0, "«inicio» está ubicado al principio del nivel (x = %.1f)" % entrada_inicio.global_position.x)
+		_comprobar(is_equal_approx(entrada_inicio.mirando, 1.0), "«inicio» mira hacia la derecha")
+
+	_comprobar(entrada_desde_salon != null, "existe el PuntoEntrada «desde_salon»")
+	if entrada_desde_salon:
+		_comprobar(is_equal_approx(entrada_desde_salon.mirando, -1.0), "«desde_salon» mira hacia la izquierda")
+
+	# B) Comprobar TransicionSala hacia el Salón del Prefecto
+	var transiciones: Array[Node] = _sala.find_children("*", "TransicionSala", true, false)
+	var transicion_salon: TransicionSala = null
+	for t: Node in transiciones:
+		var tr: TransicionSala = t as TransicionSala
+		if tr.escena_destino == "res://scenes/niveles/elyndor/salon_prefecto.tscn":
+			transicion_salon = tr
+
+	_comprobar(transicion_salon != null, "existe la TransicionSala hacia el Salón del Prefecto")
+	if transicion_salon:
+		_comprobar(transicion_salon.entrada_destino == &"desde_barrio", "la transición apunta a la entrada «desde_barrio»")
+		_comprobar(transicion_salon.collision_mask & 8 != 0, "la transición detecta la capa del jugador (8)")
+
+	# C) Comprobar que «desde_salon» está fuera de la transición
+	if entrada_desde_salon and transicion_salon:
+		var col_transicion: CollisionShape3D = transicion_salon.get_node("Forma") as CollisionShape3D
+		var box: BoxShape3D = col_transicion.shape as BoxShape3D
+		var mitad_x: float = box.size.x * 0.5 if box else 1.0
+		var min_x_transicion: float = transicion_salon.global_position.x - mitad_x
+		var max_x_transicion: float = transicion_salon.global_position.x + mitad_x
+		var x_punto: float = entrada_desde_salon.global_position.x
+		var fuera: bool = x_punto < min_x_transicion or x_punto > max_x_transicion
+		_comprobar(fuera, "el PuntoEntrada «desde_salon» (x = %.1f) está fuera de la transición (rango x = %.1f..%.1f)" % [x_punto, min_x_transicion, max_x_transicion])
+
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)
 

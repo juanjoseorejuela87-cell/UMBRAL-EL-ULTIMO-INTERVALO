@@ -1,7 +1,7 @@
 # TAREA-006 — Conectar el Barrio Desprendido con el Salón del Prefecto
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** `scenes/niveles/elyndor/barrio_desprendido.tscn`, `tests/test_barrio_desprendido.gd`.
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `scenes/niveles/elyndor/salon_prefecto.tscn` (es de Claude), `project.godot`.
 
@@ -34,4 +34,15 @@ Commit `[antigravity] Conexión Barrio Desprendido ↔ Salón del Prefecto (TARE
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+1. **Puntos de entrada y transición en `scenes/niveles/elyndor/barrio_desprendido.tscn`:**
+   - Añadido `PuntoEntrada` id `inicio` (`Marker3D` en x = -16.0, y = 0.1, `mirando = 1.0`).
+   - Añadido `PuntoEntrada` id `desde_salon` (`Marker3D` en x = 106.5, y = 4.6, `mirando = -1.0`), situado a más de 3.2 m a la izquierda de la zona de transición para evitar rebotes indeseados.
+   - Añadida `TransicionSala` id `HaciaSalon` (`Area3D` en x = 110.5, y = 6.5, con forma de caja de 1.5 x 4 x 4 m y `collision_mask = 8`) configurada con `escena_destino = "res://scenes/niveles/elyndor/salon_prefecto.tscn"` y `entrada_destino = &"desde_barrio"`.
+   - Modificado `PorticoFinal`: añadido hijo CSGBox3D subtractivo (`HuecoArco` de 3 x 4.2 x 4.2 m en y = -1.0) para abrir el pórtico como un arco transitable manteniendo su lectura arquitectónica.
+   - `SueloFinal` extendido hasta x = 114.0 y `MuroLimiteDerecho` reubicado en x = 114.5.
+2. **Pruebas añadidas en `tests/test_barrio_desprendido.gd`:**
+   - Comprobación de existencia, posición y orientación de `PuntoEntrada` `inicio`.
+   - Comprobación de existencia y orientación de `PuntoEntrada` `desde_salon`.
+   - Comprobación de `TransicionSala` apuntando a `salon_prefecto.tscn` con entrada `desde_barrio` y máscara de colisión de jugador (capa 8).
+   - Comprobación matemática de que `desde_salon` se encuentra fuera del volumen de colisión de la transición.
+3. **Verificación:** Ejecutado `tools/comprobar.ps1` resultando en 0 fallos en las 8 pruebas.

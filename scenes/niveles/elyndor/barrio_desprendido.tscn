@@ -12,6 +12,8 @@
 [ext_resource type="PackedScene" path="res://scenes/enemigos/vigia_hueco/vigia_hueco.tscn" id="10_vigia"]
 [ext_resource type="PackedScene" path="res://scenes/enemigos/eco_rezagado/eco_rezagado.tscn" id="11_eco"]
 [ext_resource type="PackedScene" path="res://scenes/enemigos/guardian_partido/guardian_partido.tscn" id="12_guardian"]
+[ext_resource type="Script" path="res://scripts/core/mundo/punto_entrada.gd" id="13_entrada"]
+[ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="14_transicion"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_piedra"]
 albedo_color = Color(0.32, 0.31, 0.36, 1)
@@ -49,6 +51,9 @@ size = Vector3(55, 3, 8)
 
 [sub_resource type="BoxShape3D" id="Box_caida_foso"]
 size = Vector3(45, 3, 8)
+
+[sub_resource type="BoxShape3D" id="Box_transicion_salon"]
+size = Vector3(1.5, 4, 4)
 
 [sub_resource type="Environment" id="Entorno"]
 background_mode = 1
@@ -241,9 +246,9 @@ punto_costura = NodePath("PuntoCosturaAtajo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
 
 [node name="SueloFinal" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105, 4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106, 4, 0)
 use_collision = true
-size = Vector3(12, 1, 4)
+size = Vector3(16, 1, 4)
 material = SubResource("Mat_piedra")
 
 [node name="PorticoFinal" type="CSGBox3D" parent="Geometria"]
@@ -252,8 +257,13 @@ use_collision = true
 size = Vector3(2, 6, 4)
 material = SubResource("Mat_arquitectura")
 
+[node name="HuecoArco" type="CSGBox3D" parent="Geometria/PorticoFinal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+operation = 2
+size = Vector3(3, 4.2, 4.2)
+
 [node name="MuroLimiteDerecho" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 113.5, 9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 114.5, 9, 0)
 use_collision = true
 size = Vector3(1, 12, 4)
 material = SubResource("Mat_piedra")
@@ -319,3 +329,26 @@ objetivo = NodePath("../Nereth")
 
 [node name="HudJuego" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("4_hud")]
 objetivo = NodePath("../Nereth")
+
+[node name="EntradaInicio" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.1, 0)
+script = ExtResource("13_entrada")
+id = &"inicio"
+mirando = 1.0
+
+[node name="EntradaDesdeSalon" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106.5, 4.6, 0)
+script = ExtResource("13_entrada")
+id = &"desde_salon"
+mirando = -1.0
+
+[node name="HaciaSalon" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 110.5, 6.5, 0)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("14_transicion")
+escena_destino = "res://scenes/niveles/elyndor/salon_prefecto.tscn"
+entrada_destino = &"desde_barrio"
+
+[node name="Forma" type="CollisionShape3D" parent="HaciaSalon"]
+shape = SubResource("Box_transicion_salon")
