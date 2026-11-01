@@ -1,0 +1,26 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materiales/sillares.tres" id="1_sillares"]
+
+[node name="Escalera" type="CSGCombiner3D"]
+use_collision = true
+
+[node name="Peldano1" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+size = Vector3(4.8, 0.3, 3)
+material = ExtResource("1_sillares")
+
+[node name="Peldano2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.45, 0)
+size = Vector3(4, 0.3, 3)
+material = ExtResource("1_sillares")
+
+[node name="Peldano3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.75, 0)
+size = Vector3(3.2, 0.3, 3)
+material = ExtResource("1_sillares")
+
+[node name="Peldano4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1.05, 0)
+size = Vector3(2.4, 0.3, 3)
+material = ExtResource("1_sillares")

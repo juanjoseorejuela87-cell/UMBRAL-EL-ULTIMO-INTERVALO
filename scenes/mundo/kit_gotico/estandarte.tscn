@@ -1,0 +1,43 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/mundo/kit_gotico/estandarte.gd" id="1_script"]
+
+[sub_resource type="Gradient" id="Gradiente_tela"]
+offsets = PackedFloat32Array(0, 0.6, 0.85, 1)
+colors = PackedColorArray(0.34, 0.06, 0.05, 1, 0.28, 0.05, 0.04, 1, 0.2, 0.04, 0.03, 0.8, 0.15, 0.03, 0.02, 0)
+
+[sub_resource type="GradientTexture2D" id="Textura_tela"]
+gradient = SubResource("Gradiente_tela")
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_tela"]
+transparency = 1
+cull_mode = 2
+albedo_texture = SubResource("Textura_tela")
+roughness = 1.0
+
+[sub_resource type="QuadMesh" id="Malla_tela"]
+material = SubResource("Mat_tela")
+size = Vector2(1.1, 3.2)
+center_offset = Vector3(0, -1.6, 0)
+
+[sub_resource type="CylinderMesh" id="Malla_vara"]
+top_radius = 0.04
+bottom_radius = 0.04
+height = 1.5
+radial_segments = 6
+
+[sub_resource type="StandardMaterial3D" id="Mat_vara"]
+albedo_color = Color(0.25, 0.18, 0.1, 1)
+
+[node name="Estandarte" type="Node3D"]
+
+[node name="Vara" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("Malla_vara")
+surface_material_override/0 = SubResource("Mat_vara")
+
+[node name="Tela" type="MeshInstance3D" parent="."]
+mesh = SubResource("Malla_tela")
+script = ExtResource("1_script")
