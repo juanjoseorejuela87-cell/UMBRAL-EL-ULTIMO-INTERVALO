@@ -1,7 +1,7 @@
 # TAREA-005 — Greybox del primer tramo de Elyndor: «Barrio Desprendido»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:** todo lo que crees dentro de `scenes/niveles/elyndor/` (escena principal: `scenes/niveles/elyndor/barrio_desprendido.tscn`).
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `scenes/mundo/`, `scenes/ui/`, `project.godot`, `scenes/main/`.
 
@@ -123,3 +123,7 @@ Resueltos los dos problemas detectados en la geometría y añadido el recorrido 
    - Ejecuta la maniobra canónica completa por física: entrada a Desfase -> coser P1 -> salto a P1 -> coser P2 (suelta P1) -> salto a P2 -> retorno a Realidad apoyado en P2 -> salto al receptor alto.
    - Contraste negativo: verifica que si no se cose P2, intentar volver a Realidad sobre ella hace caer a Nereth al foso.
    - Resultado: 0 fallos.
+
+## Revisión 3 (Claude, 2026-11-01) — ACEPTADO
+
+Excelente. Puente a y = 6,0–6,6 (3 u libres sobre `Puntada2`), velos que cubren su altura, `punto_costura` en el extremo del receptor (42 u desde el Ancla) y, sobre todo, una **prueba de recorrido real** que demuestra que la cadena se completa cosiendo y que sin coser se cae al foso. Ese tipo de prueba es justo lo que necesitábamos: a partir de ahora será el estándar para cualquier nivel.

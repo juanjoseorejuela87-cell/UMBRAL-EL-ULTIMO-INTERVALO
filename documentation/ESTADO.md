@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor. Siguiente hito: 8 (transiciones entre salas y montaje de la vertical slice).
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor. Siguiente: cerrar la vertical slice (conexión de salas, recompensa del Prefecto, pantalla de título y pulido).
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -15,7 +15,7 @@
 | 5 | Costura (Puntada, Remiendo, Desgarro) | Hecho Puntada y Remiendo — `tests/test_costura.gd` (17/17). Desgarro pasa al hito 6 (necesita enemigos con Hilos) |
 | 6 | Arquetipos: corpóreo, eco, bifásico + Desgarro + guardia/parry | Hecho — `tests/test_enemigos.gd` (29/29): Vigía Hueco, Eco Rezagado, Guardián Partido |
 | 7 | El Prefecto de las Puertas | Hecho — `tests/test_prefecto.gd` (24/24): 3 fases, travesía entre puertas, trampa cosida, Cierre, derrota persistente |
-| 8 | Salas de Elyndor (greybox) + transiciones entre salas | En curso — Barrio Desprendido (Antigravity, TAREA-005); transiciones (Claude, siguiente) |
+| 8 | Salas de Elyndor (greybox) + transiciones entre salas | Transiciones hechas — `tests/test_transiciones.gd` (8/8). Barrio Desprendido aceptado; Salón del Prefecto creado; conexión entre ambos: TAREA-006 |
 
 ## Encargos a ayudantes
 
@@ -25,12 +25,14 @@
 | [TAREA-002](tareas/TAREA-002-hud-depuracion.md) | Antigravity | ACEPTADO |
 | [TAREA-003](tareas/TAREA-003-hud-juego.md) | Antigravity | ACEPTADO |
 | [TAREA-004](tareas/TAREA-004-hud-desfase.md) | Antigravity | ACEPTADO |
-| [TAREA-005](tareas/TAREA-005-greybox-elyndor.md) | Antigravity | CAMBIOS (revisión 2) |
+| [TAREA-005](tareas/TAREA-005-greybox-elyndor.md) | Antigravity | ACEPTADO |
+| [TAREA-006](tareas/TAREA-006-conexion-barrio-salon.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
 - Controles (teclado): A/D o flechas mover, Espacio saltar, Shift o L esquivar, J o clic izquierdo ataque ligero, K o clic derecho ataque pesado (mantener para cargar), E interactuar. Mando: stick izquierdo/cruceta, A saltar, B esquivar, X ligero, RB pesado, Y interactuar.
-- La escena de arranque carga `sala_combate.tscn` (incluye movimiento y dos muñecos de práctica).
+- Arranque: `main.tscn` continúa en el último Ancla si hay partida (`user://partida.json`); si no, empieza en `elyndor/barrio_desprendido.tscn` (entrada `inicio`). Para empezar de cero, borra ese archivo.
+- Salas: autoload `Salas` (`GestorSalas.global()`), `PuntoEntrada` y `TransicionSala` en `scripts/core/mundo/`.
 - Desfase: Q / I o LB. Autoload `Fase` (`GestorFase`); en código usar `GestorFase.global()`. Geometría de cada estado en capa 2 (Realidad) o 3 (Desfase) mediante un nodo hijo `ElementoFase`; Nereth solo cambia su `collision_mask`. Las cajas CSG con `ElementoFase` reciben automáticamente una colisión convexa.
 - Costura: F / O o gatillo derecho (mantener, desde el Desfase). `ElementoCosible` (hijo `Node3D` de un elemento con `ElementoFase`): Puntada (`tipo = 0`, temporal, 25 de Resonancia, una activa) o Remiendo (`tipo = 1`, permanente, `id` + `ancla_requerida`, se guarda en `Partida.remiendos`).
 - Defensa: U / C o gatillo izquierdo = guardia (los primeros 0,15 s son parry). La guardia no cubre la espalda; sin resistencia se rompe.
