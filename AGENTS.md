@@ -5,10 +5,10 @@ Este archivo es la referencia común para **todos** los agentes de IA que trabaj
 ## Proyecto
 
 - Action RPG con estructura Metroidvania, un jugador, PC Windows.
-- **Godot 4.7.2**, **GDScript tipado**, renderizador **Compatibility** (el equipo de desarrollo tiene una Intel UHD 610).
+- **Godot 4.7.2**, **GDScript tipado**. Calidad **escalable** (D-017): debe funcionar en PC modestos (renderizador Compatibility; el equipo de desarrollo tiene una Intel UHD 610) y aprovechar PC potentes (Forward+). Todo efecto caro debe tener alternativa barata o poder desactivarse.
 - 2.5D: mundo 3D, movimiento de Nereth sobre un plano lateral (eje X/Y; Z fijo salvo transiciones de profundidad contextuales).
 - Documentación de diseño en `documentation/`:
-  - `LORE.md` — historia y universo.
+  - `LORE.md` — **historia oficial** (canon). No contradecirla; las dudas se anotan en su §12.
   - `GAMEPLAY.md` — sistemas jugables.
   - `DECISIONES.md` — registro de decisiones (qué, por qué, estado).
   - `ESTADO.md` — hoja de ruta, etapa actual y tareas en curso.

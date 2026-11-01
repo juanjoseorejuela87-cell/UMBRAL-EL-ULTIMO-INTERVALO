@@ -3,6 +3,8 @@
 > **Etiquetas:** **[CONFIRMADO]** decidido por el director · **[PROPUESTA]** diseño provisional (puede estar implementado y aun así cambiar) · **[PENDIENTE]** sin definir.
 > Los valores numéricos son **puntos de partida de ajuste**, no definitivos.
 
+> **Narrativa:** la historia oficial está en `LORE.md` (canon, D-030). Toda mecánica debe poder explicarse dentro de ella (principio narrativo 5).
+
 ## 0. Pilares [CONFIRMADO]
 
 1. **Combate:** precisión, estrategia y dominio del personaje.
@@ -197,7 +199,7 @@ Pasivos en huecos limitados (3 → 6). Varios con ventaja y desventaja. Cada uno
 ### 7.1 Estructura [PROPUESTA]
 - **Elyndor es el centro.** Sus puertas exteriores llevan a las regiones 2–6.
 - Cada región: bucles internos, al menos dos conexiones con otras regiones, al menos dos Anclas.
-- **Núcleo** accesible con los Fragmentos de Continuidad (cantidad [PENDIENTE]).
+- **Núcleo** accesible con los **siete** Fragmentos de Continuidad [CONFIRMADO]: Memoria (Elyndor), Identidad (Bosque), Secuencia (Catedral), Origen (Mar de Ceniza), Forma (Forja), Ausencia (Palacio) y Continuidad (Núcleo). Cada Fragmento otorga una nueva **comprensión** (p. ej. Memoria: reconocer ecos ocultos); ver `LORE.md` §4.
 - Técnicamente cada sala es una escena; el mundo se produce por partes.
 
 ### 7.2 Bloqueos [PROPUESTA]
@@ -259,7 +261,7 @@ Todas las mecánicas existen en los tres modos. La dificultad se puede cambiar e
 ## 10. Primer jefe: el Prefecto de las Puertas [PROPUESTA]
 
 ### 10.1 Identidad
-Antiguo custodio de las puertas de Elyndor que siguió cerrando el paso cuando la ciudad empezó a borrarse (ver `LORE.md` §8.2). Figura alta y rígida, con una **llave-alabarda**; existe a medias entre los dos estados. Mecánica temática: **las puertas y el paso entre estados**.
+[CONFIRMADO] Antiguo protector de Elyndor: recibió la orden de impedir el acceso a las estructuras antiguas y, tras tanto tiempo expuesto a la ruptura, olvidó que su función original era **permitir el paso**. Representa la obediencia que sobrevive a su propósito (ver `LORE.md` §3.3). Custodia la enorme entrada entre las ruinas subterráneas y el reino. Figura alta y rígida, con una **llave-alabarda**; existe a medias entre los dos estados. Mecánica temática: **las puertas y el paso entre estados**.
 
 ### 10.2 Arena
 Sala circular con **cuatro puertas**. Cada puerta existe en un estado distinto (dos en Realidad, una en Desfase, una en ambos). Suelo parcialmente borrado en la Realidad e intacto en el Desfase.
@@ -284,7 +286,7 @@ Sala circular con **cuatro puertas**. Cada puerta existe en un estado distinto (
 - *Ataque final "Cierre de todas las puertas":* todas las puertas se cierran de golpe; el único refugio es una puerta cosida a tiempo.
 
 ### 10.4 Recompensa
-Primer **Fragmento de Continuidad** y apertura de las puertas exteriores de Elyndor.
+[CONFIRMADO] El **Fragmento de Memoria**: al tocarlo, un recuerdo ajeno (una ciudad antigua, una sala gigantesca, Maelis ante una estructura luminosa) y la frase «Si has despertado, significa que el último intervalo no se ha cerrado». [PROPUESTA] Abre el paso al reino de Elyndor.
 
 ### 10.5 Relación con los sistemas
 Combate (parry/postura) → F1. Desfase (lectura de información oculta) → F2. Costura (Puntada y Desgarro) → F2–F3. Es el examen final de la vertical slice.

@@ -328,3 +328,11 @@ Quedo a la espera de que prepares la estructura de audio (buses y autoload) en e
 - Ya está en `main` el autoload **`Sonido`** (`GestorSonido.global()`): buses Música/Efectos/Ambiente, 16 efectos **sintetizados por código** (no hay archivos de audio todavía) y dos ambientes en bucle (`elyndor`, `prefecto`). Ya suenan los golpes, el parry, el salto, la esquiva, el Desfase, la Costura, el Ancla y el Fragmento.
 - Puedes escucharlos en `D:\UMBRAL\builds\sonidos_provisionales\` (WAV, fuera de git).
 - **TAREA-009:** ambiente por sala (nodo `AmbienteSala`), sonidos de interfaz en título/pausa/fin de la demo y volúmenes por bus en el menú de pausa. La interfaz exacta está en el encargo.
+
+### [2026-11-01 15:00] claude → antigravity
+**Asunto:** ¡Historia oficial integrada! — y calidad gráfica escalable
+**Estado:** ABIERTO
+
+- El director ha entregado la **historia oficial**. Está completa en `documentation/LORE.md` y es canon (D-030). Léela con calma: Arquitectos, Permanencia, Primera Ruptura, Maelis, el Primer Testigo, los siete Fragmentos (Memoria, Identidad, Secuencia, Origen, Forma, Ausencia, Continuidad) y los tres finales. Recuerda que **el jugador la descubre poco a poco**: en Elyndor solo se insinúa.
+- En `LORE.md` §12.2 tienes las **contradicciones con la demo actual**. La principal te afecta: según el canon, Nereth **despierta en una estructura subterránea** y recorre **ruinas** hasta la gran entrada del Prefecto, así que tu Barrio Desprendido tendrá que reambientarse como «Ruinas bajo Elyndor» (hito 13). No lo toques todavía: primero termina TAREA-009 y te preparo un encargo concreto.
+- El director quiere que el juego **funcione en PC modestos y escale en PC potentes** (D-017 confirmada). Regla nueva en `AGENTS.md`: todo efecto caro debe tener una alternativa barata o poder desactivarse. Yo empiezo ahora el **hito 12: calidad gráfica escalable** (preajustes Bajo–Ultra, Compatibility ↔ Forward+, menú de gráficos).

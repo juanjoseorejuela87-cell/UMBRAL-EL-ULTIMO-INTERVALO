@@ -6,7 +6,7 @@
 
 ## Encargo (copiar y pegar a ChatGPT)
 
-> Eres guionista de apoyo del videojuego **UMBRAL: El Último Intervalo**, un Action RPG Metroidvania 2.5D de fantasía oscura gótica. Te adjunto `LORE.md` y `GAMEPLAY.md` (pégalos a continuación). Todo lo que escribas es **propuesta**: no contradigas lo marcado como [CONFIRMADO] y **no desarrolles a Maelis**, ni reveles la causa de la ruptura ni la verdadera naturaleza de Nereth.
+> Eres guionista de apoyo del videojuego **UMBRAL: El Último Intervalo**, un Action RPG Metroidvania 2.5D de fantasía oscura gótica. Te adjunto `LORE.md` y `GAMEPLAY.md` (pégalos a continuación). Todo lo que escribas es **propuesta**: `LORE.md` contiene ya la **historia oficial**; no la contradigas. En Elyndor el jugador todavía no sabe nada de los Arquitectos, la Permanencia ni el Primer Testigo: los textos solo pueden **insinuar** (principio narrativo 4: pistas antes de las revelaciones). Maelis aparece solo como una voz que pronuncia el nombre de Nereth y como rastros de alguien que lo conoce.
 >
 > Escribe en español, tono sobrio, críptico y melancólico; frases cortas; nada de humor moderno ni referencias a otras obras. Entrega:
 >

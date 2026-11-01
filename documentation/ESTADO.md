@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor **jugable de principio a fin** (título → Barrio → Salón del Prefecto → fin de la demo). Siguiente: definir la Fase 2 (Elyndor completo) con el director; mientras, pulido de la demo. La demo se puede jugar con `builds/windows/UMBRAL.exe`.
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor jugable de principio a fin. **Historia oficial integrada** en `LORE.md`. Siguiente hito: 12 (calidad gráfica escalable); después, 13 (ajustes narrativos de la demo). La demo se puede jugar con `builds/windows/UMBRAL.exe`.
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -19,6 +19,8 @@
 | 9 | Ejecutable de Windows de la demo | Hecho — `tools/exportar.ps1` genera `builds/windows/UMBRAL.exe` (≈104 MB, todo incluido); arranque verificado |
 | 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Hecho — autoload `Impactos` (`tests/test_impactos.gd`, 10/10) + efecto de impacto (Antigravity, TAREA-008) |
 | 11 | Audio base (efectos provisionales y ambiente) | Núcleo hecho — autoload `Sonido` con 16 efectos sintetizados y 2 ambientes (`tests/test_sonido.gd`, 15/15); ambiente por sala, interfaz y volúmenes: TAREA-009 |
+| 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Siguiente (Claude) — D-017 |
+| 13 | Ajustes narrativos de la demo según el canon (Cámara del Despertar, Ruinas bajo Elyndor, Fragmento de Memoria, frases de Maelis) | Pendiente — `LORE.md` §12.2 |
 
 ## Encargos a ayudantes
 
@@ -52,5 +54,4 @@
 
 ## Pendiente del director
 
-- Historia oficial para `LORE.md` (opcional: si llega, sustituye a las propuestas).
-- **Objetivo visual AAA con modelos 3D** (pedido el 2026-11-01): requiere decidir hardware/renderizador y canal de producción de arte. Ver D-017.
+- **Origen de los modelos 3D y animaciones** (generados con IA, comprados, encargados…). La dirección visual ya está decidida: calidad escalable (D-017).
