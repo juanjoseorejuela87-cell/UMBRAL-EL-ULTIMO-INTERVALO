@@ -39,7 +39,7 @@ func _ejecutar() -> void:
 	_calmar()
 	_nereth.restaurar()
 	_prefecto.vida.recibir_dano(_prefecto.vida.maximo * 0.36)
-	_comprobar(_prefecto.fase_actual == 2, "al 64 %% de vida pasa a la fase 2 (Puertas cruzadas)")
+	_comprobar(_prefecto.fase_actual == 2, "al 64 % de vida pasa a la fase 2 (Puertas cruzadas)")
 	await _esperar(2)
 	_comprobar(_contar_ecos() == _prefecto.ecos_fase_2, "invoca %d ecos (%d)" % [_prefecto.ecos_fase_2, _contar_ecos()])
 
@@ -70,7 +70,7 @@ func _ejecutar() -> void:
 	# --- Fase 3 ---
 	_calmar()
 	_prefecto.vida.recibir_dano(_prefecto.vida.actual - _prefecto.vida.maximo * 0.29)
-	_comprobar(_prefecto.fase_actual == 3, "al 29 %% pasa a la fase 3 (Umbral abierto)")
+	_comprobar(_prefecto.fase_actual == 3, "al 29 % pasa a la fase 3 (Umbral abierto)")
 	_comprobar(is_equal_approx(_prefecto.multiplicador_dano_realidad, 0.25), "en la fase 3 está blindado en la Realidad")
 	_comprobar(suelo_izq.existe_en == ElementoFase.Existencia.DESFASE, "en la fase 3 los suelos laterales solo existen en el Desfase")
 

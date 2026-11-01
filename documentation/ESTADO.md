@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor. Siguiente hito: 7 (El Prefecto de las Puertas).
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor. Siguiente hito: 8 (transiciones entre salas y montaje de la vertical slice).
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -14,8 +14,8 @@
 | 4 | Ancla de Continuidad y guardado | Hecho — `tests/test_ancla.gd` (22/22): estabilizar, descansar, reinicio de zona, reaparición, guardado JSON |
 | 5 | Costura (Puntada, Remiendo, Desgarro) | Hecho Puntada y Remiendo — `tests/test_costura.gd` (17/17). Desgarro pasa al hito 6 (necesita enemigos con Hilos) |
 | 6 | Arquetipos: corpóreo, eco, bifásico + Desgarro + guardia/parry | Hecho — `tests/test_enemigos.gd` (29/29): Vigía Hueco, Eco Rezagado, Guardián Partido |
-| 7 | El Prefecto de las Puertas | Siguiente (Claude) |
-| 8 | Salas de Elyndor (greybox) | En curso — Barrio Desprendido (Antigravity, TAREA-005) |
+| 7 | El Prefecto de las Puertas | Hecho — `tests/test_prefecto.gd` (24/24): 3 fases, travesía entre puertas, trampa cosida, Cierre, derrota persistente |
+| 8 | Salas de Elyndor (greybox) + transiciones entre salas | En curso — Barrio Desprendido (Antigravity, TAREA-005); transiciones (Claude, siguiente) |
 
 ## Encargos a ayudantes
 
@@ -25,7 +25,7 @@
 | [TAREA-002](tareas/TAREA-002-hud-depuracion.md) | Antigravity | ACEPTADO |
 | [TAREA-003](tareas/TAREA-003-hud-juego.md) | Antigravity | ACEPTADO |
 | [TAREA-004](tareas/TAREA-004-hud-desfase.md) | Antigravity | ACEPTADO |
-| [TAREA-005](tareas/TAREA-005-greybox-elyndor.md) | Antigravity | CAMBIOS |
+| [TAREA-005](tareas/TAREA-005-greybox-elyndor.md) | Antigravity | CAMBIOS (revisión 2) |
 
 ## Notas técnicas
 

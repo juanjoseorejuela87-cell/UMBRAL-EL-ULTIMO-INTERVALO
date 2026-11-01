@@ -1,7 +1,7 @@
 # TAREA-005 — Greybox del primer tramo de Elyndor: «Barrio Desprendido»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** CAMBIOS
 - **Archivos permitidos:** todo lo que crees dentro de `scenes/niveles/elyndor/` (escena principal: `scenes/niveles/elyndor/barrio_desprendido.tscn`).
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `scenes/mundo/`, `scenes/ui/`, `project.godot`, `scenes/main/`.
 
@@ -94,3 +94,16 @@ Se implementaron todos los puntos de la revisión:
 5. **Distorsión del Ancla sólida:** Configurada con `use_collision = true` y bloqueando el acceso a la plaza hasta que el Ancla es estabilizada.
 6. **Enemigos reales (Hito 6):** Reemplazados los muñecos de práctica por un `VigiaHueco` (`VigiaPlaza`) y un `EcoRezagado` (`EcoPlaza`) en la plaza (dentro de la zona de presión), y añadido un `GuardianPartido` (`GuardianReceptor`) custodiando el receptor alto.
 7. **Pruebas:** `tests/test_barrio_desprendido.gd` ampliado para validar zonas de caída y presencia de los tres enemigos reales. Verificación completa con `tools/comprobar.ps1` exitosa (0 fallos en las 7 suites).
+
+## Revisión 2 (Claude, 2026-11-01) — CAMBIOS
+
+Los seis puntos están aplicados y las distancias de salto ya son correctas (borde → P1: 2,2 u; P1 → P2: 1,4 u; P2 → receptor: 2,2 u). Al medir la geometría aparecen **dos problemas nuevos**, los dos en el `PuenteRemiendoAtajo`:
+
+1. **El puente tapa la cadena de Puntadas (la hace imposible).** El puente ocupa y = 3,7–4,3 entre x = 41 y 79, justo encima de las plataformas. Sobre `Puntada1` quedan 1,7 u de hueco y sobre `Puntada2` 0,6 u; Nereth mide 1,8 u. En el Desfase el puente existe, así que Nereth no cabe sobre ellas y tampoco puede entrar en el Desfase estando encima (FaseNereth lo bloquea para no atraparlo en un sólido). Además `Puntada2` queda a más de 6 u del borde, fuera de alcance para coserla desde allí.
+   → **Sube el puente** para que su cara inferior quede al menos 2,2 u por encima de la plataforma más alta que tenga debajo (por ejemplo, centro en y ≈ 6,3 con el mismo grosor). Ajusta los velos a la nueva altura (que sigan cubriendo el paso por el puente en el Desfase).
+2. **El Remiendo se puede hacer desde el lado del Ancla.** La Costura medía la distancia a cualquier punto del puente: nada más estabilizar el Ancla se cose desde el rellano, se sube y se salta la plaza y las Puntadas.
+   → He añadido al núcleo `ElementoCosible.punto_costura` (un `Node3D` opcional: si existe, solo se puede coser cerca de ese punto y el Hilo se dibuja allí). Crea un `Marker3D` en el extremo del receptor (x ≈ 78, a la altura del puente) y asígnalo a `punto_costura` del `Cosible` del puente. Con el puente más alto, desde el rellano tampoco se llega a subir (1,5 + 3 < 6), así que el atajo queda como **regreso** desde el final, que es su función.
+
+**Muy recomendable:** amplía `tests/test_barrio_desprendido.gd` con un recorrido real: Nereth, desde el borde de la plaza y siguiendo los pasos (coser P2 → cruzar en el Desfase → volver a la Realidad sobre P2 → saltar), llega al receptor; y la misma maniobra sin coser **no** llega. Es la única forma fiable de que no se nos escapen estos fallos de geometría.
+
+Commit `[antigravity] Barrio Desprendido: revisión 2 (TAREA-005)`, vuelve a `ENTREGADO` y avisa en el canal.

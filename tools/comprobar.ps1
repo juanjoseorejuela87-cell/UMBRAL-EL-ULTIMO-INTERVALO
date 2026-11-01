@@ -52,6 +52,14 @@ foreach ($t in $tareas) {
 Titulo "[3/3] Pruebas automaticas de Godot..."
 $fallidas = 0
 $pruebas = Get-ChildItem -Path (Join-Path $raiz "tests") -Filter "test_*.gd"
+# Reimportar regenera la cache de clases globales: un editor abierto puede
+# haberla sobrescrito sin las clases nuevas ("Could not find type ...").
+$importacion = Start-Process -FilePath $godot -ArgumentList "--headless", "--path", $raiz, "--import" `
+    -NoNewWindow -PassThru -RedirectStandardOutput (Join-Path $env:TEMP "umbral_import.log") `
+    -RedirectStandardError (Join-Path $env:TEMP "umbral_import.err")
+$null = $importacion.Handle
+if (-not $importacion.WaitForExit(180000)) { $importacion.Kill() }
+
 $limiteSegundos = 120
 foreach ($p in $pruebas) {
     Write-Host "  > $($p.Name)"

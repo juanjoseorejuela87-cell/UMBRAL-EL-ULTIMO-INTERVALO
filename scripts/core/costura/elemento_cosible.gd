@@ -24,6 +24,9 @@ const COLOR_REMIENDO: Color = Color(1.0, 0.8, 0.4)
 @export var id: StringName = &""
 ## Solo Remiendo: Ancla que debe estar estabilizada para poder coser.
 @export var ancla_requerida: AnclaContinuidad
+## Opcional: si se indica, solo se puede coser cerca de este punto (p. ej. un
+## Remiendo que debe hacerse desde un extremo concreto de un puente largo).
+@export var punto_costura: Node3D
 
 var _elemento: ElementoFase
 var _restante: float = 0.0
@@ -96,6 +99,8 @@ func resaltar(activo: bool) -> void:
 
 ## Distancia desde un punto al elemento (a su caja si es un CSGBox3D).
 func distancia_a(punto: Vector3) -> float:
+	if punto_costura:
+		return punto_costura.global_position.distance_to(punto)
 	var padre: Node3D = get_parent() as Node3D
 	if padre is CSGBox3D:
 		var local: Vector3 = padre.to_local(punto)
@@ -133,6 +138,9 @@ func _crear_marca() -> void:
 		altura = (get_parent() as CSGBox3D).size.y * 0.5 + 0.6
 	_marca.position = Vector3(0.0, altura, 0.0)
 	add_child(_marca)
+	if punto_costura:
+		_marca.top_level = true
+		_marca.global_position = punto_costura.global_position + Vector3.UP * 0.6
 
 
 ## Los Hilos solo se ven en el Desfase y mientras el elemento no esté cosido.
