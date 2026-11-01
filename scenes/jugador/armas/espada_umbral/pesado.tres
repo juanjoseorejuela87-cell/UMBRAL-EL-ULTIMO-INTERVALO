@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_datos")
 nombre = &"espada_pesado"
+fuerza = 1
 carga_maxima = 0.8
 preparacion = 0.3
 activo = 0.12

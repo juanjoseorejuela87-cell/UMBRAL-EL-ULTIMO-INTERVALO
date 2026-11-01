@@ -11,6 +11,10 @@ enum Existencia { REALIDAD, DESFASE, AMBOS }
 const COLOR_FANTASMA: Color = Color(0.6, 0.7, 1.0, 0.16)
 
 @export var existe_en: Existencia = Existencia.DESFASE
+## Si es false, no toca la colisión del padre (enemigos: gestionan la suya).
+@export var ajustar_colision: bool = true
+## Si se indica, solo se gestiona la apariencia de este nodo y sus hijos.
+@export var raiz_visual: Node
 
 ## Si es true, el elemento existe en ambos estados (lo activa ElementoCosible).
 var cosido: bool = false:
@@ -30,12 +34,14 @@ var _cuerpo_colision: Object
 
 func _ready() -> void:
 	var padre: Node = get_parent()
-	if padre is CSGBox3D and (padre as CSGBox3D).use_collision:
+	if not ajustar_colision:
+		pass
+	elif padre is CSGBox3D and (padre as CSGBox3D).use_collision:
 		_crear_colision_convexa(padre as CSGBox3D)
 	elif "collision_layer" in padre:
 		_cuerpo_colision = padre
 	_actualizar_capa()
-	_recoger_geometrias(padre)
+	_recoger_geometrias(raiz_visual if raiz_visual else padre)
 	_fase.cambiada.connect(_aplicar)
 	_aplicar(_fase.estado)
 

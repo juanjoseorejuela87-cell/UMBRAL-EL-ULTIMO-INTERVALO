@@ -16,6 +16,12 @@ extends Resource
 @export var inicio_cancelacion: float = 0.05
 
 @export_group("Efecto")
+## LIGERA interrumpe solo a enemigos ligeros; PESADA también a los medios.
+@export var fuerza: InfoGolpe.Fuerza = InfoGolpe.Fuerza.LIGERA
+## Si es false, no se puede desviar con parry (hay que esquivar).
+@export var parable: bool = true
+## Si es false, la guardia no lo detiene.
+@export var bloqueable: bool = true
 @export var dano: float = 10.0
 @export var dano_postura: float = 8.0
 @export var tipo_dano: InfoGolpe.TipoDano = InfoGolpe.TipoDano.FISICO

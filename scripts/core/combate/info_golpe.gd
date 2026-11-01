@@ -3,8 +3,12 @@ extends RefCounted
 ## Datos de un golpe que viaja de una CajaGolpe a una CajaDano.
 
 enum TipoDano { FISICO, RESONANTE }
+enum Fuerza { LIGERA, PESADA }
 
 var dano: float = 0.0
+var fuerza: Fuerza = Fuerza.LIGERA
+var parable: bool = true
+var bloqueable: bool = true
 var dano_postura: float = 0.0
 var tipo: TipoDano = TipoDano.FISICO
 ## Sentido horizontal del golpe (1 = hacia la derecha).

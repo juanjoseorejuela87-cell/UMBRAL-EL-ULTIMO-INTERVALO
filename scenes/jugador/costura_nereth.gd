@@ -3,16 +3,22 @@ extends Node
 ## Costura de Continuidad de Nereth: desde el Desfase, mantener el botón cerca
 ## de un elemento cosible lo cose (Puntada temporal o Remiendo permanente).
 ## Nereth llama a procesar() cada frame de física.
-## Diseño: documentation/GAMEPLAY.md §4. El Desgarro (combate) llega con los
-## enemigos que tienen Hilos.
+## Con un enemigo cerca, la misma pulsación hace un Desgarro instantáneo.
+## Diseño: documentation/GAMEPLAY.md §4.
 
 signal costura_iniciada(objetivo: ElementoCosible)
 signal costura_completada(objetivo: ElementoCosible)
 signal costura_cancelada
+signal desgarro_realizado(enemigo: Enemigo, efecto: StringName)
 
 @export var alcance: float = 6.0
 @export var tiempo_canalizacion: float = 0.35
 @export var puntadas_simultaneas: int = 1
+
+@export_group("Desgarro")
+@export var alcance_desgarro: float = 3.5
+@export var coste_desgarro: float = 20.0
+@export var enfriamiento_desgarro: float = 1.5
 
 ## Elemento al que se coserá (el más cercano disponible), o null.
 var objetivo: ElementoCosible
@@ -20,6 +26,7 @@ var objetivo: ElementoCosible
 var _canalizando: bool = false
 var _tiempo: float = 0.0
 var _puntadas: Array[ElementoCosible] = []
+var _enfriamiento: float = 0.0
 var _fase: GestorFase = GestorFase.global()
 
 @onready var _nereth: Nereth = get_parent() as Nereth
@@ -44,6 +51,9 @@ func procesar(delta: float) -> void:
 				_completar()
 		return
 
+	_enfriamiento = maxf(_enfriamiento - delta, 0.0)
+	if _fase.en_desfase() and Input.is_action_just_pressed(&"coser") and _intentar_desgarro():
+		return
 	_cambiar_objetivo(_buscar_objetivo() if _fase.en_desfase() else null)
 	if Input.is_action_just_pressed(&"coser") and objetivo \
 			and _nereth.estado == Nereth.Estado.SUELO and _puede_pagar(objetivo):
@@ -59,6 +69,40 @@ func cancelar() -> void:
 	_canalizando = false
 	_nereth.terminar_accion()
 	costura_cancelada.emit()
+
+
+func _intentar_desgarro() -> bool:
+	if _enfriamiento > 0.0 or _resonancia.actual <= coste_desgarro:
+		return false
+	# Como la esquiva, el Desgarro puede cancelar la recuperación de un ataque.
+	var cancela_ataque: bool = _nereth.estado == Nereth.Estado.ACCION and _nereth.combate.puede_cancelar()
+	if _nereth.estado != Nereth.Estado.SUELO and _nereth.estado != Nereth.Estado.AIRE and not cancela_ataque:
+		return false
+	var enemigo: Enemigo = _buscar_enemigo()
+	if enemigo == null:
+		return false
+	if cancela_ataque:
+		_nereth.combate.interrumpir()
+		_nereth.terminar_accion()
+	_resonancia.gastar(coste_desgarro)
+	_enfriamiento = enfriamiento_desgarro
+	var efecto: StringName = enemigo.desgarrar()
+	desgarro_realizado.emit(enemigo, efecto)
+	return true
+
+
+func _buscar_enemigo() -> Enemigo:
+	var mejor: Enemigo = null
+	var mejor_distancia: float = alcance_desgarro
+	for nodo: Node in _nereth.get_tree().get_nodes_in_group(Enemigo.GRUPO_DESGARRABLES):
+		var enemigo: Enemigo = nodo as Enemigo
+		if enemigo == null or not enemigo.puede_desgarrarse():
+			continue
+		var distancia: float = enemigo.global_position.distance_to(_nereth.global_position)
+		if distancia <= mejor_distancia:
+			mejor = enemigo
+			mejor_distancia = distancia
+	return mejor
 
 
 func _puede_pagar(elemento: ElementoCosible) -> bool:

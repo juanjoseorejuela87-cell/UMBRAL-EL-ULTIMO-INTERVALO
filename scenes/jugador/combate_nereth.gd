@@ -140,6 +140,7 @@ func _detectar_golpes() -> void:
 		info.dano = ataque_actual.dano * _multiplicador
 		info.dano_postura = ataque_actual.dano_postura * _multiplicador
 		info.tipo = ataque_actual.tipo_dano
+		info.fuerza = ataque_actual.fuerza
 		info.direccion = _nereth.mirando
 		info.origen = _nereth
 		info.nombre_ataque = ataque_actual.nombre

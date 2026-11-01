@@ -21,6 +21,7 @@ const ACCIONES: Dictionary = {
 	&"atacar_pesado": [KEY_K, "raton:2", "boton:10"],
 	&"desfase": [KEY_Q, KEY_I, "boton:9"],
 	&"coser": [KEY_F, KEY_O, "eje:5:1"],
+	&"guardia": [KEY_U, KEY_C, "eje:4:1"],
 }
 
 

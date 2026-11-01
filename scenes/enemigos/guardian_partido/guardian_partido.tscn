@@ -1,0 +1,98 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scripts/core/enemigos/enemigo.gd" id="1_enemigo"]
+[ext_resource type="Script" path="res://scripts/core/combate/componente_vida.gd" id="2_vida"]
+[ext_resource type="Script" path="res://scripts/core/combate/componente_postura.gd" id="3_postura"]
+[ext_resource type="Script" path="res://scripts/core/combate/caja_dano.gd" id="4_caja_dano"]
+[ext_resource type="Script" path="res://scripts/core/fase/elemento_fase.gd" id="5_fase"]
+[ext_resource type="PackedScene" path="res://scenes/ui/barra_postura/barra_postura.tscn" id="6_barra"]
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="7_datos"]
+[ext_resource type="Resource" path="res://scenes/enemigos/guardian_partido/barrido.tres" id="8_barrido"]
+[ext_resource type="Resource" path="res://scenes/enemigos/guardian_partido/embestida.tres" id="9_embestida"]
+
+[sub_resource type="CapsuleShape3D" id="Forma_cuerpo"]
+radius = 0.6
+height = 2.4
+
+[sub_resource type="CapsuleMesh" id="Malla_cuerpo"]
+radius = 0.6
+height = 2.4
+
+[sub_resource type="StandardMaterial3D" id="Mat_cuerpo"]
+albedo_color = Color(0.35, 0.33, 0.45, 1)
+
+[sub_resource type="BoxMesh" id="Malla_frente"]
+size = Vector3(0.35, 0.15, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="Mat_frente"]
+albedo_color = Color(0.6, 0.75, 1, 1)
+emission_enabled = true
+emission = Color(0.4, 0.55, 1, 1)
+
+[sub_resource type="BoxShape3D" id="Forma_golpe"]
+size = Vector3(2.2, 1.4, 1)
+
+[node name="GuardianPartido" type="CharacterBody3D"]
+script = ExtResource("1_enemigo")
+existe_en = 2
+peso = 2
+velocidad = 1.8
+rango_ataque = 2.0
+ataques = Array[ExtResource("7_datos")]([ExtResource("8_barrido"), ExtResource("9_embestida")])
+pausa_entre_ataques = 1.2
+multiplicador_dano_realidad = 0.4
+multiplicador_postura_realidad = 1.5
+multiplicador_dano_desfase = 1.2
+multiplicador_postura_desfase = 0.5
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("Forma_cuerpo")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Cuerpo" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+mesh = SubResource("Malla_cuerpo")
+surface_material_override/0 = SubResource("Mat_cuerpo")
+
+[node name="Frente" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 1.9, 0)
+mesh = SubResource("Malla_frente")
+surface_material_override/0 = SubResource("Mat_frente")
+
+[node name="Vida" type="Node" parent="."]
+script = ExtResource("2_vida")
+maximo = 160.0
+
+[node name="Postura" type="Node" parent="."]
+script = ExtResource("3_postura")
+maximo = 90.0
+
+[node name="CajaDano" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_caja_dano")
+
+[node name="FormaDano" type="CollisionShape3D" parent="CajaDano"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("Forma_cuerpo")
+
+[node name="CajaGolpe" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 64
+monitorable = false
+monitoring = false
+
+[node name="FormaGolpe" type="CollisionShape3D" parent="CajaGolpe"]
+shape = SubResource("Forma_golpe")
+
+[node name="ElementoFase" type="Node" parent="." node_paths=PackedStringArray("raiz_visual")]
+script = ExtResource("5_fase")
+existe_en = 2
+ajustar_colision = false
+raiz_visual = NodePath("../Visual")
+
+[node name="BarraPostura" parent="." instance=ExtResource("6_barra")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)

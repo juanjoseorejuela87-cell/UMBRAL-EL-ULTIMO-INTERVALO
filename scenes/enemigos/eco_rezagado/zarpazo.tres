@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DatosAtaque" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="1_datos"]
+
+[resource]
+script = ExtResource("1_datos")
+nombre = &"eco_zarpazo"
+preparacion = 0.4
+activo = 0.1
+recuperacion = 0.45
+dano = 10.0
+dano_postura = 0.0
+impulso = 3.0
+tamano_caja = Vector3(1.3, 1, 1)
+desplazamiento_caja = Vector3(0.8, 0.9, 0)

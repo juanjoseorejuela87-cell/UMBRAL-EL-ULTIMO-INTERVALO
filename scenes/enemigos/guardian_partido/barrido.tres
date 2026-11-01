@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DatosAtaque" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="1_datos"]
+
+[resource]
+script = ExtResource("1_datos")
+nombre = &"guardian_barrido"
+fuerza = 1
+preparacion = 0.7
+activo = 0.14
+recuperacion = 0.7
+dano = 22.0
+dano_postura = 0.0
+impulso = 1.5
+tamano_caja = Vector3(2.2, 1.4, 1)
+desplazamiento_caja = Vector3(1.1, 1.1, 0)

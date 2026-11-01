@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DatosAtaque" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="1_datos"]
+
+[resource]
+script = ExtResource("1_datos")
+nombre = &"vigia_tajo"
+preparacion = 0.55
+activo = 0.12
+recuperacion = 0.6
+dano = 15.0
+dano_postura = 0.0
+impulso = 2.0
+tamano_caja = Vector3(1.5, 1.2, 1)
+desplazamiento_caja = Vector3(0.9, 1, 0)

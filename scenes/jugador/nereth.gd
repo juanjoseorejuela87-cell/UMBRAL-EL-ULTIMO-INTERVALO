@@ -8,8 +8,14 @@ signal aterrizado
 signal esquiva_iniciada
 signal esquiva_terminada
 signal derrotado
+signal golpe_recibido(info: InfoGolpe)
+signal parry_realizado(info: InfoGolpe)
+signal golpe_bloqueado(info: InfoGolpe)
+signal guardia_rota
 
-enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO }
+enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO, GUARDIA }
+
+const GRUPO: StringName = &"jugador"
 
 @export_group("Desplazamiento")
 @export var velocidad_maxima: float = 6.0
@@ -37,6 +43,16 @@ enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO }
 ## se guarda este tiempo y sale en cuanto la ventana se abre.
 @export var tiempo_buffer_esquiva: float = 0.15
 
+@export_group("Defensa")
+## Primeros segundos de la guardia en los que un golpe se desvía (parry).
+@export var ventana_parry: float = 0.15
+@export var ganancia_resonancia_parry: float = 12.0
+## Resistencia gastada por punto de daño bloqueado.
+@export var coste_bloqueo_por_dano: float = 1.2
+@export var duracion_guardia_rota: float = 0.9
+@export var aturdimiento_golpe: float = 0.3
+@export var empuje_golpe: float = 4.0
+
 @export_group("Acción")
 ## Frenada horizontal durante los ataques (unidades/s²).
 @export var friccion_accion: float = 30.0
@@ -62,6 +78,7 @@ var _enfriamiento: float = 0.0
 var _esquiva_aerea_disponible: bool = true
 var _buffer_esquiva: float = 0.0
 var _aturdimiento: float = 0.0
+var _tiempo_guardia: float = 0.0
 
 @onready var vida: ComponenteVida = $Vida
 @onready var resistencia: ComponenteResistencia = $Resistencia
@@ -76,8 +93,10 @@ var _aturdimiento: float = 0.0
 func _ready() -> void:
 	_plano_z = global_position.z
 	_recalcular_salto()
+	add_to_group(GRUPO)
 	combate.golpe_conectado.connect(_al_conectar_golpe)
 	vida.agotada.connect(_al_agotar_vida)
+	_caja_dano.golpe_recibido.connect(_al_recibir_golpe)
 
 
 ## Deriva gravedad y velocidad inicial a partir de altura y tiempo hasta la cima.
@@ -98,6 +117,8 @@ func _physics_process(delta: float) -> void:
 			_procesar_accion(delta)
 		Estado.ATURDIDO:
 			_procesar_aturdido(delta)
+		Estado.GUARDIA:
+			_procesar_guardia(delta)
 		_:
 			_procesar_movimiento(delta)
 	velocity.z = 0.0
@@ -175,6 +196,61 @@ func _procesar_movimiento(delta: float) -> void:
 
 	if Input.is_action_just_pressed(&"esquivar"):
 		_intentar_esquivar(direccion)
+	elif Input.is_action_pressed(&"guardia") and is_on_floor() and estado == Estado.SUELO:
+		estado = Estado.GUARDIA
+		_tiempo_guardia = 0.0
+
+
+func _procesar_guardia(delta: float) -> void:
+	_tiempo_guardia += delta
+	var direccion: float = Input.get_axis(&"mover_izquierda", &"mover_derecha")
+	if not is_zero_approx(direccion):
+		mirando = signf(direccion)
+	velocity.x = move_toward(velocity.x, 0.0, friccion_accion * delta)
+	_aplicar_gravedad(delta)
+	if not Input.is_action_pressed(&"guardia") or not is_on_floor():
+		estado = Estado.SUELO if is_on_floor() else Estado.AIRE
+	elif Input.is_action_just_pressed(&"esquivar"):
+		_intentar_esquivar(direccion)
+
+
+func en_ventana_parry() -> bool:
+	return estado == Estado.GUARDIA and _tiempo_guardia <= ventana_parry
+
+
+## Golpe enemigo que ha alcanzado la caja de daño (ya descontada la
+## invulnerabilidad): parry, bloqueo, guardia rota o daño.
+func _al_recibir_golpe(info: InfoGolpe) -> void:
+	var de_frente: bool = not is_equal_approx(info.direccion, mirando)
+	if estado == Estado.GUARDIA and de_frente:
+		if info.parable and en_ventana_parry():
+			info.dano_aplicado = 0.0
+			resonancia.ganar(ganancia_resonancia_parry)
+			if info.origen and info.origen.has_method(&"recibir_parry"):
+				info.origen.call(&"recibir_parry")
+			parry_realizado.emit(info)
+			return
+		if info.bloqueable:
+			var coste: float = info.dano * coste_bloqueo_por_dano
+			if resistencia.actual >= coste:
+				resistencia.consumir(coste)
+				info.dano_aplicado = 0.0
+				velocity.x = info.direccion * empuje_golpe * 0.5
+				golpe_bloqueado.emit(info)
+				return
+			resistencia.consumir(resistencia.actual)
+			info.dano_aplicado = info.dano * 0.5
+			vida.recibir_dano(info.dano_aplicado)
+			guardia_rota.emit()
+			if vida.actual > 0.0:
+				aturdir(duracion_guardia_rota)
+			return
+	info.dano_aplicado = info.dano
+	vida.recibir_dano(info.dano)
+	golpe_recibido.emit(info)
+	if vida.actual > 0.0:
+		aturdir(aturdimiento_golpe)
+		velocity.x = info.direccion * empuje_golpe
 
 
 func _procesar_accion(delta: float) -> void:
