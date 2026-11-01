@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/barra_postura/barra_postura.gd" id="1_script"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_fondo"]
+size = Vector2(0.9, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="Mat_fondo"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.1, 0.1, 0.12, 0.85)
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_relleno"]
+size = Vector2(0.86, 0.05)
+
+[sub_resource type="StandardMaterial3D" id="Mat_relleno"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.82, 0.82, 0.88, 0.95)
+billboard_mode = 1
+
+[node name="BarraPostura" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+script = ExtResource("1_script")
+
+[node name="Fondo" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_fondo")
+surface_material_override/0 = SubResource("Mat_fondo")
+
+[node name="Relleno" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.005)
+mesh = SubResource("QuadMesh_relleno")
+surface_material_override/0 = SubResource("Mat_relleno")

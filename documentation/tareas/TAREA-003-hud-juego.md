@@ -1,7 +1,7 @@
 # TAREA-003 — HUD de juego y barra de postura de enemigos
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - `scenes/ui/hud/hud.tscn`, `scenes/ui/hud/hud.gd`
   - `scenes/ui/barra_postura/barra_postura.tscn`, `scenes/ui/barra_postura/barra_postura.gd`
@@ -46,4 +46,14 @@ Commit en `main`: `[antigravity] HUD de juego y barra de postura (TAREA-003)`, *
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+- Creado `scenes/ui/hud/hud.gd` y `scenes/ui/hud/hud.tscn` (`HudJuego`, `CanvasLayer`):
+  - Barra de vida en rojo apagado con sub-barra de daño reciente que desciende con retraso (0.4s) y animación cuadrática suave.
+  - Barra de resistencia en verde-oliva con tween reactivo a la señal `cambiada`.
+  - Actualización reactiva por señales sin polling en `_process`.
+  - Nodo preparado y oculto `BarraResonancia` para el Desfase (Hito 3).
+- Creado `scenes/ui/barra_postura/barra_postura.gd` y `scenes/ui/barra_postura/barra_postura.tscn` (`BarraPostura`, `Node3D`):
+  - Barra billboard con `QuadMesh` ligera y unshaded para GPU integrada (sin sobrecarga de SubViewport), flotando a 2.4 m sobre la cabeza.
+  - Conexión por señales (`cambiada`, `rota`, `recuperada`) al `ComponentePostura`.
+  - Oculta cuando la postura es 0 y no hay Ruptura; en Ruptura cambia a color ámbar y pulsa suavemente.
+- Instanciado `HudJuego` en `scenes/niveles/pruebas/sala_combate.tscn` vinculado a `Nereth`.
+- Instanciada `BarraPostura` como hija de la raíz en `scenes/enemigos/muneco_practica/muneco_practica.tscn`.

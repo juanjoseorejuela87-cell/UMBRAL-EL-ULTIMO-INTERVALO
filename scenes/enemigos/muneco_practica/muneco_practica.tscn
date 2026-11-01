@@ -4,6 +4,7 @@
 [ext_resource type="Script" path="res://scripts/core/combate/componente_vida.gd" id="2_vida"]
 [ext_resource type="Script" path="res://scripts/core/combate/componente_postura.gd" id="3_postura"]
 [ext_resource type="Script" path="res://scripts/core/combate/caja_dano.gd" id="4_caja_dano"]
+[ext_resource type="PackedScene" path="res://scenes/ui/barra_postura/barra_postura.tscn" id="5_barra_postura"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
 radius = 0.45
@@ -46,3 +47,5 @@ script = ExtResource("4_caja_dano")
 [node name="FormaDano" type="CollisionShape3D" parent="CajaDano"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 shape = SubResource("CapsuleShape3D_cuerpo")
+
+[node name="BarraPostura" parent="." instance=ExtResource("5_barra_postura")]
