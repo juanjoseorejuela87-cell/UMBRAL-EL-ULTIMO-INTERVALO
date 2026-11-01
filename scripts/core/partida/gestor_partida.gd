@@ -88,6 +88,12 @@ func descansar(nereth: Nereth, id: StringName, posicion: Vector3) -> void:
 
 ## Tras una derrota: Nereth vuelve al último Ancla con todo restaurado.
 func reaparecer(nereth: Nereth) -> void:
+	# Si el último Ancla está en otra sala, se viaja a ella.
+	var escena: Node = nereth.get_tree().current_scene
+	var escena_actual: String = escena.scene_file_path if escena else ""
+	if hay_reaparicion and escena_ancla != "" and escena_actual != "" and escena_ancla != escena_actual:
+		GestorSalas.global().ir_a_posicion(escena_ancla, posicion_reaparicion, true)
+		return
 	if hay_reaparicion:
 		nereth.reaparecer(posicion_reaparicion)
 	nereth.restaurar()

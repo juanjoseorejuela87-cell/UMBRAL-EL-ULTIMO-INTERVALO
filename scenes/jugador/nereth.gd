@@ -12,6 +12,8 @@ signal golpe_recibido(info: InfoGolpe)
 signal parry_realizado(info: InfoGolpe)
 signal golpe_bloqueado(info: InfoGolpe)
 signal guardia_rota
+## Nereth ha sido recolocado de golpe (la cámara debe saltar, no deslizarse).
+signal reaparecido
 
 enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO, GUARDIA }
 
@@ -141,6 +143,7 @@ func aturdir(duracion: float) -> void:
 func reaparecer(posicion: Vector3) -> void:
 	global_position = Vector3(posicion.x, posicion.y, _plano_z)
 	velocity = Vector3.ZERO
+	reaparecido.emit()
 
 
 ## Vida, resistencia y Resonancia al máximo, de vuelta en la Realidad y con el

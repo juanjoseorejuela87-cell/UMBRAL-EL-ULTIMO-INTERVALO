@@ -18,6 +18,13 @@ func _ready() -> void:
 	rotation_degrees.x = inclinacion_grados
 	fov = campo_vision
 	if objetivo:
+		objetivo.reaparecido.connect(saltar_a_objetivo)
+		saltar_a_objetivo()
+
+
+## Coloca la cámara en su sitio sin suavizado (inicio, reapariciones).
+func saltar_a_objetivo() -> void:
+	if objetivo:
 		_adelanto_actual = adelanto * objetivo.mirando
 		global_position = _posicion_deseada()
 

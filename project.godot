@@ -20,6 +20,7 @@ config/features=PackedStringArray("4.7", "GL Compatibility")
 Controles="*res://scripts/core/controles.gd"
 Fase="*res://scripts/core/fase/gestor_fase.gd"
 Partida="*res://scripts/core/partida/gestor_partida.gd"
+Salas="*res://scripts/core/mundo/gestor_salas.gd"
 
 [debug]
 

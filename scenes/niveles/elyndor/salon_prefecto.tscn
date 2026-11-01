@@ -1,0 +1,218 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/jugador/nereth.tscn" id="1_nereth"]
+[ext_resource type="Script" path="res://scenes/camara/camara_lateral.gd" id="2_camara"]
+[ext_resource type="PackedScene" path="res://scenes/ui/depuracion/panel_depuracion.tscn" id="3_panel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="4_hud"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/ancla/ancla.tscn" id="5_ancla"]
+[ext_resource type="Script" path="res://scripts/core/fase/elemento_fase.gd" id="6_fase"]
+[ext_resource type="Script" path="res://scripts/core/costura/elemento_cosible.gd" id="7_cosible"]
+[ext_resource type="PackedScene" path="res://scenes/enemigos/prefecto/prefecto.tscn" id="8_prefecto"]
+[ext_resource type="Script" path="res://scripts/core/mundo/punto_entrada.gd" id="9_entrada"]
+[ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="10_transicion"]
+
+[sub_resource type="BoxShape3D" id="Box_transicion"]
+size = Vector3(1, 5, 4)
+
+[sub_resource type="StandardMaterial3D" id="Mat_piedra"]
+albedo_color = Color(0.32, 0.31, 0.36, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_arena"]
+albedo_color = Color(0.38, 0.35, 0.33, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_puerta_real"]
+albedo_color = Color(0.45, 0.33, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_puerta_desfase"]
+albedo_color = Color(0.4, 0.55, 0.95, 1)
+emission_enabled = true
+emission = Color(0.2, 0.3, 0.8, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_puerta_ambos"]
+albedo_color = Color(0.55, 0.5, 0.65, 1)
+emission_enabled = true
+emission = Color(0.35, 0.3, 0.5, 1)
+emission_energy_multiplier = 0.3
+
+[sub_resource type="StandardMaterial3D" id="Mat_salida"]
+albedo_color = Color(0.25, 0.22, 0.28, 1)
+
+[sub_resource type="Environment" id="Entorno"]
+background_mode = 1
+background_color = Color(0.04, 0.04, 0.07, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.48, 0.46, 0.58, 1)
+ambient_light_energy = 0.55
+
+[node name="SalonPrefecto" type="Node3D"]
+
+[node name="Entorno" type="WorldEnvironment" parent="."]
+environment = SubResource("Entorno")
+
+[node name="Sol" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.643, -0.766, 0, 0.766, 0.643, 0, 12, 5)
+light_energy = 1.0
+shadow_enabled = true
+
+[node name="LuzArena" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 1)
+light_color = Color(0.9, 0.75, 0.55, 1)
+light_energy = 1.4
+omni_range = 14.0
+
+[node name="Geometria" type="Node3D" parent="."]
+
+[node name="MuroIzquierdo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.5, 5, 0)
+use_collision = true
+size = Vector3(1, 12, 4)
+material = SubResource("Mat_piedra")
+
+[node name="Antecamara" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19, -0.5, 0)
+use_collision = true
+size = Vector3(10, 1, 4)
+material = SubResource("Mat_piedra")
+
+[node name="SueloIzquierdo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, -0.5, 0)
+use_collision = true
+size = Vector3(8, 1, 4)
+material = SubResource("Mat_arena")
+
+[node name="ElementoFase" type="Node" parent="Geometria/SueloIzquierdo"]
+script = ExtResource("6_fase")
+existe_en = 2
+
+[node name="SueloCentro" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(12, 1, 4)
+material = SubResource("Mat_arena")
+
+[node name="SueloDerecho" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -0.5, 0)
+use_collision = true
+size = Vector3(8, 1, 4)
+material = SubResource("Mat_arena")
+
+[node name="ElementoFase" type="Node" parent="Geometria/SueloDerecho"]
+script = ExtResource("6_fase")
+existe_en = 2
+
+[node name="Foso" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2.5, 0)
+use_collision = true
+size = Vector3(28, 1, 4)
+material = SubResource("Mat_piedra")
+
+[node name="PuertaSalida" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.5, 3, 0)
+use_collision = true
+size = Vector3(1, 7, 4)
+material = SubResource("Mat_salida")
+
+[node name="Pasillo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, -0.5, 0)
+use_collision = true
+size = Vector3(10, 1, 4)
+material = SubResource("Mat_piedra")
+
+[node name="MuroDerecho" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.5, 5, 0)
+use_collision = true
+size = Vector3(1, 12, 4)
+material = SubResource("Mat_piedra")
+
+[node name="Puertas" type="Node3D" parent="."]
+
+[node name="PuertaA" type="CSGBox3D" parent="Puertas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 1.7, -1.6)
+size = Vector3(1.8, 3.4, 0.3)
+material = SubResource("Mat_puerta_real")
+
+[node name="ElementoFase" type="Node" parent="Puertas/PuertaA"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="Cosible" type="Node3D" parent="Puertas/PuertaA"]
+script = ExtResource("7_cosible")
+duracion = 6.0
+
+[node name="PuertaB" type="CSGBox3D" parent="Puertas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 1.7, -1.6)
+size = Vector3(1.8, 3.4, 0.3)
+material = SubResource("Mat_puerta_desfase")
+
+[node name="ElementoFase" type="Node" parent="Puertas/PuertaB"]
+script = ExtResource("6_fase")
+
+[node name="Cosible" type="Node3D" parent="Puertas/PuertaB"]
+script = ExtResource("7_cosible")
+duracion = 6.0
+
+[node name="PuertaC" type="CSGBox3D" parent="Puertas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 1.7, -1.6)
+size = Vector3(1.8, 3.4, 0.3)
+material = SubResource("Mat_puerta_ambos")
+
+[node name="ElementoFase" type="Node" parent="Puertas/PuertaC"]
+script = ExtResource("6_fase")
+existe_en = 2
+
+[node name="Cosible" type="Node3D" parent="Puertas/PuertaC"]
+script = ExtResource("7_cosible")
+duracion = 6.0
+
+[node name="PuertaD" type="CSGBox3D" parent="Puertas"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1.7, -1.6)
+size = Vector3(1.8, 3.4, 0.3)
+material = SubResource("Mat_puerta_real")
+
+[node name="ElementoFase" type="Node" parent="Puertas/PuertaD"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="Cosible" type="Node3D" parent="Puertas/PuertaD"]
+script = ExtResource("7_cosible")
+duracion = 6.0
+
+[node name="Ancla" parent="." instance=ExtResource("5_ancla")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0, 0)
+id = &"elyndor_salon_ancla"
+
+[node name="Prefecto" parent="." node_paths=PackedStringArray("puertas", "suelos_fase_3", "puerta_salida") instance=ExtResource("8_prefecto")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+puertas = [NodePath("../Puertas/PuertaA"), NodePath("../Puertas/PuertaB"), NodePath("../Puertas/PuertaC"), NodePath("../Puertas/PuertaD")]
+suelos_fase_3 = [NodePath("../Geometria/SueloIzquierdo"), NodePath("../Geometria/SueloDerecho")]
+puerta_salida = NodePath("../Geometria/PuertaSalida")
+
+[node name="Nereth" parent="." instance=ExtResource("1_nereth")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 0.2, 0)
+
+[node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
+script = ExtResource("2_camara")
+objetivo = NodePath("../Nereth")
+
+[node name="PanelDepuracion" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_panel")]
+objetivo = NodePath("../Nereth")
+
+[node name="HudJuego" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("4_hud")]
+objetivo = NodePath("../Nereth")
+
+[node name="DesdeBarrio" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0.1, 0)
+script = ExtResource("9_entrada")
+id = &"desde_barrio"
+
+[node name="HaciaBarrio" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.6, 2.5, 0)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("10_transicion")
+escena_destino = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
+entrada_destino = &"desde_salon"
+
+[node name="Forma" type="CollisionShape3D" parent="HaciaBarrio"]
+shape = SubResource("Box_transicion")

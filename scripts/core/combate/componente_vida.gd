@@ -23,6 +23,12 @@ func recibir_dano(cantidad: float) -> void:
 		agotada.emit()
 
 
+## Fija la vida a un valor (p. ej. al conservarla entre salas).
+func establecer(valor: float) -> void:
+	actual = clampf(valor, 0.0, maximo)
+	cambiada.emit(actual, maximo)
+
+
 func restaurar() -> void:
 	actual = maximo
 	cambiada.emit(actual, maximo)
