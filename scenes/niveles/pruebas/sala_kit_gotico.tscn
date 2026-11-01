@@ -1,0 +1,102 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/jugador/nereth.tscn" id="1_nereth"]
+[ext_resource type="Script" path="res://scenes/camara/camara_lateral.gd" id="2_camara"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/muro.tscn" id="3_muro"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/columna.tscn" id="4_columna"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/arco.tscn" id="5_arco"]
+[ext_resource type="Material" path="res://assets/materiales/suelo_monasterio.tres" id="6_suelo"]
+[ext_resource type="Material" path="res://assets/materiales/madera_oscura.tres" id="7_madera"]
+[ext_resource type="Material" path="res://assets/materiales/metal_oxidado.tres" id="8_metal"]
+[ext_resource type="Material" path="res://assets/materiales/roca_ruinas.tres" id="9_roca"]
+[ext_resource type="Material" path="res://assets/materiales/empedrado.tres" id="10_empedrado"]
+
+[sub_resource type="Environment" id="Entorno"]
+background_mode = 1
+background_color = Color(0.03, 0.03, 0.05, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.42, 0.42, 0.55, 1)
+ambient_light_energy = 0.45
+
+[node name="SalaKitGotico" type="Node3D"]
+
+[node name="Entorno" type="WorldEnvironment" parent="."]
+environment = SubResource("Entorno")
+
+[node name="Sol" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, 0, 0.5, 0.383, 0.643, -0.663, -0.321, 0.766, 0.557, 0, 12, 6)
+light_color = Color(0.75, 0.78, 0.95, 1)
+light_energy = 0.7
+shadow_enabled = true
+
+[node name="Antorcha" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 3.5, 1)
+light_color = Color(1, 0.65, 0.35, 1)
+light_energy = 2.2
+omni_range = 9.0
+shadow_enabled = true
+
+[node name="Suelo" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, -1)
+use_collision = true
+size = Vector3(34, 1, 6)
+material = ExtResource("6_suelo")
+
+[node name="Empedrado" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -0.45, 0)
+use_collision = true
+size = Vector3(8, 1, 3)
+material = ExtResource("10_empedrado")
+
+[node name="RocaIzquierda" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 3, -1)
+use_collision = true
+size = Vector3(4, 8, 6)
+material = ExtResource("9_roca")
+
+[node name="Plataforma" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.6, 0)
+use_collision = true
+size = Vector3(3, 0.3, 1.6)
+material = ExtResource("7_madera")
+
+[node name="PuertaMetal" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -2.6)
+size = Vector3(2, 3, 0.15)
+material = ExtResource("8_metal")
+
+[node name="Fondo" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+
+[node name="Muro1" parent="Fondo" instance=ExtResource("3_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
+
+[node name="Muro2" parent="Fondo" instance=ExtResource("3_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+
+[node name="Arco" parent="Fondo" instance=ExtResource("5_arco")]
+
+[node name="Muro3" parent="Fondo" instance=ExtResource("3_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+
+[node name="Muro4" parent="Fondo" instance=ExtResource("3_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
+
+[node name="Columna1" parent="Fondo" instance=ExtResource("4_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 0.9)
+
+[node name="Columna2" parent="Fondo" instance=ExtResource("4_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 0.9)
+
+[node name="Columna3" parent="Fondo" instance=ExtResource("4_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0.9)
+
+[node name="Columna4" parent="Fondo" instance=ExtResource("4_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0.9)
+
+[node name="Nereth" parent="." instance=ExtResource("1_nereth")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.1, 0)
+
+[node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
+script = ExtResource("2_camara")
+objetivo = NodePath("../Nereth")

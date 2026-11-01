@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materiales/piedra_castillo.tres" id="1_piedra"]
+[ext_resource type="Material" path="res://assets/materiales/sillares.tres" id="2_sillares"]
+
+[node name="Muro" type="CSGCombiner3D"]
+use_collision = true
+
+[node name="Lienzo" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+size = Vector3(4, 6, 0.8)
+material = ExtResource("1_piedra")
+
+[node name="Zocalo" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.1)
+size = Vector3(4, 0.7, 1)
+material = ExtResource("2_sillares")
+
+[node name="Cornisa" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5.85, 0.1)
+size = Vector3(4, 0.3, 1)
+material = ExtResource("2_sillares")

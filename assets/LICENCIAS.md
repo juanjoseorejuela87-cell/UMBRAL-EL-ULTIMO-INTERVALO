@@ -4,7 +4,14 @@ El juego se va a **vender** (D-032). Solo se admiten recursos cuya licencia perm
 
 | Archivo(s) en el proyecto | Origen (web / herramienta) | Autor | Licencia | Fecha | ¿Atribución obligatoria? | Notas (modificaciones, prompt de IA…) |
 |---|---|---|---|---|---|---|
-| — | — | — | — | — | — | Aún no hay recursos de terceros. El audio actual está sintetizado por código propio (D-029). |
+| `assets/texturas/castle_brick_07/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/castle_brick_07 | Rob Tuytel | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
+| `assets/texturas/castle_wall_slates/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/castle_wall_slates | Rob Tuytel | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
+| `assets/texturas/cobblestone_floor_08/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/cobblestone_floor_08 | Rob Tuytel | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
+| `assets/texturas/dark_wooden_planks/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/dark_wooden_planks | Amal Kumar | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
+| `assets/texturas/medieval_blocks_02/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/medieval_blocks_02 | Rob Tuytel | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
+| `assets/texturas/monastery_stone_floor/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/monastery_stone_floor | Amal Kumar | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
+| `assets/texturas/rock_wall_08/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/rock_wall_08 | Amal Kumar | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
+| `assets/texturas/rusty_metal_02/` (color, normal, rugosidad, 1K) | Poly Haven — https://polyhaven.com/a/rusty_metal_02 | Rob Tuytel | CC0 1.0 (verificada en polyhaven.com/license) | 2026-11-01 | No | Sin modificar; importadas con compresión VRAM |
 
 ## Reglas
 
