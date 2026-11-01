@@ -1,7 +1,7 @@
 # TAREA-010 — Reambientar el Barrio Desprendido como «Ruinas bajo Elyndor»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** `scenes/niveles/elyndor/barrio_desprendido.tscn`, `tests/test_barrio_desprendido.gd`, y lo que crees dentro de `scenes/niveles/elyndor/ruinas/` (piezas propias de este nivel, si las necesitas).
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `scenes/mundo/` (el kit es compartido: si te falta una pieza, pídemela en el canal), `scenes/niveles/elyndor/camara_despertar.tscn` y `salon_prefecto.tscn`, `project.godot`.
 
@@ -39,4 +39,25 @@ Commit `[antigravity] Ruinas bajo Elyndor: reambientación del primer tramo (TAR
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+Reambientación completada con éxito siguiendo rigurosamente las 4 capas de composición, la guía de arte y la sala de referencia:
+
+1. **Atmósfera por estado:** Sustituido el `WorldEnvironment` genérico por `AtmosferaFase` con fondo abisal casi negro `Color(0.035, 0.03, 0.04, 1.0)`, niebla volumétrica y ajustes equilibrados entre Realidad (dorado tenue y niebla sutil) y Desfase (índigo/azul con niebla densa).
+2. **Materiales del plano de juego:** Asignados materiales PBR CC0 triplanares (`suelo_monasterio.tres`, `roca_ruinas.tres`, `sillares.tres`, `piedra_castillo.tres`) en suelos, muros y plataformas. Los elementos exclusivos del Desfase (plataformas y puntadas) mantienen su identidad visual fría y emisiva cian/azul. La geometría y colisiones jugables permanecen intactas al milímetro.
+3. **Fondo cercano modular (Z ≈ −3.8 a −3.2):** Composición arquitectónica con el kit gótico (`muro.tscn`, `arco_apuntado.tscn`, `ventanal.tscn`) a lo largo de todo el tramo. Luz subterránea filtrada desde grietas superiores mediante 4 instancias de `rayo_luz.tscn` con valores oscuros para Compatibility.
+4. **Columnas Realidad/Desfase (Z ≈ −2.2):** 6 pares de columnas sincronizadas (`columna_rota.tscn` con `ElementoFase.existe_en = REALIDAD` frente a `columna.tscn` entera con `ElementoFase.existe_en = DESFASE`) en las posiciones x = -12, 14, 32, 46, 58 y 90.
+5. **Techo y fondo lejano:** Implementado `TechoRoca` superior (`roca_ruinas.tres`) cerrando la estructura subterránea y `FondoLejano` en Z = -14 con `Mat_silueta` (`Color(0.02, 0.02, 0.03)`).
+6. **Detalles y partículas:**
+   - 5 grupos de `Escombros` con semillas diferenciadas (solo en Realidad vía `ElementoFase`), acumulados en esquinas y suelo.
+   - 4 instancias de `SimboloArquitectos` (2 en arcos cercanos al Ancla y 2 en los muros del atajo).
+   - 2 sistemas de partículas de `Polvo` en las zonas amplias (plaza y rellano del Ancla).
+7. **Primer plano (Z ≈ +3.5 a +3.8):** 3 siluetas arquitectónicas de piedra (`Mat_silueta`) que aportan profundidad y enmarcan la cámara sin ocluir a Nereth ni a los enemigos.
+8. **Iluminación (escalabilidad y presupuesto):** Exactamente 4 luces en toda la sala y 2 con sombra:
+   - `Luna` (Direccional hacia abajo-derecha, con sombra, sutil luz cenital).
+   - `AntorchaAncla` (Omni cálida, con sombra, junto al Ancla).
+   - `LuzPlaza` (Omni tenue sin sombra).
+   - `LuzPuenteRemiendo` (Omni fría tenue sin sombra sobre el tramo final).
+9. **Conexión con la Cámara del Despertar:** Añadida `TransicionSala` (`HaciaCamara`) en x = -20.0 hacia `res://scenes/niveles/elyndor/camara_despertar.tscn` con `entrada_destino = &"desde_ruinas"`. El `PuntoEntrada` `inicio` (x = -16.0) queda a más de 3.2 m de distancia fuera del volumen de transición.
+10. **Verificación de pruebas:**
+    - `tests/test_barrio_desprendido.gd` ampliado con comprobaciones de `AtmosferaFase`, detección de los pares de columnas Realidad/Desfase y verificación de la transición bidireccional segura.
+    - Todos los tests de recorrido jugable físico canónico pasan sin fallos.
+    - `tools/comprobar.ps1`: 15 de 15 pruebas superadas con 0 fallos (`Todo correcto`).

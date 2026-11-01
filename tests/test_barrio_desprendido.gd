@@ -254,6 +254,56 @@ func _ejecutar() -> void:
 		var fuera: bool = x_punto < min_x_transicion or x_punto > max_x_transicion
 		_comprobar(fuera, "el PuntoEntrada «desde_salon» (x = %.1f) está fuera de la transición (rango x = %.1f..%.1f)" % [x_punto, min_x_transicion, max_x_transicion])
 
+	# 11. Comprobaciones de reambientación Ruinas bajo Elyndor (TAREA-010):
+	# A) Presencia de AtmosferaFase
+	var atmosfera: AtmosferaFase = _sala.get_node_or_null("Atmosfera") as AtmosferaFase
+	if not atmosfera:
+		var atmos: Array[Node] = _sala.find_children("*", "AtmosferaFase", true, false)
+		if not atmos.is_empty():
+			atmosfera = atmos[0] as AtmosferaFase
+	_comprobar(atmosfera != null, "la escena cuenta con AtmosferaFase para el control de fase ambiental")
+
+	# B) Columnas Realidad/Desfase: al menos 4 pares con existe_en opuestos
+	var pares_columnas: int = 0
+	var col_realidad: Node = _sala.get_node_or_null("ColumnasRealidad")
+	var col_desfase: Node = _sala.get_node_or_null("ColumnasDesfase")
+	if col_realidad and col_desfase:
+		for hijo_r: Node in col_realidad.get_children():
+			var elem_r: ElementoFase = hijo_r.get_node_or_null("ElementoFase") as ElementoFase
+			if not elem_r or elem_r.existe_en != ElementoFase.Existencia.REALIDAD:
+				continue
+			var pos_r: Vector3 = (hijo_r as Node3D).global_position
+			for hijo_d: Node in col_desfase.get_children():
+				var elem_d: ElementoFase = hijo_d.get_node_or_null("ElementoFase") as ElementoFase
+				if not elem_d or elem_d.existe_en != ElementoFase.Existencia.DESFASE:
+					continue
+				var pos_d: Vector3 = (hijo_d as Node3D).global_position
+				if pos_r.distance_to(pos_d) < 0.1:
+					pares_columnas += 1
+					break
+	_comprobar(pares_columnas >= 4, "existen al menos 4 pares de columnas Realidad/Desfase (%d encontrados)" % pares_columnas)
+
+	# C) Transición a la Cámara del Despertar y verificación de spawn seguro
+	var transicion_camara: TransicionSala = null
+	for t: Node in transiciones:
+		var tr: TransicionSala = t as TransicionSala
+		if tr.escena_destino == "res://scenes/niveles/elyndor/camara_despertar.tscn":
+			transicion_camara = tr
+			break
+	_comprobar(transicion_camara != null, "existe la TransicionSala hacia la Cámara del Despertar")
+	if transicion_camara:
+		_comprobar(transicion_camara.entrada_destino == &"desde_ruinas", "la transición apunta a la entrada «desde_ruinas»")
+		_comprobar(transicion_camara.collision_mask & 8 != 0, "la transición detecta la capa del jugador (8)")
+		if entrada_inicio:
+			var col_tr: CollisionShape3D = transicion_camara.get_node("Forma") as CollisionShape3D
+			var box_tr: BoxShape3D = col_tr.shape as BoxShape3D
+			var mitad_x_camara: float = box_tr.size.x * 0.5 if box_tr else 1.0
+			var min_x_cam: float = transicion_camara.global_position.x - mitad_x_camara
+			var max_x_cam: float = transicion_camara.global_position.x + mitad_x_camara
+			var x_inicio: float = entrada_inicio.global_position.x
+			var fuera_cam: bool = x_inicio < min_x_cam or x_inicio > max_x_cam
+			_comprobar(fuera_cam, "el PuntoEntrada «inicio» (x = %.1f) está fuera de la transición a la cámara (rango x = %.1f..%.1f)" % [x_inicio, min_x_cam, max_x_cam])
+
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)
 

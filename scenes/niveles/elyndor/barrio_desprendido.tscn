@@ -16,15 +16,24 @@
 [ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="14_transicion"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pausa/menu_pausa.tscn" id="15_pausa"]
 [ext_resource type="Script" path="res://scripts/core/sonido/ambiente_sala.gd" id="16_ambiente"]
+[ext_resource type="Script" path="res://scripts/core/fase/atmosfera_fase.gd" id="17_atmosfera"]
+[ext_resource type="Material" path="res://assets/materiales/suelo_monasterio.tres" id="18_suelo"]
+[ext_resource type="Material" path="res://assets/materiales/roca_ruinas.tres" id="19_roca"]
+[ext_resource type="Material" path="res://assets/materiales/sillares.tres" id="20_sillares"]
+[ext_resource type="Material" path="res://assets/materiales/piedra_castillo.tres" id="21_piedra"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/muro.tscn" id="22_muro"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/arco_apuntado.tscn" id="23_arco"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/ventanal.tscn" id="24_ventanal"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/columna.tscn" id="25_columna"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/columna_rota.tscn" id="26_columna_rota"]
+[ext_resource type="Script" path="res://scenes/mundo/kit_gotico/escombros.gd" id="27_escombros"]
+[ext_resource type="Script" path="res://scenes/mundo/kit_gotico/simbolo_arquitectos.gd" id="28_simbolo"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/polvo.tscn" id="29_polvo"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/rayo_luz.tscn" id="30_rayo"]
 
-[sub_resource type="StandardMaterial3D" id="Mat_piedra"]
-albedo_color = Color(0.32, 0.31, 0.36, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_arquitectura"]
-albedo_color = Color(0.24, 0.22, 0.28, 1)
-
-[sub_resource type="StandardMaterial3D" id="Mat_real"]
-albedo_color = Color(0.48, 0.4, 0.32, 1)
+[sub_resource type="StandardMaterial3D" id="Mat_silueta"]
+albedo_color = Color(0.02, 0.018, 0.022, 1)
+roughness = 1.0
 
 [sub_resource type="StandardMaterial3D" id="Mat_desfase"]
 albedo_color = Color(0.42, 0.58, 0.95, 1)
@@ -54,37 +63,354 @@ size = Vector3(55, 3, 8)
 [sub_resource type="BoxShape3D" id="Box_caida_foso"]
 size = Vector3(45, 3, 8)
 
+[sub_resource type="BoxShape3D" id="Box_transicion_camara"]
+size = Vector3(1.5, 6, 4)
+
 [sub_resource type="BoxShape3D" id="Box_transicion_salon"]
 size = Vector3(1.5, 4, 4)
 
+[sub_resource type="QuadMesh" id="Malla_simbolo"]
+size = Vector2(0.7, 0.7)
+
 [sub_resource type="Environment" id="Entorno"]
 background_mode = 1
-background_color = Color(0.04, 0.04, 0.07, 1)
-ambient_light_source = 2
-ambient_light_color = Color(0.48, 0.48, 0.6, 1)
-ambient_light_energy = 0.55
+background_color = Color(0.035, 0.03, 0.04, 1)
+fog_enabled = true
 
 [node name="BarrioDesprendido" type="Node3D"]
 
-[node name="Entorno" type="WorldEnvironment" parent="."]
+[node name="Atmosfera" type="WorldEnvironment" parent="."]
 environment = SubResource("Entorno")
+script = ExtResource("17_atmosfera")
 
-[node name="Sol" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.643, -0.766, 0, 0.766, 0.643, 0, 15, 6)
-light_energy = 1.05
+[node name="Luna" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, 0, 0.5, 0.25, 0.866, -0.433, -0.433, 0.5, 0.75, 0, 14, 6)
+light_color = Color(0.6, 0.66, 0.85, 1)
+light_energy = 0.35
 shadow_enabled = true
 
-[node name="LuzAncla" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 3, 1)
-light_color = Color(0.95, 0.8, 0.55, 1)
-light_energy = 1.5
-omni_range = 8.0
+[node name="AntorchaAncla" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 34.5, 3.2, 0.6)
+light_color = Color(1, 0.65, 0.35, 1)
+light_energy = 2.5
+omni_range = 10.0
+shadow_enabled = true
 
 [node name="LuzPlaza" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 3.5, 1)
-light_color = Color(0.85, 0.5, 0.35, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 3.5, 0.5)
+light_color = Color(0.85, 0.6, 0.45, 1)
 light_energy = 1.2
 omni_range = 10.0
+
+[node name="LuzPuenteRemiendo" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 7.5, 0.5)
+light_color = Color(0.55, 0.75, 1, 1)
+light_energy = 0.9
+omni_range = 8.0
+
+[node name="TechoRoca" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 11.5, -1)
+size = Vector3(145, 2, 9)
+material = ExtResource("19_roca")
+
+[node name="FondoLejano" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 6, -14)
+size = Vector3(160, 22, 1)
+material = SubResource("Mat_silueta")
+
+[node name="FondoCercano" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.8)
+
+[node name="Arco1" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, 0)
+
+[node name="Muro1" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0)
+
+[node name="Ventanal1" parent="FondoCercano" instance=ExtResource("24_ventanal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 0)
+
+[node name="Muro2" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0)
+
+[node name="Arco2" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, 0)
+
+[node name="Muro3" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 1, 0)
+
+[node name="Ventanal2" parent="FondoCercano" instance=ExtResource("24_ventanal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1, 0)
+
+[node name="Muro4" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1, 0)
+
+[node name="Arco3" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 1, 0)
+
+[node name="Muro5" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 1, 0)
+
+[node name="Muro6" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 1.5, 0)
+
+[node name="ArcoAncla" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 1.5, 0)
+
+[node name="Muro7" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 1.5, 0)
+
+[node name="Muro8" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 0)
+
+[node name="Ventanal3" parent="FondoCercano" instance=ExtResource("24_ventanal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 0)
+
+[node name="ArcoPlaza" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 0)
+
+[node name="Muro9" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 0)
+
+[node name="Ventanal4" parent="FondoCercano" instance=ExtResource("24_ventanal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 0)
+
+[node name="Muro10" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 1, 0)
+
+[node name="Muro11" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 1, 0)
+
+[node name="ArcoFoso" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 74, 1, 0)
+
+[node name="Muro12" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 4.5, 0)
+
+[node name="Muro13" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 4.5, 0)
+
+[node name="Ventanal5" parent="FondoCercano" instance=ExtResource("24_ventanal")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 4.5, 0)
+
+[node name="Arco4" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 4.5, 0)
+
+[node name="Muro14" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 4.5, 0)
+
+[node name="Muro15" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 4.5, 0)
+
+[node name="ArcoSalida" parent="FondoCercano" instance=ExtResource("23_arco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106, 4.5, 0)
+
+[node name="Muro16" parent="FondoCercano" instance=ExtResource("22_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 110, 4.5, 0)
+
+[node name="Rayo1" parent="." instance=ExtResource("30_rayo")]
+transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, -8, 8.5, -3.2)
+
+[node name="Rayo2" parent="." instance=ExtResource("30_rayo")]
+transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, 20, 8.5, -3.2)
+
+[node name="Rayo3" parent="." instance=ExtResource("30_rayo")]
+transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, 50, 8.5, -3.2)
+
+[node name="Rayo4" parent="." instance=ExtResource("30_rayo")]
+transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, 90, 10.5, -3.2)
+
+[node name="ColumnasRealidad" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.2)
+
+[node name="Rota1" parent="ColumnasRealidad" instance=ExtResource("26_columna_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasRealidad/Rota1"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="Rota2" parent="ColumnasRealidad" instance=ExtResource("26_columna_rota")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 14, 1, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasRealidad/Rota2"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="Rota3" parent="ColumnasRealidad" instance=ExtResource("26_columna_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.5, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasRealidad/Rota3"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="Rota4" parent="ColumnasRealidad" instance=ExtResource("26_columna_rota")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 46, 0, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasRealidad/Rota4"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="Rota5" parent="ColumnasRealidad" instance=ExtResource("26_columna_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasRealidad/Rota5"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="Rota6" parent="ColumnasRealidad" instance=ExtResource("26_columna_rota")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 90, 4.5, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasRealidad/Rota6"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="ColumnasDesfase" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.2)
+
+[node name="Entera1" parent="ColumnasDesfase" instance=ExtResource("25_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasDesfase/Entera1"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="Entera2" parent="ColumnasDesfase" instance=ExtResource("25_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 1, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasDesfase/Entera2"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="Entera3" parent="ColumnasDesfase" instance=ExtResource("25_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 1.5, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasDesfase/Entera3"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="Entera4" parent="ColumnasDesfase" instance=ExtResource("25_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 46, 0, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasDesfase/Entera4"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="Entera5" parent="ColumnasDesfase" instance=ExtResource("25_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 58, 0, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasDesfase/Entera5"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="Entera6" parent="ColumnasDesfase" instance=ExtResource("25_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 4.5, 0)
+
+[node name="ElementoFase" type="Node" parent="ColumnasDesfase/Entera6"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="EscombrosEntrada" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -1.2)
+script = ExtResource("27_escombros")
+cantidad = 22
+semilla = 3
+material = ExtResource("20_sillares")
+
+[node name="ElementoFase" type="Node" parent="EscombrosEntrada"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="EscombrosCalle" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 1, -1.2)
+script = ExtResource("27_escombros")
+cantidad = 20
+semilla = 8
+material = ExtResource("20_sillares")
+
+[node name="ElementoFase" type="Node" parent="EscombrosCalle"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="EscombrosPlaza" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, -1.2)
+script = ExtResource("27_escombros")
+cantidad = 28
+semilla = 15
+material = ExtResource("19_roca")
+
+[node name="ElementoFase" type="Node" parent="EscombrosPlaza"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="EscombrosFoso" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, -3.5, -1)
+script = ExtResource("27_escombros")
+cantidad = 25
+semilla = 22
+material = ExtResource("19_roca")
+
+[node name="ElementoFase" type="Node" parent="EscombrosFoso"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="EscombrosPrimerPlano" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 1, 2)
+script = ExtResource("27_escombros")
+cantidad = 16
+semilla = 31
+material = ExtResource("19_roca")
+
+[node name="ElementoFase" type="Node" parent="EscombrosPrimerPlano"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="SimboloAncla1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.5, 3.2, -1.5)
+mesh = SubResource("Malla_simbolo")
+script = ExtResource("28_simbolo")
+
+[node name="SimboloAncla2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5, 3.2, -1.5)
+mesh = SubResource("Malla_simbolo")
+script = ExtResource("28_simbolo")
+
+[node name="SimboloPuente1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 7.5, -1.5)
+mesh = SubResource("Malla_simbolo")
+script = ExtResource("28_simbolo")
+
+[node name="SimboloPuente2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78, 7.5, -1.5)
+mesh = SubResource("Malla_simbolo")
+script = ExtResource("28_simbolo")
+
+[node name="Silueta1" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 5, 3.5)
+radius = 0.5
+height = 12.0
+sides = 8
+material = SubResource("Mat_silueta")
+
+[node name="Silueta2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 5.5, 3.8)
+radius = 0.6
+height = 12.0
+sides = 8
+material = SubResource("Mat_silueta")
+
+[node name="Silueta3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 85, 8, 3.6)
+radius = 0.5
+height = 12.0
+sides = 8
+material = SubResource("Mat_silueta")
+
+[node name="PolvoEntrada" parent="." instance=ExtResource("29_polvo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 3, 0)
+
+[node name="PolvoPlaza" parent="." instance=ExtResource("29_polvo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 3, 0)
 
 [node name="Geometria" type="Node3D" parent="."]
 
@@ -92,25 +418,25 @@ omni_range = 10.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -21.5, 6, 0)
 use_collision = true
 size = Vector3(1, 14, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("19_roca")
 
 [node name="SueloEntrada1" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14, -0.5, 0)
 use_collision = true
 size = Vector3(14, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("18_suelo")
 
 [node name="EscalonEntrada" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0.5, 0)
 use_collision = true
 size = Vector3(4, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("20_sillares")
 
 [node name="SueloEntrada2" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1, 0)
 use_collision = true
 size = Vector3(5, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("18_suelo")
 
 [node name="PuenteDesfaseCalle" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1, 0)
@@ -125,13 +451,13 @@ script = ExtResource("6_fase")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.5, 0)
 use_collision = true
 size = Vector3(10, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("18_suelo")
 
 [node name="MuroFachadaReal" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 4, 0)
 use_collision = true
 size = Vector3(0.8, 6, 4)
-material = SubResource("Mat_real")
+material = ExtResource("21_piedra")
 
 [node name="ElementoFase" type="Node" parent="Geometria/MuroFachadaReal"]
 script = ExtResource("6_fase")
@@ -141,7 +467,7 @@ existe_en = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.5, 0)
 use_collision = true
 size = Vector3(11, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("18_suelo")
 
 [node name="MuroFachadaDesfase" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 4, 0)
@@ -156,7 +482,7 @@ script = ExtResource("6_fase")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 1, 0)
 use_collision = true
 size = Vector3(10, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("20_sillares")
 
 [node name="DistorsionAncla" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.5, 3.5, 0)
@@ -168,13 +494,13 @@ material = SubResource("Mat_distorsion")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, -0.5, 0)
 use_collision = true
 size = Vector3(22, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("18_suelo")
 
 [node name="BordePlazaSalida" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64.5, 0.5, 0)
 use_collision = true
 size = Vector3(3, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("20_sillares")
 
 [node name="Puntada1" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69, 1.8, 0)
@@ -204,7 +530,7 @@ script = ExtResource("7_cosible")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.5, 4, 0)
 use_collision = true
 size = Vector3(21, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("20_sillares")
 
 [node name="ElementoFase" type="Node" parent="Geometria/SueloReceptorAlto"]
 script = ExtResource("6_fase")
@@ -251,13 +577,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106, 4, 0)
 use_collision = true
 size = Vector3(16, 1, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("18_suelo")
 
 [node name="PorticoFinal" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 110, 7.5, 0)
 use_collision = true
 size = Vector3(2, 6, 4)
-material = SubResource("Mat_arquitectura")
+material = ExtResource("21_piedra")
 
 [node name="HuecoArco" type="CSGBox3D" parent="Geometria/PorticoFinal"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
@@ -268,7 +594,7 @@ size = Vector3(3, 4.2, 4.2)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 114.5, 9, 0)
 use_collision = true
 size = Vector3(1, 12, 4)
-material = SubResource("Mat_piedra")
+material = ExtResource("19_roca")
 
 [node name="AnclaBarrio" parent="." node_paths=PackedStringArray("distorsiones") instance=ExtResource("5_ancla")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 1.5, 0)
@@ -339,6 +665,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.1, 0)
 script = ExtResource("13_entrada")
 id = &"inicio"
 mirando = 1.0
+
+[node name="HaciaCamara" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 3, 0)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("14_transicion")
+escena_destino = "res://scenes/niveles/elyndor/camara_despertar.tscn"
+entrada_destino = &"desde_ruinas"
+
+[node name="Forma" type="CollisionShape3D" parent="HaciaCamara"]
+shape = SubResource("Box_transicion_camara")
 
 [node name="EntradaDesdeSalon" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106.5, 4.6, 0)
