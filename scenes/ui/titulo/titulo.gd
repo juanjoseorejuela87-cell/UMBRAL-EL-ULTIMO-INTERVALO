@@ -1,6 +1,7 @@
 class_name PantallaTitulo
 extends Control
 ## Pantalla de título: continuar la partida guardada, empezar una nueva o salir.
+## Fondo 3D de la Cámara del Despertar con kit gótico, pulso de Desfase y fundido inicial.
 
 const ESCENA_INICIAL: String = "res://scenes/niveles/elyndor/camara_despertar.tscn"
 
@@ -10,11 +11,15 @@ var _foco_inicial_dado: bool = false
 @onready var boton_continuar: Button = %Continuar
 @onready var boton_nueva: Button = %NuevaPartida
 @onready var boton_salir: Button = %Salir
+@onready var cortina: ColorRect = $CortinaNegra
+@onready var fondo_3d: FondoTitulo = $FondoTitulo
 
 
 func _ready() -> void:
 	if GestorSonido.global() != null:
 		GestorSonido.global().ambiente(&"")
+
+	_iniciar_fundido_entrada()
 
 	_conectar_sonidos_boton(boton_continuar)
 	_conectar_sonidos_boton(boton_nueva)
@@ -27,6 +32,18 @@ func _ready() -> void:
 	boton_continuar.disabled = not hay_partida
 	(boton_continuar if hay_partida else boton_nueva).grab_focus.call_deferred()
 	_activar_sonido_foco_tras_frame()
+
+
+func _iniciar_fundido_entrada() -> void:
+	if cortina == null:
+		return
+	cortina.visible = true
+	cortina.modulate.a = 1.0
+	var tween: Tween = create_tween()
+	tween.tween_property(cortina, "modulate:a", 0.0, 1.0).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	tween.tween_callback(func() -> void:
+		cortina.visible = false
+	)
 
 
 func _conectar_sonidos_boton(boton: Button) -> void:

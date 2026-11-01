@@ -1,7 +1,7 @@
 # TAREA-013 — Pantalla de título con fondo 3D y contraste del Vigía Hueco
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - `scenes/ui/titulo/titulo.tscn`, `scenes/ui/titulo/titulo.gd`.
   - Nuevo: `scenes/ui/titulo/fondo_titulo.tscn` (+ `fondo_titulo.gd` si lo necesitas).
@@ -36,4 +36,33 @@ Commit `[antigravity] Pantalla de título con fondo 3D y contraste del Vigía (T
 
 ## Resultado
 
-_(lo rellena Antigravity)_
+1. **Fondo 3D del título (`fondo_titulo.tscn` + `fondo_titulo.gd`):**
+   - Implementado como un `SubViewportContainer` a pantalla completa con `mouse_filter = MOUSE_FILTER_IGNORE` para aislamiento óptimo y sin interferir con las entradas de ratón de la interfaz.
+   - Composición gótica: estrado de piedra de la Cámara del Despertar con sillares PBR (`assets/materiales/sillares.tres`), símbolo de los Arquitectos emisivo en el pavimento, dos columnas rotas laterales (`scenes/mundo/kit_gotico/columna_rota.tscn`), arco apuntado monumental al fondo (`arco_apuntado.tscn`), ventanales góticos (`ventanal.tscn`), muro de sillería (`muro.tscn`), partículas de polvo en suspensión (`scenes/efectos/atmosfera/polvo.tscn`) y un rayo de luna diagonal descendente (`rayo_luz.tscn`).
+   - Figura de Nereth (`scenes/jugador/figura_nereth.gd`) situada sobre el estrado de tres cuartos en pose contemplativa hacia el arco y la luz de luna (sin lógica de juego ni interferencia con el estado de jugador).
+   - Movimiento de cámara: balanceo sutil y travelling sinusoidal lento con ciclo de 24 s.
+   - Pulso periódico de Desfase: cada 8 s se activa una transición de 1,5 s donde la niebla y la luz ambiental se enfrían a tonos azul-cian, el símbolo del estrado resplandece y las columnas rotas materializan sus fustes enteros como columnas fantasma espectrales translúcidas y emisivas. El pulso es estrictamente visual y **no altera** `GestorFase.global().en_desfase()`.
+   - Rendimiento: sin sombras complejas, renderizado ultra ligero medido en 3,61 ms por fotograma en la GPU Intel UHD Graphics 610.
+
+2. **Estilo de la interfaz del título (`titulo.tscn`, `titulo.gd`):**
+   - Título «UMBRAL» monumental en tamaño 64 pt con contorno gótico oscuro (12 px) y sombra profunda.
+   - Subtítulo «El Último Intervalo» en tamaño 22 pt en tono azul grisáceo con contorno.
+   - Botones («Continuar», «Nueva partida», «Salir») estilizados sin marco gris rectangular por defecto (`StyleBoxEmpty`), con texto claro y subrayado/borde inferior dorado con resplandor (`StyleBoxFlat`) al recibir foco o pasar el ratón.
+   - Fundido inicial suave de entrada desde negro (1,0 s) con cortina no bloqueante.
+
+3. **Fin de la demo (`fin_demo.tscn`, `fin_demo.gd`):**
+   - Fondo atmosférico con gradiente vertical que evoca el amanecer sobre el reino de Elyndor (de azul oscuro estrellado a púrpura, rosa y horizonte dorado) con siluetas recortadas de torres y chapiteles góticos en el horizonte.
+   - Mismo estilo refinado en los botones sin caja gris y con acento dorado.
+   - Textos de Maelis y resumen oficial preservados intactos.
+   - Fundido de entrada suave desde negro (1,0 s).
+
+4. **Retoque de contraste del Vigía Hueco (`vigia_hueco.tscn`):**
+   - `Mat_cuerpo` actualizado con un albedo más claro `Color(0.56, 0.52, 0.48)`, metalicidad 0.45, rugosidad 0.55 y rim lighting activado (`rim = 0.65`, `rim_tint = 0.4`) para que sus piezas de armadura se recorten con definición sobre muros oscuros y zonas en penumbra.
+   - Punta de lanza refinada con metalicidad 0.8 y rugosidad 0.25.
+   - Se mantiene el material compartido `Mat_cuerpo` en todas las piezas del cuerpo para preservar el destello de daño, telegrafía y Ruptura.
+
+5. **Pruebas y capturas:**
+   - Creado `tests/test_titulo.gd` con 25 comprobaciones automatizadas: **25 de 25 superadas con 0 fallos**.
+   - `tests/test_demo.gd` verificado y superado sin fallos (16/16).
+   - `tests/test_figuras_enemigos.gd` verificado con el nuevo material del Vigía (38/38 OK).
+   - Capturas visuales generadas y revisadas con `tools/captura_sala.gd` en `scratch/capturas/titulo.png` y `scratch/capturas/fin_demo.png`.

@@ -1,0 +1,118 @@
+extends SceneTree
+## Prueba automática de la pantalla de título 3D y fin de la demo (TAREA-013).
+## Uso: Godot_console.exe --headless --path D:\UMBRAL -s res://tests/test_titulo.gd
+## Código de salida = número de comprobaciones fallidas.
+
+const TITULO: String = "res://scenes/ui/titulo/titulo.tscn"
+const CAMARA: String = "res://scenes/niveles/elyndor/camara_despertar.tscn"
+const FIN: String = "res://scenes/ui/fin_demo/fin_demo.tscn"
+const VIGIA: String = "res://scenes/enemigos/vigia_hueco/vigia_hueco.tscn"
+
+var _partida: GestorPartida
+var _fallos: int = 0
+
+
+func _initialize() -> void:
+	ConfigControles.registrar()
+	_partida = GestorPartida.global()
+	_partida.ruta_guardado = "user://prueba_titulo.json"
+	_partida.nueva_partida()
+	GestorSalas.global().duracion_fundido = 0.0
+	_ejecutar.call_deferred()
+
+
+func _ejecutar() -> void:
+	# 1. Carga del título y fondo 3D
+	change_scene_to_file(TITULO)
+	await _llegar_a(TITULO)
+	var titulo: PantallaTitulo = current_scene as PantallaTitulo
+	_comprobar(titulo != null, "la pantalla de título carga con éxito")
+	var fondo: FondoTitulo = titulo.get_node_or_null("FondoTitulo") as FondoTitulo
+	_comprobar(fondo != null, "el título incluye la escena de fondo 3D FondoTitulo")
+	_comprobar(fondo != null and fondo.tiene_camara_activa(), "el fondo 3D tiene una Camera3D activa")
+	_comprobar(fondo != null and fondo.tiene_figura_nereth(), "el estrado 3D incluye la figura de Nereth")
+	_comprobar(fondo != null and fondo.simbolo_dais != null, "el estrado cuenta con el símbolo de los Arquitectos")
+	_comprobar(fondo != null and fondo.columnas_fantasma != null and fondo.columnas_fantasma.get_child_count() >= 2,
+		"existen columnas fantasma preparadas para el pulso de Desfase")
+
+	# 2. Comprobación del pulso de Desfase
+	var fase_inicial: bool = GestorFase.global().en_desfase()
+	_comprobar(not fase_inicial, "GestorFase empieza en Realidad")
+	fondo.lanzar_pulso_desfase()
+	_comprobar(fondo.esta_en_pulso(), "el pulso de Desfase visual se activa")
+	await _esperar(5)
+	_comprobar(GestorFase.global().en_desfase() == false, "el pulso visual de Desfase NO cambia el estado global de Fase")
+
+	# 3. Estilo de interfaz y botones del título
+	_comprobar(titulo.boton_continuar != null and titulo.boton_continuar.disabled, "sin partida guardada, «Continuar» está desactivado")
+	_comprobar(titulo.boton_nueva != null and not titulo.boton_nueva.disabled, "«Nueva partida» está activo")
+	_comprobar(titulo.boton_salir != null and not titulo.boton_salir.disabled, "«Salir» está activo")
+
+	var estilo_normal: StyleBox = titulo.boton_nueva.get_theme_stylebox("normal")
+	_comprobar(estilo_normal is StyleBoxEmpty, "los botones del título no tienen fondo gris por defecto (StyleBoxEmpty)")
+	var estilo_foco: StyleBox = titulo.boton_nueva.get_theme_stylebox("focus")
+	_comprobar(estilo_foco is StyleBoxFlat and (estilo_foco as StyleBoxFlat).border_width_bottom > 0,
+		"los botones tienen subrayado/borde inferior dorado en foco")
+
+	# 4. Navegación a Nueva Partida
+	titulo.nueva_partida()
+	_comprobar(await _llegar_a(CAMARA), "«Nueva partida» navega correctamente a la Cámara del Despertar")
+
+	# 5. Pantalla de Fin de Demo
+	change_scene_to_file(FIN)
+	await _llegar_a(FIN)
+	var fin: PantallaFinDemo = current_scene as PantallaFinDemo
+	_comprobar(fin != null, "la pantalla de fin de demo carga correctamente")
+	var label_texto: Label = fin.get_node_or_null("Centro/Texto") as Label
+	_comprobar(label_texto != null and label_texto.text.contains("No recuperes los fragmentos sin comprender lo que estás devolviendo"),
+		"el fin de la demo conserva la frase oficial de Maelis")
+	var fondo_amanecer: Node = fin.get_node_or_null("FondoAmanecer")
+	_comprobar(fondo_amanecer is TextureRect, "el fin de la demo tiene un fondo de amanecer con degradado")
+	var siluetas: Node = fin.get_node_or_null("SiluetasTorres")
+	_comprobar(siluetas != null and siluetas.get_child_count() > 0, "el fin de la demo incluye siluetas de torres en el horizonte")
+	var boton_volver: Button = fin.boton_titulo
+	_comprobar(boton_volver != null and boton_volver.get_theme_stylebox("normal") is StyleBoxEmpty,
+		"el botón de fin de demo comparte el nuevo estilo sin fondo gris")
+
+	# 6. Retoque de contraste del Vigía Hueco
+	var escena_vigia: PackedScene = load(VIGIA) as PackedScene
+	_comprobar(escena_vigia != null, "la escena del Vigía Hueco carga")
+	var inst_vigia: Node = escena_vigia.instantiate()
+	root.add_child(inst_vigia)
+	await _esperar(2)
+	var cuerpo: MeshInstance3D = inst_vigia.get_node_or_null("Visual/Cuerpo") as MeshInstance3D
+	_comprobar(cuerpo != null, "el Vigía conserva Visual/Cuerpo")
+	var mat_cuerpo: StandardMaterial3D = cuerpo.get_active_material(0) as StandardMaterial3D
+	_comprobar(mat_cuerpo != null, "el material activo del cuerpo existe")
+	if mat_cuerpo:
+		_comprobar(mat_cuerpo.rim_enabled, "el material del cuerpo del Vigía tiene rim lighting activado para contraste")
+		_comprobar(mat_cuerpo.albedo_color.v > 0.45, "el albedo del cuerpo del Vigía es más claro para recortarse contra fondos oscuros")
+	inst_vigia.queue_free()
+
+	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
+	quit(_fallos)
+
+
+func _llegar_a(escena: String) -> bool:
+	for i: int in 180:
+		if _escena() == escena and not GestorSalas.global().cambiando():
+			return true
+		await physics_frame
+	return false
+
+
+func _escena() -> String:
+	return current_scene.scene_file_path if current_scene else ""
+
+
+func _esperar(frames: int) -> void:
+	for i: int in frames:
+		await physics_frame
+
+
+func _comprobar(condicion: bool, descripcion: String) -> void:
+	if condicion:
+		print("  [OK]    %s" % descripcion)
+	else:
+		_fallos += 1
+		print("  [FALLO] %s" % descripcion)
