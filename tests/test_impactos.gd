@@ -56,13 +56,17 @@ func _ejecutar() -> void:
 	_nereth.mirando = 1.0
 	await _esperar(5)
 	var tembló: Array[bool] = [false]
+	var hubo_efecto: Array[bool] = [false]
 	Input.action_press(&"atacar_ligero")
 	await _esperar(1)
 	Input.action_release(&"atacar_ligero")
 	for i: int in 25:
 		await physics_frame
 		tembló[0] = tembló[0] or _camara.temblando()
+		for hijo: Node in root.get_children():
+			hubo_efecto[0] = hubo_efecto[0] or hijo is EfectoImpacto
 	_comprobar(tembló[0], "conectar un golpe hace temblar la cámara")
+	_comprobar(hubo_efecto[0], "conectar un golpe crea el efecto visual de impacto")
 
 	# Recibir daño hace temblar la cámara
 	await _esperar(40)

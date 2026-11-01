@@ -97,12 +97,13 @@ func _process(delta: float) -> void:
 
 
 func _crear_efecto(tipo: StringName, posicion: Vector3) -> void:
-	if _escena_efecto == null or get_tree().current_scene == null:
+	if _escena_efecto == null:
 		return
 	var efecto: Node3D = _escena_efecto.instantiate() as Node3D
 	if efecto == null:
 		return
-	get_tree().current_scene.add_child(efecto)
+	var contenedor: Node = get_tree().current_scene if get_tree().current_scene else get_tree().root
+	contenedor.add_child(efecto)
 	efecto.global_position = posicion
 	if efecto.has_method(&"configurar"):
 		efecto.call(&"configurar", tipo)

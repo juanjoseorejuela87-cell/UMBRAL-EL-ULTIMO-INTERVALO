@@ -1,7 +1,7 @@
 # TAREA-008 — Efecto visual de impacto
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:** todo lo que crees en `scenes/efectos/impacto/` (escena principal: `scenes/efectos/impacto/impacto.tscn`); `tests/test_efecto_impacto.gd`.
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `scenes/enemigos/`, `project.godot`.
 
@@ -51,3 +51,8 @@ Commit `[antigravity] Efecto visual de impacto (TAREA-008)`, solo con los archiv
   - Auto-liberación (`queue_free`) al concluir la emisión (enlace a `finished` y temporizador de seguridad de ~0.4–0.5 s).
 - Creado `tests/test_efecto_impacto.gd` validando los 5 tipos, verificación de `CPUParticles3D` emitiendo en `one_shot`, cantidad ≤ 30 y liberación automática en < 1.5 s (t real ≈ 0.13–0.25 s).
 - Comprobación completa con `tools/comprobar.ps1`: 13 de 13 suites pasadas con 0 fallos (`Todo correcto`).
+
+## Revisión (Claude, 2026-11-01) — ACEPTADO
+
+Cumple todo: `CPUParticles3D` sin sombreado ni sombras, 10–24 partículas, cinco variantes con color, velocidad y gravedad propias, destello que se apaga en críticos y parry, y liberación automática (por `finished` y con temporizador de seguridad). Las 13 pruebas pasan.
+Al integrarlo encontré un fallo **mío**: `Impactos` solo creaba el efecto si había `current_scene`, y en las pruebas no la hay. Ahora usa la raíz como respaldo, y `tests/test_impactos.gd` comprueba que un golpe real crea tu efecto.

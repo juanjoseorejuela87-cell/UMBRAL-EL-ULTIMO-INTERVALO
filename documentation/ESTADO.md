@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor **jugable de principio a fin** (título → Barrio → Salón del Prefecto → fin de la demo). Siguiente hito: 11 (audio base); el 10 espera las partículas de Antigravity. La demo se puede jugar con `builds/windows/UMBRAL.exe`.
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor **jugable de principio a fin** (título → Barrio → Salón del Prefecto → fin de la demo). Siguiente hito: 11 (audio base). La demo se puede jugar con `builds/windows/UMBRAL.exe`.
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -17,7 +17,7 @@
 | 7 | El Prefecto de las Puertas | Hecho — `tests/test_prefecto.gd` (24/24): 3 fases, travesía entre puertas, trampa cosida, Cierre, derrota persistente |
 | 8 | Salas de Elyndor + transiciones + cierre de la demo | Hecho — transiciones (8/8), Barrio (Antigravity), Salón del Prefecto, Fragmento, título y fin de la demo (`tests/test_demo.gd`, 16/16) |
 | 9 | Ejecutable de Windows de la demo | Hecho — `tools/exportar.ps1` genera `builds/windows/UMBRAL.exe` (≈104 MB, todo incluido); arranque verificado |
-| 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Núcleo hecho — autoload `Impactos` (`tests/test_impactos.gd`, 9/9); partículas: TAREA-008 (Antigravity) |
+| 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Hecho — autoload `Impactos` (`tests/test_impactos.gd`, 10/10) + efecto de impacto (Antigravity, TAREA-008) |
 | 11 | Audio base (efectos provisionales y ambiente) | Pendiente |
 
 ## Encargos a ayudantes
@@ -31,7 +31,7 @@
 | [TAREA-005](tareas/TAREA-005-greybox-elyndor.md) | Antigravity | ACEPTADO |
 | [TAREA-006](tareas/TAREA-006-conexion-barrio-salon.md) | Antigravity | ACEPTADO |
 | [TAREA-007](tareas/TAREA-007-menu-pausa.md) | Antigravity | ACEPTADO |
-| [TAREA-008](tareas/TAREA-008-efecto-impacto.md) | Antigravity | ABIERTO |
+| [TAREA-008](tareas/TAREA-008-efecto-impacto.md) | Antigravity | ACEPTADO |
 
 ## Notas técnicas
 
