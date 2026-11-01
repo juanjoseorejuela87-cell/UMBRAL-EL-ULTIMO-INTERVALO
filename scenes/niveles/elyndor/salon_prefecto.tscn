@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="10_transicion"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/fragmento/fragmento.tscn" id="11_fragmento"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pausa/menu_pausa.tscn" id="12_pausa"]
+[ext_resource type="Script" path="res://scripts/core/sonido/ambiente_sala.gd" id="13_ambiente"]
 
 [sub_resource type="BoxShape3D" id="Box_transicion"]
 size = Vector3(1, 5, 4)
@@ -235,3 +236,7 @@ escena_destino = "res://scenes/ui/fin_demo/fin_demo.tscn"
 
 [node name="Forma" type="CollisionShape3D" parent="HaciaFinDemo"]
 shape = SubResource("Box_transicion")
+
+[node name="AmbienteSala" type="Node" parent="."]
+script = ExtResource("13_ambiente")
+pista = &"prefecto"

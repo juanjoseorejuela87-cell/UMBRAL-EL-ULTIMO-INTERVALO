@@ -5,6 +5,7 @@ extends Control
 const ESCENA_INICIAL: String = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
 
 var _confirmando_nueva: bool = false
+var _foco_inicial_dado: bool = false
 
 @onready var boton_continuar: Button = %Continuar
 @onready var boton_nueva: Button = %NuevaPartida
@@ -12,12 +13,38 @@ var _confirmando_nueva: bool = false
 
 
 func _ready() -> void:
+	if GestorSonido.global() != null:
+		GestorSonido.global().ambiente(&"")
+
+	_conectar_sonidos_boton(boton_continuar)
+	_conectar_sonidos_boton(boton_nueva)
+	_conectar_sonidos_boton(boton_salir)
+
 	boton_continuar.pressed.connect(continuar)
 	boton_nueva.pressed.connect(nueva_partida)
 	boton_salir.pressed.connect(func() -> void: get_tree().quit())
 	var hay_partida: bool = GestorPartida.global().hay_reaparicion
 	boton_continuar.disabled = not hay_partida
 	(boton_continuar if hay_partida else boton_nueva).grab_focus.call_deferred()
+	_activar_sonido_foco_tras_frame()
+
+
+func _conectar_sonidos_boton(boton: Button) -> void:
+	boton.focus_entered.connect(func() -> void:
+		if not _foco_inicial_dado:
+			return
+		if GestorSonido.global() != null:
+			GestorSonido.global().reproducir(&"ui_mover")
+	)
+	boton.pressed.connect(func() -> void:
+		if GestorSonido.global() != null:
+			GestorSonido.global().reproducir(&"ui_aceptar")
+	)
+
+
+func _activar_sonido_foco_tras_frame() -> void:
+	await get_tree().process_frame
+	_foco_inicial_dado = true
 
 
 func continuar() -> void:

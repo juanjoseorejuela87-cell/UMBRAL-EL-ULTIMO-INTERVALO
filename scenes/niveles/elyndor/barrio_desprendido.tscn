@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://scripts/core/mundo/punto_entrada.gd" id="13_entrada"]
 [ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="14_transicion"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pausa/menu_pausa.tscn" id="15_pausa"]
+[ext_resource type="Script" path="res://scripts/core/sonido/ambiente_sala.gd" id="16_ambiente"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_piedra"]
 albedo_color = Color(0.32, 0.31, 0.36, 1)
@@ -355,3 +356,7 @@ entrada_destino = &"desde_barrio"
 
 [node name="Forma" type="CollisionShape3D" parent="HaciaSalon"]
 shape = SubResource("Box_transicion_salon")
+
+[node name="AmbienteSala" type="Node" parent="."]
+script = ExtResource("16_ambiente")
+pista = &"elyndor"

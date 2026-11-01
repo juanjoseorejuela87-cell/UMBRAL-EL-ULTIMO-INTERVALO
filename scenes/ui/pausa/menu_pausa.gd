@@ -1,6 +1,6 @@
 class_name MenuPausa
 extends CanvasLayer
-## Menú de pausa del juego con lista legible de controles.
+## Menú de pausa del juego con lista legible de controles y ajustes de sonido.
 ## Se abre y cierra con Esc o con el botón Start del mando.
 ## Al pausar, detiene el árbol del juego (get_tree().paused = true).
 
@@ -24,14 +24,24 @@ const NOMBRES_ACCIONES: Dictionary = {
 
 var _abierto: bool = false
 var _ultimo_frame_accion: int = -1
+var _foco_inicial_dado: bool = false
 
 @onready var panel_raiz: Control = %PanelRaiz
 @onready var menu_opciones: VBoxContainer = %MenuOpciones
 @onready var panel_controles: VBoxContainer = %PanelControles
+@onready var panel_sonido: VBoxContainer = %PanelSonido
+
 @onready var boton_reanudar: Button = %Reanudar
 @onready var boton_controles: Button = %Controles
+@onready var boton_sonido: Button = %Sonido
 @onready var boton_volver_titulo: Button = %VolverTitulo
 @onready var boton_volver_menu: Button = %VolverMenu
+@onready var boton_volver_sonido: Button = %VolverSonido
+
+@onready var deslizador_musica: HSlider = %DeslizadorMusica
+@onready var deslizador_efectos: HSlider = %DeslizadorEfectos
+@onready var deslizador_ambiente: HSlider = %DeslizadorAmbiente
+
 @onready var texto_controles: Label = %TextoControles
 
 
@@ -40,13 +50,64 @@ func _ready() -> void:
 	asegurar_accion_pausa()
 	_generar_lista_controles()
 
+	# Conexiones de botones principales
 	boton_reanudar.pressed.connect(cerrar)
 	boton_controles.pressed.connect(mostrar_controles)
+	boton_sonido.pressed.connect(mostrar_sonido)
 	boton_volver_titulo.pressed.connect(volver_al_titulo)
 	boton_volver_menu.pressed.connect(mostrar_menu_principal)
+	boton_volver_sonido.pressed.connect(mostrar_menu_principal)
+
+	# Sonidos de interfaz para botones
+	for btn: Button in [boton_reanudar, boton_controles, boton_sonido, boton_volver_titulo, boton_volver_menu, boton_volver_sonido]:
+		_conectar_sonidos_boton(btn)
+
+	# Sonidos y eventos de los deslizadores
+	for sld: HSlider in [deslizador_musica, deslizador_efectos, deslizador_ambiente]:
+		_conectar_sonidos_deslizador(sld)
+
+	deslizador_musica.value_changed.connect(func(v: float) -> void:
+		if GestorSonido.global() != null:
+			GestorSonido.global().fijar_volumen(GestorSonido.BUS_MUSICA, v)
+	)
+	deslizador_efectos.value_changed.connect(func(v: float) -> void:
+		if GestorSonido.global() != null:
+			GestorSonido.global().fijar_volumen(GestorSonido.BUS_EFECTOS, v)
+	)
+	deslizador_ambiente.value_changed.connect(func(v: float) -> void:
+		if GestorSonido.global() != null:
+			GestorSonido.global().fijar_volumen(GestorSonido.BUS_AMBIENTE, v)
+	)
 
 	visible = false
 	panel_raiz.visible = false
+
+
+func _conectar_sonidos_boton(boton: Button) -> void:
+	boton.focus_entered.connect(func() -> void:
+		if not _foco_inicial_dado:
+			return
+		if GestorSonido.global() != null:
+			GestorSonido.global().reproducir(&"ui_mover")
+	)
+	boton.pressed.connect(func() -> void:
+		if GestorSonido.global() != null:
+			GestorSonido.global().reproducir(&"ui_aceptar")
+	)
+
+
+func _conectar_sonidos_deslizador(sld: HSlider) -> void:
+	sld.focus_entered.connect(func() -> void:
+		if not _foco_inicial_dado:
+			return
+		if GestorSonido.global() != null:
+			GestorSonido.global().reproducir(&"ui_mover")
+	)
+
+
+func _activar_sonido_foco_tras_frame() -> void:
+	await get_tree().process_frame
+	_foco_inicial_dado = true
 
 
 static func asegurar_accion_pausa() -> void:
@@ -104,13 +165,43 @@ func esta_abierto() -> bool:
 func mostrar_menu_principal() -> void:
 	menu_opciones.visible = true
 	panel_controles.visible = false
+	panel_sonido.visible = false
+	_foco_inicial_dado = false
 	boton_reanudar.grab_focus.call_deferred()
+	_activar_sonido_foco_tras_frame()
 
 
 func mostrar_controles() -> void:
 	menu_opciones.visible = false
 	panel_controles.visible = true
+	panel_sonido.visible = false
+	_foco_inicial_dado = false
 	boton_volver_menu.grab_focus.call_deferred()
+	_activar_sonido_foco_tras_frame()
+
+
+func mostrar_sonido() -> void:
+	_actualizar_deslizadores_sonido()
+	menu_opciones.visible = false
+	panel_controles.visible = false
+	panel_sonido.visible = true
+	_foco_inicial_dado = false
+	deslizador_musica.grab_focus.call_deferred()
+	_activar_sonido_foco_tras_frame()
+
+
+func _actualizar_deslizadores_sonido() -> void:
+	var idx_m: int = AudioServer.get_bus_index(GestorSonido.BUS_MUSICA)
+	if idx_m >= 0 and is_instance_valid(deslizador_musica):
+		deslizador_musica.set_value_no_signal(db_to_linear(AudioServer.get_bus_volume_db(idx_m)))
+
+	var idx_e: int = AudioServer.get_bus_index(GestorSonido.BUS_EFECTOS)
+	if idx_e >= 0 and is_instance_valid(deslizador_efectos):
+		deslizador_efectos.set_value_no_signal(db_to_linear(AudioServer.get_bus_volume_db(idx_e)))
+
+	var idx_a: int = AudioServer.get_bus_index(GestorSonido.BUS_AMBIENTE)
+	if idx_a >= 0 and is_instance_valid(deslizador_ambiente):
+		deslizador_ambiente.set_value_no_signal(db_to_linear(AudioServer.get_bus_volume_db(idx_a)))
 
 
 func volver_al_titulo() -> void:

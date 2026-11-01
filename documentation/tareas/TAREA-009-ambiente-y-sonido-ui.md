@@ -1,7 +1,7 @@
 # TAREA-009 — Ambiente de las salas, sonidos de interfaz y volúmenes
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - `scenes/niveles/elyndor/barrio_desprendido.tscn` y `scenes/niveles/elyndor/salon_prefecto.tscn` (solo añadir un nodo `AmbienteSala`).
   - `scenes/ui/titulo/titulo.tscn`, `scenes/ui/titulo/titulo.gd`, `scenes/ui/fin_demo/fin_demo.tscn`, `scenes/ui/fin_demo/fin_demo.gd` (solo sonidos de botones).
@@ -34,4 +34,17 @@ Commit `[antigravity] Ambiente de las salas, sonidos de interfaz y volúmenes (T
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+- **Ambiente por sala:**
+  - Instanciado nodo `AmbienteSala` en `scenes/niveles/elyndor/barrio_desprendido.tscn` (`pista = &"elyndor"`).
+  - Instanciado nodo `AmbienteSala` en `scenes/niveles/elyndor/salon_prefecto.tscn` (`pista = &"prefecto"`).
+  - En `scenes/ui/titulo/titulo.gd` y `scenes/ui/fin_demo/fin_demo.gd` se detiene el ambiente (`GestorSonido.global().ambiente(&"")`).
+- **Sonidos de interfaz:**
+  - Enlazados `ui_mover` (`focus_entered`) y `ui_aceptar` (`pressed`) en todos los botones y deslizadores de `titulo.gd`, `fin_demo.gd` y `menu_pausa.gd`.
+  - Suprimido el sonido `ui_mover` en la asignación del foco inicial diferido mediante bandera `_foco_inicial_dado` activada tras el primer frame de procesamiento.
+- **Volúmenes en el menú de pausa:**
+  - Creada sección `PanelSonido` en `scenes/ui/pausa/menu_pausa.tscn` y `menu_pausa.gd` accesible desde la opción "Sonido".
+  - Tres deslizadores `HSlider` para Música, Efectos y Ambiente (rango 0.0–1.0, paso 0.05), navegables con teclado y mando.
+  - Sincronizados con `AudioServer` al abrir la sección (`db_to_linear(AudioServer.get_bus_volume_db(...))`) y conectados a `GestorSonido.global().fijar_volumen(...)` en tiempo real.
+- **Pruebas y verificación:**
+  - Creado `tests/test_sonido_ui.gd` validando ambientes por sala, detención en título y fin de demo, visibilidad de ajustes y cambio de volúmenes por bus.
+  - Comprobación completa con `tools/comprobar.ps1`: **15 de 15 pruebas superadas con 0 fallos (`Todo correcto`)**.
