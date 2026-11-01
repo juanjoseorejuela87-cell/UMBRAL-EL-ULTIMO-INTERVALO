@@ -23,6 +23,7 @@ Partida="*res://scripts/core/partida/gestor_partida.gd"
 Salas="*res://scripts/core/mundo/gestor_salas.gd"
 Impactos="*res://scripts/core/efectos/director_impactos.gd"
 Sonido="*res://scripts/core/sonido/gestor_sonido.gd"
+Graficos="*res://scripts/core/graficos/configuracion_grafica.gd"
 
 [debug]
 

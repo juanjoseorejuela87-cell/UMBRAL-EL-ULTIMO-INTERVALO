@@ -41,7 +41,27 @@ func _ready() -> void:
 	environment.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	environment.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	_fase.cambiada.connect(_al_cambiar)
+	var graficos: ConfiguracionGrafica = ConfiguracionGrafica.global()
+	if graficos:
+		graficos.calidad_cambiada.connect(_al_cambiar_calidad)
+		_al_cambiar_calidad(graficos.preajuste)
 	_aplicar(1.0 if _fase.en_desfase() else 0.0)
+
+
+## Efectos de entorno según la calidad (D-017). SSAO, SSIL, SDFGI y la niebla
+## volumétrica solo existen en Forward+ (ALTO y ULTRA); Compatibility los ignora.
+func _al_cambiar_calidad(_preajuste: ConfiguracionGrafica.Preajuste) -> void:
+	var a: Dictionary = ConfiguracionGrafica.global().ajustes()
+	# Hasta que el reinicio cambie de renderizador, no se piden efectos que el
+	# actual no tiene (el motor avisaría por cada uno).
+	var completo: bool = RenderingServer.get_current_rendering_method() == ConfiguracionGrafica.METODO_COMPLETO
+	environment.glow_enabled = a["brillo"]
+	environment.ssao_enabled = completo and a["ssao"]
+	environment.ssil_enabled = completo and a["ssil"]
+	environment.sdfgi_enabled = completo and a["sdfgi"]
+	environment.volumetric_fog_enabled = completo and a["niebla_volumetrica"]
+	environment.volumetric_fog_density = 0.01
+	environment.volumetric_fog_length = 40.0
 
 
 ## 0 = Realidad, 1 = Desfase (valores intermedios durante la transición).
@@ -52,6 +72,7 @@ func _aplicar(mezcla: float) -> void:
 	environment.ambient_light_energy = lerpf(energia_ambiente_realidad, energia_ambiente_desfase, mezcla)
 	environment.glow_intensity = lerpf(brillo_realidad, brillo_desfase, mezcla)
 	environment.adjustment_saturation = lerpf(saturacion_realidad, saturacion_desfase, mezcla)
+	environment.volumetric_fog_albedo = environment.fog_light_color
 
 
 func _al_cambiar(estado: GestorFase.Estado) -> void:

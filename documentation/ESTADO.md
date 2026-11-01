@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor jugable de principio a fin. **Historia oficial integrada** en `LORE.md`. Siguiente hito: **14 (rebanada visual)**, por decisión del director; después 12 (calidad escalable) y 13 (ajustes narrativos). La demo se puede jugar con `builds/windows/UMBRAL.exe`.
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor jugable de principio a fin. **Historia oficial integrada** en `LORE.md`. En curso: **hito 12** (calidad escalable; núcleo hecho, menú de gráficos en TAREA-011) y lo que queda del **14** (modelos de personajes). La demo se puede jugar con `builds/windows/UMBRAL.exe`.
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -19,7 +19,7 @@
 | 9 | Ejecutable de Windows de la demo | Hecho — `tools/exportar.ps1` genera `builds/windows/UMBRAL.exe` (≈104 MB, todo incluido); arranque verificado |
 | 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Hecho — autoload `Impactos` (`tests/test_impactos.gd`, 10/10) + efecto de impacto (Antigravity, TAREA-008) |
 | 11 | Audio base (efectos provisionales y ambiente) | Hecho — autoload `Sonido` con 16 efectos sintetizados y 2 ambientes (`tests/test_sonido.gd`, 15/15); ambiente por sala, interfaz y volúmenes (Antigravity, TAREA-009) |
-| 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Pendiente (tras el 14) — D-017 |
+| 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Núcleo hecho (autoload `Graficos`, `tests/test_graficos.gd`); menú en TAREA-011 (Antigravity) — D-017, D-034 |
 | 13 | Ajustes narrativos de la demo según el canon (Cámara del Despertar, Ruinas bajo Elyndor, Fragmento de Memoria, frases de Maelis) | En curso — Cámara del Despertar integrada (inicio del juego, Desfase obligado por un derrumbe; `tests/test_camara_despertar.gd` 7/7); Ruinas reambientadas (Antigravity, TAREA-010); Fragmento de Memoria con recuerdo y frases oficiales de Maelis hecho (`PantallaRecuerdo`). Salón del Prefecto reambientado (arcos apuntados en las 4 puertas, columnas Realidad/Desfase, atmósfera) |
 | 14 | **Rebanada visual**: una sala con acabado de calidad final (guía de arte, kit gótico detallado, iluminación, niebla, posprocesado y un modelo real de Nereth) como referencia para todo el juego | **En curso (Claude)** — hecho: `GUIA_ARTE.md`, atmósfera por estado (`AtmosferaFase`), kit detallado (columna rota, arco apuntado, ventanal, escombros, símbolos), polvo y rayos de luz baratos, sala de referencia `elyndor/camara_despertar.tscn`. Falta: modelo real de Nereth y enemigos, más piezas del kit, aplicar a todas las salas |
 
