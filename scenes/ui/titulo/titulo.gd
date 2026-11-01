@@ -2,7 +2,7 @@ class_name PantallaTitulo
 extends Control
 ## Pantalla de título: continuar la partida guardada, empezar una nueva o salir.
 
-const ESCENA_INICIAL: String = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
+const ESCENA_INICIAL: String = "res://scenes/niveles/elyndor/camara_despertar.tscn"
 
 var _confirmando_nueva: bool = false
 var _foco_inicial_dado: bool = false

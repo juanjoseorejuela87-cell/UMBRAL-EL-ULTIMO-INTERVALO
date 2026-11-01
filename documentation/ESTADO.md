@@ -20,7 +20,7 @@
 | 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Hecho — autoload `Impactos` (`tests/test_impactos.gd`, 10/10) + efecto de impacto (Antigravity, TAREA-008) |
 | 11 | Audio base (efectos provisionales y ambiente) | Hecho — autoload `Sonido` con 16 efectos sintetizados y 2 ambientes (`tests/test_sonido.gd`, 15/15); ambiente por sala, interfaz y volúmenes (Antigravity, TAREA-009) |
 | 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Pendiente (tras el 14) — D-017 |
-| 13 | Ajustes narrativos de la demo según el canon (Cámara del Despertar, Ruinas bajo Elyndor, Fragmento de Memoria, frases de Maelis) | Pendiente — `LORE.md` §12.2 |
+| 13 | Ajustes narrativos de la demo según el canon (Cámara del Despertar, Ruinas bajo Elyndor, Fragmento de Memoria, frases de Maelis) | En curso — Cámara del Despertar integrada (inicio del juego, Desfase obligado por un derrumbe; `tests/test_camara_despertar.gd` 7/7); Ruinas: TAREA-010; falta Fragmento de Memoria y frases de Maelis |
 | 14 | **Rebanada visual**: una sala con acabado de calidad final (guía de arte, kit gótico detallado, iluminación, niebla, posprocesado y un modelo real de Nereth) como referencia para todo el juego | **En curso (Claude)** — hecho: `GUIA_ARTE.md`, atmósfera por estado (`AtmosferaFase`), kit detallado (columna rota, arco apuntado, ventanal, escombros, símbolos), polvo y rayos de luz baratos, sala de referencia `elyndor/camara_despertar.tscn`. Falta: modelo real de Nereth y enemigos, más piezas del kit, aplicar a todas las salas |
 
 ## Encargos a ayudantes
@@ -36,11 +36,12 @@
 | [TAREA-007](tareas/TAREA-007-menu-pausa.md) | Antigravity | ACEPTADO |
 | [TAREA-008](tareas/TAREA-008-efecto-impacto.md) | Antigravity | ACEPTADO |
 | [TAREA-009](tareas/TAREA-009-ambiente-y-sonido-ui.md) | Antigravity | ACEPTADO |
+| [TAREA-010](tareas/TAREA-010-ruinas-bajo-elyndor.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
 - Controles (teclado): A/D o flechas mover, Espacio saltar, Shift o L esquivar, J o clic izquierdo ataque ligero, K o clic derecho ataque pesado (mantener para cargar), E interactuar. Mando: stick izquierdo/cruceta, A saltar, B esquivar, X ligero, RB pesado, Y interactuar.
-- Arranque: `main.tscn` → pantalla de título (`scenes/ui/titulo/`): Continuar (último Ancla), Nueva partida (borra `user://partida.json`, pide confirmación) y Salir. La salida del Salón del Prefecto lleva a `scenes/ui/fin_demo/`.
+- Arranque: `main.tscn` → pantalla de título (`scenes/ui/titulo/`): Continuar (último Ancla), Nueva partida (borra `user://partida.json`, pide confirmación; **empieza en la Cámara del Despertar**) y Salir. Recorrido: Cámara del Despertar → Ruinas bajo Elyndor (antes «Barrio Desprendido») → Salón del Prefecto → fin de la demo. La salida del Salón del Prefecto lleva a `scenes/ui/fin_demo/`.
 - Salas: autoload `Salas` (`GestorSalas.global()`), `PuntoEntrada` y `TransicionSala` en `scripts/core/mundo/`.
 - Desfase: Q / I o LB. Autoload `Fase` (`GestorFase`); en código usar `GestorFase.global()`. Geometría de cada estado en capa 2 (Realidad) o 3 (Desfase) mediante un nodo hijo `ElementoFase`; Nereth solo cambia su `collision_mask`. Las cajas CSG con `ElementoFase` reciben automáticamente una colisión convexa.
 - Costura: F / O o gatillo derecho (mantener, desde el Desfase). `ElementoCosible` (hijo `Node3D` de un elemento con `ElementoFase`): Puntada (`tipo = 0`, temporal, 25 de Resonancia, una activa) o Remiendo (`tipo = 1`, permanente, `id` + `ancla_requerida`, se guarda en `Partida.remiendos`).

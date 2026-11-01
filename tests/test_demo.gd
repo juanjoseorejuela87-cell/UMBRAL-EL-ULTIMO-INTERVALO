@@ -6,6 +6,7 @@ extends SceneTree
 
 const TITULO: String = "res://scenes/ui/titulo/titulo.tscn"
 const BARRIO: String = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
+const CAMARA: String = "res://scenes/niveles/elyndor/camara_despertar.tscn"
 const SALON: String = "res://scenes/niveles/elyndor/salon_prefecto.tscn"
 const FIN: String = "res://scenes/ui/fin_demo/fin_demo.tscn"
 
@@ -30,7 +31,7 @@ func _ejecutar() -> void:
 	_comprobar(titulo != null, "arranca la pantalla de título")
 	_comprobar(titulo.boton_continuar.disabled, "sin partida, «Continuar» está desactivado")
 	titulo.nueva_partida()
-	_comprobar(await _llegar_a(BARRIO), "«Nueva partida» empieza en el Barrio Desprendido")
+	_comprobar(await _llegar_a(CAMARA), "«Nueva partida» empieza en la Cámara del Despertar")
 
 	# --- Recompensa del Prefecto ---
 	change_scene_to_file(SALON)
@@ -76,7 +77,7 @@ func _ejecutar() -> void:
 	await _esperar(3)
 	_comprobar(_escena() == TITULO and _partida.hay_reaparicion, "con partida, «Nueva partida» pide confirmación primero")
 	titulo.nueva_partida()
-	_comprobar(await _llegar_a(BARRIO), "al confirmar empieza de cero en el Barrio")
+	_comprobar(await _llegar_a(CAMARA), "al confirmar empieza de cero en la Cámara del Despertar")
 	_comprobar(not _partida.existe_partida() or _partida.fragmentos.is_empty(), "la partida anterior se ha borrado")
 	_comprobar(_partida.fragmentos.is_empty() and not _partida.hay_reaparicion, "la memoria de la partida está vacía")
 

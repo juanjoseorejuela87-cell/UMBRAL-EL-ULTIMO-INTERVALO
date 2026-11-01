@@ -20,6 +20,8 @@
 [ext_resource type="Script" path="res://scripts/core/sonido/ambiente_sala.gd" id="18_ambiente"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="19_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pausa/menu_pausa.tscn" id="20_pausa"]
+[ext_resource type="Script" path="res://scripts/core/mundo/punto_entrada.gd" id="21_entrada"]
+[ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="22_transicion"]
 
 [sub_resource type="Environment" id="Entorno"]
 background_mode = 1
@@ -36,6 +38,9 @@ metallic = 0.4
 emission_enabled = true
 emission = Color(0.45, 0.65, 1, 1)
 emission_energy_multiplier = 1.4
+
+[sub_resource type="BoxShape3D" id="Forma_transicion"]
+size = Vector3(1, 5, 4)
 
 [sub_resource type="QuadMesh" id="Malla_simbolo"]
 size = Vector2(0.7, 0.7)
@@ -301,3 +306,54 @@ objetivo = NodePath("../Nereth")
 objetivo = NodePath("../Nereth")
 
 [node name="MenuPausa" parent="." instance=ExtResource("20_pausa")]
+
+[node name="ParedDerecha" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 4.5, -1)
+use_collision = true
+size = Vector3(1, 10, 7)
+material = ExtResource("15_roca")
+
+[node name="Derrumbe" type="CSGBox3D" parent="."]
+transform = Transform3D(0.985, 0.174, 0, -0.174, 0.985, 0, 0, 0, 1, 10.5, 2.4, 0)
+use_collision = true
+size = Vector3(1.6, 5.2, 2.6)
+material = ExtResource("15_roca")
+
+[node name="ElementoFase" type="Node" parent="Derrumbe"]
+script = ExtResource("4_fase")
+existe_en = 0
+
+[node name="EscombrosDerrumbe" type="MultiMeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 0.3)
+script = ExtResource("10_escombros")
+cantidad = 26
+zona = Vector3(3.2, 0.8, 2.2)
+tamano_max = 0.8
+semilla = 21
+material = ExtResource("15_roca")
+
+[node name="ElementoFase" type="Node" parent="EscombrosDerrumbe"]
+script = ExtResource("4_fase")
+existe_en = 0
+
+[node name="Inicio" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.6, 0)
+script = ExtResource("21_entrada")
+id = &"inicio"
+
+[node name="DesdeRuinas" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0.1, 0)
+script = ExtResource("21_entrada")
+id = &"desde_ruinas"
+mirando = -1.0
+
+[node name="HaciaRuinas" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 2.5, 0)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("22_transicion")
+escena_destino = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
+entrada_destino = &"inicio"
+
+[node name="Forma" type="CollisionShape3D" parent="HaciaRuinas"]
+shape = SubResource("Forma_transicion")
