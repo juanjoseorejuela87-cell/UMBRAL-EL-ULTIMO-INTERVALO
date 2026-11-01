@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor **jugable de principio a fin** (título → Barrio → Salón del Prefecto → fin de la demo). Siguiente hito: 10 (sensación de combate) mientras el 9 espera las plantillas de exportación.
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor **jugable de principio a fin** (título → Barrio → Salón del Prefecto → fin de la demo). Siguiente hito: 10 (sensación de combate). La demo se puede jugar con `builds/windows/UMBRAL.exe`.
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -16,7 +16,7 @@
 | 6 | Arquetipos: corpóreo, eco, bifásico + Desgarro + guardia/parry | Hecho — `tests/test_enemigos.gd` (29/29): Vigía Hueco, Eco Rezagado, Guardián Partido |
 | 7 | El Prefecto de las Puertas | Hecho — `tests/test_prefecto.gd` (24/24): 3 fases, travesía entre puertas, trampa cosida, Cierre, derrota persistente |
 | 8 | Salas de Elyndor + transiciones + cierre de la demo | Hecho — transiciones (8/8), Barrio (Antigravity), Salón del Prefecto, Fragmento, título y fin de la demo (`tests/test_demo.gd`, 16/16) |
-| 9 | Ejecutable de Windows de la demo | Preparado (`export_presets.cfg`, `tools/exportar.ps1`). **Bloqueado**: faltan las plantillas de exportación de Godot 4.7.2 (las instala el director) |
+| 9 | Ejecutable de Windows de la demo | Hecho — `tools/exportar.ps1` genera `builds/windows/UMBRAL.exe` (≈104 MB, todo incluido); arranque verificado |
 | 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Pendiente |
 | 11 | Audio base (efectos provisionales y ambiente) | Pendiente |
 
@@ -49,5 +49,4 @@
 ## Pendiente del director
 
 - Historia oficial para `LORE.md` (opcional: si llega, sustituye a las propuestas).
-- **Instalar las plantillas de exportación de Godot 4.7.2** (Editor → Gestionar plantillas de exportación → Descargar e instalar) para generar el ejecutable de la demo con `tools/exportar.ps1`.
 - **Objetivo visual AAA con modelos 3D** (pedido el 2026-11-01): requiere decidir hardware/renderizador y canal de producción de arte. Ver D-017.
