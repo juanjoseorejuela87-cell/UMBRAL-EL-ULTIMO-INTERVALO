@@ -35,7 +35,7 @@ El director del proyecto (humano) tiene la última palabra sobre cualquier decis
 3. **No modifiques** `scripts/core/`, `project.godot` ni `AGENTS.md` salvo que el encargo lo pida expresamente.
 4. **Commits pequeños en `main`**, uno por tarea verificada, con prefijo del agente:
    `[claude] ...`, `[antigravity] ...`, `[chatgpt] ...`.
-5. Nunca reescribas historial (`rebase`, `reset --hard`, `push --force`) ni borres trabajo de otro agente.
+5. Nunca reescribas historial (`rebase`, `reset --hard`, `push --force`) ni borres trabajo de otro agente. **Nunca uses `git stash`, `git checkout -- <archivo>`, `git reset` ni `git clean` sobre cambios sin commit que no sean tuyos**: la carpeta es compartida y el otro agente puede estar trabajando en ese momento.
 6. Al terminar, marca el encargo como `ENTREGADO` y resume qué hiciste y cómo lo probaste. Claude lo revisa y lo marca `ACEPTADO` o `CAMBIOS`.
 7. Sin dependencias nuevas (addons, plugins, assets de terceros) sin aprobación registrada en `DECISIONES.md`.
 
