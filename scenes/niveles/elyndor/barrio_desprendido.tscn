@@ -30,29 +30,27 @@
 [ext_resource type="Script" path="res://scenes/mundo/kit_gotico/simbolo_arquitectos.gd" id="28_simbolo"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/polvo.tscn" id="29_polvo"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/rayo_luz.tscn" id="30_rayo"]
+[ext_resource type="Material" path="res://assets/materiales/piedra_desfase.tres" id="31_piedra_desfase"]
+[ext_resource type="Material" path="res://assets/materiales/piedra_remiendo.tres" id="32_piedra_remiendo"]
+[ext_resource type="Texture2D" path="res://assets/texturas/medieval_blocks_02/medieval_blocks_02_color_1k.jpg" id="33_dist_color"]
+[ext_resource type="Texture2D" path="res://assets/texturas/medieval_blocks_02/medieval_blocks_02_normal_1k.jpg" id="34_dist_normal"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_silueta"]
 albedo_color = Color(0.02, 0.018, 0.022, 1)
 roughness = 1.0
 
-[sub_resource type="StandardMaterial3D" id="Mat_desfase"]
-albedo_color = Color(0.42, 0.58, 0.95, 1)
-emission_enabled = true
-emission = Color(0.22, 0.32, 0.82, 1)
-emission_energy_multiplier = 0.65
-
-[sub_resource type="StandardMaterial3D" id="Mat_remiendo"]
-albedo_color = Color(0.72, 0.58, 0.38, 1)
-emission_enabled = true
-emission = Color(0.58, 0.42, 0.15, 1)
-emission_energy_multiplier = 0.5
-
 [sub_resource type="StandardMaterial3D" id="Mat_distorsion"]
 transparency = 1
-albedo_color = Color(0.65, 0.3, 0.85, 0.5)
+albedo_color = Color(0.7, 0.35, 0.95, 0.45)
+albedo_texture = ExtResource("33_dist_color")
 emission_enabled = true
 emission = Color(0.5, 0.2, 0.7, 1)
 emission_energy_multiplier = 0.8
+normal_enabled = true
+normal_texture = ExtResource("34_dist_normal")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true
 
 [sub_resource type="BoxShape3D" id="Box_presion"]
 size = Vector3(22, 7, 4)
@@ -215,7 +213,7 @@ transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, -8, 8.5, -3.2)
 transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, 20, 8.5, -3.2)
 
 [node name="Rayo3" parent="." instance=ExtResource("30_rayo")]
-transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, 50, 8.5, -3.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50, 8.5, -3.2)
 
 [node name="Rayo4" parent="." instance=ExtResource("30_rayo")]
 transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, 90, 10.5, -3.2)
@@ -386,22 +384,29 @@ mesh = SubResource("Malla_simbolo")
 script = ExtResource("28_simbolo")
 
 [node name="Silueta1" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 5, 3.5)
-radius = 0.5
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18.5, 5, 4)
+radius = 0.22
 height = 12.0
 sides = 8
 material = SubResource("Mat_silueta")
 
 [node name="Silueta2" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38, 5.5, 3.8)
-radius = 0.6
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 5, 4.2)
+radius = 0.25
 height = 12.0
 sides = 8
 material = SubResource("Mat_silueta")
 
 [node name="Silueta3" type="CSGCylinder3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 85, 8, 3.6)
-radius = 0.5
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.5, 5, 4)
+radius = 0.24
+height = 12.0
+sides = 8
+material = SubResource("Mat_silueta")
+
+[node name="Silueta4" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111, 5, 4.2)
+radius = 0.22
 height = 12.0
 sides = 8
 material = SubResource("Mat_silueta")
@@ -442,10 +447,11 @@ material = ExtResource("18_suelo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1, 0)
 use_collision = true
 size = Vector3(6, 0.8, 2.5)
-material = SubResource("Mat_desfase")
+material = ExtResource("31_piedra_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/PuenteDesfaseCalle"]
 script = ExtResource("6_fase")
+existe_en = 1
 
 [node name="SueloTrasCalle" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, 0.5, 0)
@@ -473,10 +479,11 @@ material = ExtResource("18_suelo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 4, 0)
 use_collision = true
 size = Vector3(0.8, 6, 4)
-material = SubResource("Mat_desfase")
+material = ExtResource("31_piedra_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/MuroFachadaDesfase"]
 script = ExtResource("6_fase")
+existe_en = 1
 
 [node name="RellanoAncla" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 1, 0)
@@ -506,10 +513,11 @@ material = ExtResource("20_sillares")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69, 1.8, 0)
 use_collision = true
 size = Vector3(3.6, 0.4, 2)
-material = SubResource("Mat_desfase")
+material = ExtResource("31_piedra_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/Puntada1"]
 script = ExtResource("6_fase")
+existe_en = 1
 
 [node name="Cosible" type="Node3D" parent="Geometria/Puntada1"]
 script = ExtResource("7_cosible")
@@ -518,10 +526,11 @@ script = ExtResource("7_cosible")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.4, 2.8, 0)
 use_collision = true
 size = Vector3(3.6, 0.4, 2)
-material = SubResource("Mat_desfase")
+material = ExtResource("31_piedra_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/Puntada2"]
 script = ExtResource("6_fase")
+existe_en = 1
 
 [node name="Cosible" type="Node3D" parent="Geometria/Puntada2"]
 script = ExtResource("7_cosible")
@@ -540,28 +549,31 @@ existe_en = 0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.5, 7, 0)
 use_collision = true
 size = Vector3(0.6, 8, 4)
-material = SubResource("Mat_desfase")
+material = ExtResource("31_piedra_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/VeloDesfaseAtajo1"]
 script = ExtResource("6_fase")
+existe_en = 1
 
 [node name="VeloDesfaseAtajo2" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.5, 7.5, 0)
 use_collision = true
 size = Vector3(0.6, 8, 4)
-material = SubResource("Mat_desfase")
+material = ExtResource("31_piedra_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/VeloDesfaseAtajo2"]
 script = ExtResource("6_fase")
+existe_en = 1
 
 [node name="PuenteRemiendoAtajo" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.5, 6.3, 0)
 use_collision = true
 size = Vector3(39, 0.6, 2.5)
-material = SubResource("Mat_remiendo")
+material = ExtResource("32_piedra_remiendo")
 
 [node name="ElementoFase" type="Node" parent="Geometria/PuenteRemiendoAtajo"]
 script = ExtResource("6_fase")
+existe_en = 1
 
 [node name="Cosible" type="Node3D" parent="Geometria/PuenteRemiendoAtajo" node_paths=PackedStringArray("ancla_requerida", "punto_costura")]
 script = ExtResource("7_cosible")
@@ -571,6 +583,36 @@ ancla_requerida = NodePath("../../../AnclaBarrio")
 punto_costura = NodePath("PuntoCosturaAtajo")
 
 [node name="PuntoCosturaAtajo" type="Marker3D" parent="Geometria/PuenteRemiendoAtajo/Cosible"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
+
+[node name="CimientoEntrada" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, -3.5, 0)
+size = Vector3(26, 5, 4.5)
+material = ExtResource("19_roca")
+
+[node name="CimientoCalle" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, -3, 0)
+size = Vector3(34, 6, 4.5)
+material = ExtResource("19_roca")
+
+[node name="CimientoPlaza" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, -3.5, 0)
+size = Vector3(25, 5, 4.5)
+material = ExtResource("19_roca")
+
+[node name="CimientoReceptor" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.5, 0, 0)
+size = Vector3(21, 7, 4.5)
+material = ExtResource("19_roca")
+
+[node name="ElementoFase" type="Node" parent="Geometria/CimientoReceptor"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="CimientoFinal" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 106, -0.5, 0)
+size = Vector3(16, 8, 4.5)
+material = ExtResource("19_roca")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
 
 [node name="SueloFinal" type="CSGBox3D" parent="Geometria"]

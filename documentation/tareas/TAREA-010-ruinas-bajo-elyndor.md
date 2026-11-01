@@ -1,7 +1,7 @@
 # TAREA-010 — Reambientar el Barrio Desprendido como «Ruinas bajo Elyndor»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** CAMBIOS
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** `scenes/niveles/elyndor/barrio_desprendido.tscn`, `tests/test_barrio_desprendido.gd`, y lo que crees dentro de `scenes/niveles/elyndor/ruinas/` (piezas propias de este nivel, si las necesitas).
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `scenes/mundo/` (el kit es compartido: si te falta una pieza, pídemela en el canal), `scenes/niveles/elyndor/camara_despertar.tscn` y `salon_prefecto.tscn`, `project.godot`.
 
@@ -72,3 +72,21 @@ Reambientación completada con éxito siguiendo rigurosamente las 4 capas de com
 4. **Franja dorada horizontal sobre la plaza en la Realidad** (x ≈ 50, y ≈ 6): si es el `PuenteRemiendoAtajo`, no debería verse en la Realidad antes del Remiendo (revisa que su `ElementoFase` siga con `existe_en = 1` y que no haya una copia). Si es un `RayoLuz`, está tumbado: ponlo vertical o inclinado.
 
 Commit `[antigravity] Ruinas bajo Elyndor: pulido de revisión (TAREA-010)`, vuelve a `ENTREGADO` y avisa.
+
+### Entrega de pulido (Antigravity, 2026-11-01)
+
+Aplicados los cuatro puntos de pulido solicitados:
+
+1. **Siluetas del primer plano finas y apartadas:**
+   - Reducido el radio de todas las siluetas cilíndricas a $\le 0.25\text{ u}$ (radios entre 0.22 y 0.25) con profundidad $Z \ge 4.0\text{ u}$.
+   - Reubicadas en transiciones y fosos vacíos (x = -18.5, 8.0, 65.5 y 111.0), despejando por completo el centro de la pantalla sobre las zonas de combate (plaza, muñeco/vigías), salto y el Ancla.
+2. **Cimientos de roca bajo el suelo:**
+   - Añadida estructura visual de cimientos de roca (`roca_ruinas.tres`) bajo todos los suelos del nivel (`CimientoEntrada`, `CimientoCalle`, `CimientoPlaza`, `CimientoReceptor`, `CimientoFinal`) con `use_collision = false`, extendiéndose de 5 a 8 unidades hacia abajo para rellenar completamente el tercio inferior y eliminar la franja negra de vacío. `CimientoReceptor` cuenta con `ElementoFase existe_en = 0` sincronizado con el estrado alto.
+3. **Materiales compartidos texturizados para Desfase y Remiendo:**
+   - Asignado `piedra_desfase.tres` en todos los elementos solo-Desfase (`PuenteDesfaseCalle`, `MuroFachadaDesfase`, `Puntada1`, `Puntada2`, `VeloDesfaseAtajo1`, `VeloDesfaseAtajo2`).
+   - Asignado `piedra_remiendo.tres` en `PuenteRemiendoAtajo`.
+   - `Mat_distorsion` del Ancla actualizado con texturas CC0 triplanares, conservando su tono púrpura translúcido con brillo emisivo.
+4. **Franja dorada sobre la plaza corregida:**
+   - Identificada la causa: `PuenteRemiendoAtajo` no tenía `existe_en = 1` explícito en su `ElementoFase`, haciendo que existiera indebidamente en Realidad antes de confeccionar el Remiendo. Se ha fijado `existe_en = 1` tanto en el puente como en los velos y plataformas de Desfase. Adicionalmente, el `Rayo3` cenital sobre la plaza se ha enderezado verticalmente.
+5. **Pruebas:**
+   - `tests/test_barrio_desprendido.gd` ampliado para validar materiales texturizados, ausencia del puente en Realidad previa, presencia de cimientos y siluetas con radio $\le 0.30\text{ u}$. Todas las pruebas pasan con 0 fallos.

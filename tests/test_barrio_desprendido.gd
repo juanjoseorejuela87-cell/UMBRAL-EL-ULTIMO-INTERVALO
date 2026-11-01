@@ -304,6 +304,26 @@ func _ejecutar() -> void:
 			var fuera_cam: bool = x_inicio < min_x_cam or x_inicio > max_x_cam
 			_comprobar(fuera_cam, "el PuntoEntrada «inicio» (x = %.1f) está fuera de la transición a la cámara (rango x = %.1f..%.1f)" % [x_inicio, min_x_cam, max_x_cam])
 
+	# D) Pulido TAREA-010: materiales texturizados, cimientos y siluetas
+	var elem_puente: ElementoFase = puente_atajo.get_node("ElementoFase") as ElementoFase
+	_comprobar(elem_puente != null and elem_puente.existe_en == ElementoFase.Existencia.DESFASE, "el PuenteRemiendoAtajo existe solo en Desfase antes del Remiendo")
+	var mat_remiendo: Material = puente_atajo.material
+	_comprobar(mat_remiendo != null and mat_remiendo.resource_name == "piedra_remiendo", "el puente del Remiendo usa piedra_remiendo.tres")
+	var mat_p1: Material = p1_box.material
+	var mat_p2: Material = p2_box.material
+	_comprobar(mat_p1 != null and mat_p1.resource_name == "piedra_desfase", "Puntada 1 usa piedra_desfase.tres")
+	_comprobar(mat_p2 != null and mat_p2.resource_name == "piedra_desfase", "Puntada 2 usa piedra_desfase.tres")
+	var cimiento_plaza: Node = _sala.get_node_or_null("Geometria/CimientoPlaza")
+	_comprobar(cimiento_plaza != null, "existen cimientos de roca bajo el suelo para evitar la franja negra")
+	var siluetas: Array[Node] = _sala.find_children("Silueta*", "CSGCylinder3D", false, false)
+	var siluetas_finas: bool = not siluetas.is_empty()
+	for s: Node in siluetas:
+		var cyl: CSGCylinder3D = s as CSGCylinder3D
+		if cyl.radius > 0.3:
+			siluetas_finas = false
+			break
+	_comprobar(siluetas_finas, "todas las siluetas del primer plano son finas (radio <= 0.30 u)")
+
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)
 
