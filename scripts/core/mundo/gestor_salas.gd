@@ -29,6 +29,8 @@ static func global() -> GestorSalas:
 
 
 func _ready() -> void:
+	# El fundido debe avanzar aunque el juego esté en pausa.
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	var capa := CanvasLayer.new()
 	capa.layer = 100
 	add_child(capa)

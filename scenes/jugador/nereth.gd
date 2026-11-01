@@ -232,6 +232,7 @@ func _al_recibir_golpe(info: InfoGolpe) -> void:
 			if info.origen and info.origen.has_method(&"recibir_parry"):
 				info.origen.call(&"recibir_parry")
 			parry_realizado.emit(info)
+			DirectorImpactos.global().parry(_punto_impacto())
 			return
 		if info.bloqueable:
 			var coste: float = info.dano * coste_bloqueo_por_dano
@@ -240,17 +241,20 @@ func _al_recibir_golpe(info: InfoGolpe) -> void:
 				info.dano_aplicado = 0.0
 				velocity.x = info.direccion * empuje_golpe * 0.5
 				golpe_bloqueado.emit(info)
+				DirectorImpactos.global().sacudir(0.08, 0.12)
 				return
 			resistencia.consumir(resistencia.actual)
 			info.dano_aplicado = info.dano * 0.5
 			vida.recibir_dano(info.dano_aplicado)
 			guardia_rota.emit()
+			DirectorImpactos.global().herida(_punto_impacto())
 			if vida.actual > 0.0:
 				aturdir(duracion_guardia_rota)
 			return
 	info.dano_aplicado = info.dano
 	vida.recibir_dano(info.dano)
 	golpe_recibido.emit(info)
+	DirectorImpactos.global().herida(_punto_impacto())
 	if vida.actual > 0.0:
 		aturdir(aturdimiento_golpe)
 		velocity.x = info.direccion * empuje_golpe
@@ -277,9 +281,15 @@ func _procesar_aturdido(delta: float) -> void:
 		estado = Estado.SUELO if is_on_floor() else Estado.AIRE
 
 
-func _al_conectar_golpe(_info: InfoGolpe, _objetivo: CajaDano) -> void:
+func _al_conectar_golpe(info: InfoGolpe, objetivo: CajaDano) -> void:
 	if combate.ataque_actual:
 		resonancia.ganar(combate.ataque_actual.ganancia_resonancia)
+	DirectorImpactos.global().golpe(info, objetivo.global_position + Vector3.UP * 1.0)
+
+
+## Punto aproximado donde se ve un impacto sobre Nereth.
+func _punto_impacto() -> Vector3:
+	return global_position + Vector3(mirando * 0.4, 1.1, 0.0)
 
 
 func _aplicar_desplazamiento(direccion: float, delta: float) -> void:

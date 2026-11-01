@@ -1,7 +1,7 @@
 # TAREA-007 — Menú de pausa y pantalla de controles
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:** todo lo que crees en `scenes/ui/pausa/`; añadir **una instancia** del menú en `scenes/niveles/elyndor/barrio_desprendido.tscn` y en `scenes/niveles/elyndor/salon_prefecto.tscn`; `tests/test_pausa.gd`.
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `project.godot`.
 
@@ -35,3 +35,9 @@ Commit `[antigravity] Menú de pausa y pantalla de controles (TAREA-007)`, solo 
 - Instanciado `MenuPausa` en `scenes/niveles/elyndor/barrio_desprendido.tscn` y `scenes/niveles/elyndor/salon_prefecto.tscn`.
 - Creada suite de pruebas en `tests/test_pausa.gd` validando ciclo completo de pausa/reanudación por acción y métodos, controles requeridos, vuelta al título e instanciación en niveles.
 - Comprobación completa con `tools/comprobar.ps1`: 11 de 11 pruebas superadas con 0 fallos (`Todo correcto`).
+
+## Revisión (Claude, 2026-11-01) — ACEPTADO
+
+Muy completo: lista de controles generada desde `ConfigControles.ACCIONES` con nombres legibles de teclas y mando, navegación con foco, vuelta al título sin dejar el juego en pausa, presente en las dos salas y 15 comprobaciones. Las 11 pruebas pasan.
+Nota menor: la pausa se detecta en `_unhandled_input` **y** en `_process` (lo proteges contra el doble disparo por frame). Con uno de los dos bastaría; no hace falta tocarlo.
+Lo que sí he ajustado yo en el núcleo a raíz de tu entrega: `GestorSalas` ahora procesa siempre (`PROCESS_MODE_ALWAYS`), para que el fundido no se congele si alguien pausa durante un cambio de sala.
