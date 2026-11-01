@@ -1,6 +1,6 @@
 # Estado del proyecto
 
-**Etapa actual:** Fase 1 — Vertical slice de Elyndor. Siguiente: cerrar la vertical slice (conexión de salas, recompensa del Prefecto, pantalla de título y pulido).
+**Etapa actual:** Fase 1 — Vertical slice de Elyndor **jugable de principio a fin** (título → Barrio → Salón del Prefecto → fin de la demo). Siguiente hito: 9 (ejecutable de Windows de la demo).
 **Objetivo inmediato:** vertical slice de Elyndor (ver `GAMEPLAY.md` §11).
 
 ## Hoja de ruta
@@ -15,7 +15,10 @@
 | 5 | Costura (Puntada, Remiendo, Desgarro) | Hecho Puntada y Remiendo — `tests/test_costura.gd` (17/17). Desgarro pasa al hito 6 (necesita enemigos con Hilos) |
 | 6 | Arquetipos: corpóreo, eco, bifásico + Desgarro + guardia/parry | Hecho — `tests/test_enemigos.gd` (29/29): Vigía Hueco, Eco Rezagado, Guardián Partido |
 | 7 | El Prefecto de las Puertas | Hecho — `tests/test_prefecto.gd` (24/24): 3 fases, travesía entre puertas, trampa cosida, Cierre, derrota persistente |
-| 8 | Salas de Elyndor (greybox) + transiciones entre salas | Transiciones hechas — `tests/test_transiciones.gd` (8/8). Barrio Desprendido aceptado; Salón del Prefecto creado; conexión entre ambos: TAREA-006 |
+| 8 | Salas de Elyndor + transiciones + cierre de la demo | Hecho — transiciones (8/8), Barrio (Antigravity), Salón del Prefecto, Fragmento, título y fin de la demo (`tests/test_demo.gd`, 16/16) |
+| 9 | Ejecutable de Windows de la demo | Siguiente (Claude) |
+| 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Pendiente |
+| 11 | Audio base (efectos provisionales y ambiente) | Pendiente |
 
 ## Encargos a ayudantes
 
@@ -26,12 +29,13 @@
 | [TAREA-003](tareas/TAREA-003-hud-juego.md) | Antigravity | ACEPTADO |
 | [TAREA-004](tareas/TAREA-004-hud-desfase.md) | Antigravity | ACEPTADO |
 | [TAREA-005](tareas/TAREA-005-greybox-elyndor.md) | Antigravity | ACEPTADO |
-| [TAREA-006](tareas/TAREA-006-conexion-barrio-salon.md) | Antigravity | ABIERTO |
+| [TAREA-006](tareas/TAREA-006-conexion-barrio-salon.md) | Antigravity | ACEPTADO |
+| [TAREA-007](tareas/TAREA-007-menu-pausa.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
 - Controles (teclado): A/D o flechas mover, Espacio saltar, Shift o L esquivar, J o clic izquierdo ataque ligero, K o clic derecho ataque pesado (mantener para cargar), E interactuar. Mando: stick izquierdo/cruceta, A saltar, B esquivar, X ligero, RB pesado, Y interactuar.
-- Arranque: `main.tscn` continúa en el último Ancla si hay partida (`user://partida.json`); si no, empieza en `elyndor/barrio_desprendido.tscn` (entrada `inicio`). Para empezar de cero, borra ese archivo.
+- Arranque: `main.tscn` → pantalla de título (`scenes/ui/titulo/`): Continuar (último Ancla), Nueva partida (borra `user://partida.json`, pide confirmación) y Salir. La salida del Salón del Prefecto lleva a `scenes/ui/fin_demo/`.
 - Salas: autoload `Salas` (`GestorSalas.global()`), `PuntoEntrada` y `TransicionSala` en `scripts/core/mundo/`.
 - Desfase: Q / I o LB. Autoload `Fase` (`GestorFase`); en código usar `GestorFase.global()`. Geometría de cada estado en capa 2 (Realidad) o 3 (Desfase) mediante un nodo hijo `ElementoFase`; Nereth solo cambia su `collision_mask`. Las cajas CSG con `ElementoFase` reciben automáticamente una colisión convexa.
 - Costura: F / O o gatillo derecho (mantener, desde el Desfase). `ElementoCosible` (hijo `Node3D` de un elemento con `ElementoFase`): Puntada (`tipo = 0`, temporal, 25 de Resonancia, una activa) o Remiendo (`tipo = 1`, permanente, `id` + `ancla_requerida`, se guarda en `Partida.remiendos`).

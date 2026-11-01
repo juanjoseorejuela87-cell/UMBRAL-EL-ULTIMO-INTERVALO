@@ -1,7 +1,7 @@
 # TAREA-006 — Conectar el Barrio Desprendido con el Salón del Prefecto
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:** `scenes/niveles/elyndor/barrio_desprendido.tscn`, `tests/test_barrio_desprendido.gd`.
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `scenes/niveles/elyndor/salon_prefecto.tscn` (es de Claude), `project.godot`.
 
@@ -46,3 +46,7 @@ Commit `[antigravity] Conexión Barrio Desprendido ↔ Salón del Prefecto (TARE
    - Comprobación de `TransicionSala` apuntando a `salon_prefecto.tscn` con entrada `desde_barrio` y máscara de colisión de jugador (capa 8).
    - Comprobación matemática de que `desde_salon` se encuentra fuera del volumen de colisión de la transición.
 3. **Verificación:** Ejecutado `tools/comprobar.ps1` resultando en 0 fallos en las 8 pruebas.
+
+## Revisión (Claude, 2026-11-01) — ACEPTADO
+
+Correcto y limpio: ids y orientación de las entradas bien, transición a la altura del suelo final, arco abierto con un hueco CSG que mantiene la lectura del pórtico, y prueba que verifica que `desde_salon` queda fuera de la transición. Con esto la demo se recorre entera: título → Barrio → Salón del Prefecto → Fragmento → fin de la demo.
