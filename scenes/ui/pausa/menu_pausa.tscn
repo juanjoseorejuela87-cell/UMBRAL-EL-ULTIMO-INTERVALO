@@ -83,6 +83,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Sonido"
 
+[node name="Graficos" type="Button" parent="PanelRaiz/Centro/MenuOpciones"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Gráficos"
+
 [node name="VolverTitulo" type="Button" parent="PanelRaiz/Centro/MenuOpciones"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -175,6 +181,90 @@ step = 0.05
 value = 1.0
 
 [node name="VolverSonido" type="Button" parent="PanelRaiz/Centro/PanelSonido"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Volver"
+
+[node name="PanelGraficos" type="VBoxContainer" parent="PanelRaiz/Centro"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="SubtituloGraficos" type="Label" parent="PanelRaiz/Centro/PanelGraficos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.62, 0.85, 1)
+theme_override_font_sizes/font_size = 24
+text = "Gráficos"
+horizontal_alignment = 1
+
+[node name="GridGraficos" type="GridContainer" parent="PanelRaiz/Centro/PanelGraficos"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 14
+columns = 2
+
+[node name="LabelCalidad" type="Label" parent="PanelRaiz/Centro/PanelGraficos/GridGraficos"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.82, 0.92, 1)
+theme_override_font_sizes/font_size = 18
+text = "Calidad"
+
+[node name="SelectorCalidad" type="OptionButton" parent="PanelRaiz/Centro/PanelGraficos/GridGraficos"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 32)
+layout_mode = 2
+
+[node name="TextoDescripcionCalidad" type="Label" parent="PanelRaiz/Centro/PanelGraficos"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.75, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 14
+text = "Equilibrio entre aspecto y rendimiento."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="PanelConfirmacionReinicio" type="VBoxContainer" parent="PanelRaiz/Centro/PanelGraficos"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TextoAvisoReinicio" type="Label" parent="PanelRaiz/Centro/PanelGraficos/PanelConfirmacionReinicio"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(500, 36)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.95, 0.75, 0.35, 1)
+theme_override_font_sizes/font_size = 14
+text = "El juego se reiniciará para cambiar el modo gráfico. Se perderá el progreso desde la última Ancla."
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="FilaBotonesConfirmacion" type="HBoxContainer" parent="PanelRaiz/Centro/PanelGraficos/PanelConfirmacionReinicio"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="BotonReiniciar" type="Button" parent="PanelRaiz/Centro/PanelGraficos/PanelConfirmacionReinicio/FilaBotonesConfirmacion"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Reiniciar"
+
+[node name="BotonCancelarReinicio" type="Button" parent="PanelRaiz/Centro/PanelGraficos/PanelConfirmacionReinicio/FilaBotonesConfirmacion"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(130, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Cancelar"
+
+[node name="VolverGraficos" type="Button" parent="PanelRaiz/Centro/PanelGraficos"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 20

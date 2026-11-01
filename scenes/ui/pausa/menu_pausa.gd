@@ -22,25 +22,43 @@ const NOMBRES_ACCIONES: Dictionary = {
 	&"guardia": "Guardia",
 }
 
+const DESCRIPCIONES_CALIDAD: Array[String] = [
+	"Para equipos modestos y gráficas integradas.",
+	"Equilibrio entre aspecto y rendimiento.",
+	"Sombras e iluminación de calidad. Requiere una gráfica dedicada.",
+	"Iluminación global y niebla volumétrica. Para equipos potentes.",
+]
+
 var _abierto: bool = false
 var _ultimo_frame_accion: int = -1
 var _foco_inicial_dado: bool = false
+var _preajuste_pendiente: int = -1
 
 @onready var panel_raiz: Control = %PanelRaiz
 @onready var menu_opciones: VBoxContainer = %MenuOpciones
 @onready var panel_controles: VBoxContainer = %PanelControles
 @onready var panel_sonido: VBoxContainer = %PanelSonido
+@onready var panel_graficos: VBoxContainer = %PanelGraficos
 
 @onready var boton_reanudar: Button = %Reanudar
 @onready var boton_controles: Button = %Controles
 @onready var boton_sonido: Button = %Sonido
+@onready var boton_graficos: Button = %Graficos
 @onready var boton_volver_titulo: Button = %VolverTitulo
 @onready var boton_volver_menu: Button = %VolverMenu
 @onready var boton_volver_sonido: Button = %VolverSonido
+@onready var boton_volver_graficos: Button = %VolverGraficos
 
 @onready var deslizador_musica: HSlider = %DeslizadorMusica
 @onready var deslizador_efectos: HSlider = %DeslizadorEfectos
 @onready var deslizador_ambiente: HSlider = %DeslizadorAmbiente
+
+@onready var selector_calidad: OptionButton = %SelectorCalidad
+@onready var texto_descripcion_calidad: Label = %TextoDescripcionCalidad
+@onready var panel_confirmacion_reinicio: VBoxContainer = %PanelConfirmacionReinicio
+@onready var texto_aviso_reinicio: Label = %TextoAvisoReinicio
+@onready var boton_reiniciar: Button = %BotonReiniciar
+@onready var boton_cancelar_reinicio: Button = %BotonCancelarReinicio
 
 @onready var texto_controles: Label = %TextoControles
 
@@ -54,12 +72,29 @@ func _ready() -> void:
 	boton_reanudar.pressed.connect(cerrar)
 	boton_controles.pressed.connect(mostrar_controles)
 	boton_sonido.pressed.connect(mostrar_sonido)
+	boton_graficos.pressed.connect(mostrar_graficos)
 	boton_volver_titulo.pressed.connect(volver_al_titulo)
 	boton_volver_menu.pressed.connect(mostrar_menu_principal)
 	boton_volver_sonido.pressed.connect(mostrar_menu_principal)
+	boton_volver_graficos.pressed.connect(mostrar_menu_principal)
+
+	boton_reiniciar.pressed.connect(confirmar_reinicio)
+	boton_cancelar_reinicio.pressed.connect(cancelar_reinicio)
 
 	# Sonidos de interfaz para botones
-	for btn: Button in [boton_reanudar, boton_controles, boton_sonido, boton_volver_titulo, boton_volver_menu, boton_volver_sonido]:
+	for btn: Button in [
+		boton_reanudar,
+		boton_controles,
+		boton_sonido,
+		boton_graficos,
+		boton_volver_titulo,
+		boton_volver_menu,
+		boton_volver_sonido,
+		boton_volver_graficos,
+		boton_reiniciar,
+		boton_cancelar_reinicio,
+		selector_calidad,
+	]:
 		_conectar_sonidos_boton(btn)
 
 	# Sonidos y eventos de los deslizadores
@@ -78,6 +113,27 @@ func _ready() -> void:
 		if GestorSonido.global() != null:
 			GestorSonido.global().fijar_volumen(GestorSonido.BUS_AMBIENTE, v)
 	)
+
+	_poblar_selector_graficos()
+	selector_calidad.item_selected.connect(_al_seleccionar_calidad)
+
+	var popup: PopupMenu = selector_calidad.get_popup()
+	if popup != null:
+		popup.id_focused.connect(func(id: int) -> void:
+			if GestorSonido.global() != null:
+				GestorSonido.global().reproducir(&"ui_mover")
+			_actualizar_descripcion_calidad(id)
+		)
+		popup.popup_hide.connect(func() -> void:
+			if is_instance_valid(selector_calidad):
+				_actualizar_descripcion_calidad(selector_calidad.selected)
+		)
+
+	var graficos: ConfiguracionGrafica = ConfiguracionGrafica.global()
+	if graficos != null:
+		graficos.calidad_cambiada.connect(func(_p: ConfiguracionGrafica.Preajuste) -> void:
+			_actualizar_selector_graficos()
+		)
 
 	visible = false
 	panel_raiz.visible = false
@@ -166,6 +222,7 @@ func mostrar_menu_principal() -> void:
 	menu_opciones.visible = true
 	panel_controles.visible = false
 	panel_sonido.visible = false
+	panel_graficos.visible = false
 	_foco_inicial_dado = false
 	boton_reanudar.grab_focus.call_deferred()
 	_activar_sonido_foco_tras_frame()
@@ -175,6 +232,7 @@ func mostrar_controles() -> void:
 	menu_opciones.visible = false
 	panel_controles.visible = true
 	panel_sonido.visible = false
+	panel_graficos.visible = false
 	_foco_inicial_dado = false
 	boton_volver_menu.grab_focus.call_deferred()
 	_activar_sonido_foco_tras_frame()
@@ -185,9 +243,99 @@ func mostrar_sonido() -> void:
 	menu_opciones.visible = false
 	panel_controles.visible = false
 	panel_sonido.visible = true
+	panel_graficos.visible = false
 	_foco_inicial_dado = false
 	deslizador_musica.grab_focus.call_deferred()
 	_activar_sonido_foco_tras_frame()
+
+
+func mostrar_graficos() -> void:
+	_preajuste_pendiente = -1
+	if is_instance_valid(panel_confirmacion_reinicio):
+		panel_confirmacion_reinicio.visible = false
+	_actualizar_selector_graficos()
+	menu_opciones.visible = false
+	panel_controles.visible = false
+	panel_sonido.visible = false
+	panel_graficos.visible = true
+	_foco_inicial_dado = false
+	selector_calidad.grab_focus.call_deferred()
+	_activar_sonido_foco_tras_frame()
+
+
+func _poblar_selector_graficos() -> void:
+	if not is_instance_valid(selector_calidad):
+		return
+	selector_calidad.clear()
+	for i: int in ConfiguracionGrafica.NOMBRES.size():
+		selector_calidad.add_item(ConfiguracionGrafica.NOMBRES[i], i)
+
+
+func _actualizar_selector_graficos() -> void:
+	var graficos: ConfiguracionGrafica = ConfiguracionGrafica.global()
+	if graficos != null and is_instance_valid(selector_calidad):
+		var actual: int = graficos.preajuste as int
+		selector_calidad.selected = actual
+		_actualizar_descripcion_calidad(actual)
+
+
+func _actualizar_descripcion_calidad(idx: int) -> void:
+	if is_instance_valid(texto_descripcion_calidad) and idx >= 0 and idx < DESCRIPCIONES_CALIDAD.size():
+		texto_descripcion_calidad.text = DESCRIPCIONES_CALIDAD[idx]
+
+
+func _al_seleccionar_calidad(idx: int) -> void:
+	seleccionar_preajuste(idx as ConfiguracionGrafica.Preajuste)
+
+
+func seleccionar_preajuste(p: ConfiguracionGrafica.Preajuste) -> void:
+	var graficos: ConfiguracionGrafica = ConfiguracionGrafica.global()
+	if graficos == null:
+		return
+	if is_instance_valid(selector_calidad):
+		selector_calidad.selected = p as int
+	_actualizar_descripcion_calidad(p as int)
+
+	if graficos.requiere_reinicio(p):
+		_preajuste_pendiente = p as int
+		if is_instance_valid(panel_confirmacion_reinicio):
+			panel_confirmacion_reinicio.visible = true
+			_foco_inicial_dado = false
+			boton_cancelar_reinicio.grab_focus.call_deferred()
+			_activar_sonido_foco_tras_frame()
+	else:
+		_preajuste_pendiente = -1
+		if is_instance_valid(panel_confirmacion_reinicio):
+			panel_confirmacion_reinicio.visible = false
+		graficos.cambiar(p)
+
+
+func cancelar_reinicio() -> void:
+	_preajuste_pendiente = -1
+	if is_instance_valid(panel_confirmacion_reinicio):
+		panel_confirmacion_reinicio.visible = false
+	_actualizar_selector_graficos()
+	if is_instance_valid(selector_calidad):
+		_foco_inicial_dado = false
+		selector_calidad.grab_focus.call_deferred()
+		_activar_sonido_foco_tras_frame()
+
+
+func confirmar_reinicio() -> void:
+	if _preajuste_pendiente < 0:
+		return
+	var p: ConfiguracionGrafica.Preajuste = _preajuste_pendiente as ConfiguracionGrafica.Preajuste
+	_preajuste_pendiente = -1
+	if is_instance_valid(panel_confirmacion_reinicio):
+		panel_confirmacion_reinicio.visible = false
+	var graficos: ConfiguracionGrafica = ConfiguracionGrafica.global()
+	if graficos != null:
+		graficos.cambiar(p)
+	_actualizar_selector_graficos()
+	if is_instance_valid(selector_calidad):
+		_foco_inicial_dado = false
+		selector_calidad.grab_focus.call_deferred()
+		_activar_sonido_foco_tras_frame()
 
 
 func _actualizar_deslizadores_sonido() -> void:

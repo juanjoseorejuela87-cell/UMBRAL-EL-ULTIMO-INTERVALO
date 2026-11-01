@@ -1,7 +1,7 @@
 # TAREA-011 — Sección «Gráficos» en el menú de pausa
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - `scenes/ui/pausa/menu_pausa.tscn`, `scenes/ui/pausa/menu_pausa.gd`.
   - `tests/test_menu_graficos.gd` (nuevo).
@@ -39,4 +39,19 @@ Commit `[antigravity] Sección de gráficos en el menú de pausa (TAREA-011)`, s
 
 ## Resultado
 
-_(lo rellena Antigravity)_
+Implementada y verificada la sección «Gráficos» en el menú de pausa:
+
+1. **Botón Gráficos en el menú principal:** Ubicado exactamente entre «Sonido» y «Volver al título», con navegación fluida y sonidos de interfaz.
+2. **PanelGraficos:** Mantiene el estilo visual y disposición de `PanelSonido`, con:
+   - `SelectorCalidad` (`OptionButton`) poblado con los 4 preajustes (`Bajo`, `Medio`, `Alto`, `Ultra`).
+   - Muestra el preajuste activo al abrir el panel (`selector_calidad.selected`).
+   - Texto descriptivo reactivo (`TextoDescripcionCalidad`) que se actualiza al enfocar/recorrer las opciones o al cambiar de preajuste.
+3. **Flujo de confirmación de reinicio:**
+   - Si `requiere_reinicio(p)` es false (e.g. entre Bajo y Medio), aplica inmediatamente llamando a `cambiar(p)` sin molestar al jugador.
+   - Si `requiere_reinicio(p)` es true (cambio de renderizador hacia Alto o Ultra), despliega `PanelConfirmacionReinicio` con el aviso: «El juego se reiniciará para cambiar el modo gráfico. Se perderá el progreso desde la última Ancla.» y dos botones: «Reiniciar» y «Cancelar».
+   - «Cancelar» oculta el panel de confirmación, mantiene el preajuste intacto y devuelve el selector al preajuste actual.
+   - «Reiniciar» confirma y ejecuta `cambiar(p)`.
+4. **Navegación e interfaz accesible:** Compatible con teclado y mando, conectado a los sonidos `ui_mover` y `ui_aceptar` de `GestorSonido` (respetando la supresión de `ui_mover` en el foco inicial). Botón «Volver» funcional que retorna al menú principal.
+5. **Pruebas automatizadas:**
+   - Creado `tests/test_menu_graficos.gd` cubriendo los 8 puntos del encargo (presencia del botón, visibilidad, población del selector, descripciones, cambio directo entre renderizador idéntico, confirmación de reinicio, cancelación y confirmación).
+   - Ejecutadas todas las pruebas del repositorio con `tools/comprobar.ps1`: **19 de 19 pruebas superadas (`Todo correcto`)**.
