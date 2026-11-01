@@ -61,14 +61,10 @@ func _ejecutar() -> void:
 	var sala: Node = (load(SALA) as PackedScene).instantiate()
 	root.add_child(sala)
 	await _esperar(30)
-	Input.action_press(&"saltar")
-	await _esperar(2)
-	Input.action_release(&"saltar")
+	await _pulsar(&"saltar")
 	_comprobar(_sonando(&"salto"), "al saltar suena el efecto de salto")
 	await _esperar(40)
-	Input.action_press(&"esquivar")
-	await _esperar(2)
-	Input.action_release(&"esquivar")
+	await _pulsar(&"esquivar")
 	_comprobar(_sonando(&"esquiva"), "al esquivar suena el efecto de esquiva")
 
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
@@ -97,6 +93,17 @@ func _buscar_ambiente() -> AudioStreamPlayer:
 		if reproductor and reproductor.bus == GestorSonido.BUS_AMBIENTE:
 			return reproductor
 	return null
+
+
+## Mantiene la acción varios fotogramas de proceso y de física: con carga
+## puede haber varios pasos de física por fotograma y una pulsación más corta
+## no llegaría a verse como «recién pulsada».
+func _pulsar(accion: StringName) -> void:
+	Input.action_press(accion)
+	for i: int in 3:
+		await process_frame
+	await _esperar(2)
+	Input.action_release(accion)
 
 
 func _esperar(frames: int) -> void:

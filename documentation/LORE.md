@@ -278,7 +278,7 @@ No son finales «bueno, malo y neutral»: cada uno responde a una pregunta disti
 | A2 | `LORE` §8.2 antiguo: el Prefecto «cierra el paso para que nada más se pierda» | Recibió la orden de impedir el acceso a las estructuras antiguas y olvidó que su función original era **permitir el paso** | Sustituido por la versión oficial (§3.3) | HECHO |
 | A3 | El Fragmento se llama genéricamente «Fragmento de Continuidad» (`fragmento_elyndor_prefecto`) | Es el **Fragmento de Memoria** | Mostrar el nombre «Fragmento de Memoria» y la frase de Maelis al recogerlo | HECHO |
 | A4 | La pantalla de fin de la demo usa un texto genérico | Frases oficiales: «Si has despertado, significa que el último intervalo no se ha cerrado» y «No recuperes los fragmentos sin comprender lo que estás devolviendo» | Usarlas en el recuerdo del Fragmento y al salir de Elyndor | HECHO |
-| A5 | El Salón del Prefecto es una sala cerrada | Es **una enorme entrada que conecta las ruinas subterráneas con el antiguo reino** | Al reambientar, que la salida tras el Prefecto dé al reino de Elyndor (fin de la demo) | PROPUESTA |
+| A5 | El Salón del Prefecto es una sala cerrada | Es **una enorme entrada que conecta las ruinas subterráneas con el antiguo reino** | Al reambientar, que la salida tras el Prefecto dé al reino de Elyndor (fin de la demo) | HECHO (la salida se abre a una vista del reino al amanecer) |
 | A6 | Ecos de memoria solo previstos como coleccionables | El Fragmento de Memoria **permite reconocer ecos que antes estaban ocultos** | Los ecos ocultos de Elyndor solo se ven tras obtener el Fragmento de Memoria (primera habilidad de comprensión) | HECHO (mecánica `EcoMemoria`; textos provisionales hasta TAREA-001) |
 
 ### 12.3 Pendientes que la historia deja abiertos [PENDIENTE]

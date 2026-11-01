@@ -58,6 +58,31 @@ emission_energy_multiplier = 0.3
 [sub_resource type="StandardMaterial3D" id="Mat_salida"]
 albedo_color = Color(0.25, 0.22, 0.28, 1)
 
+[sub_resource type="Gradient" id="Grad_cielo"]
+offsets = PackedFloat32Array(0, 0.35, 1)
+colors = PackedColorArray(1, 0.78, 0.5, 1, 0.85, 0.55, 0.42, 1, 0.22, 0.2, 0.32, 1)
+
+[sub_resource type="GradientTexture2D" id="Tex_cielo"]
+gradient = SubResource("Grad_cielo")
+fill_from = Vector2(0, 1)
+fill_to = Vector2(0, 0)
+
+[sub_resource type="StandardMaterial3D" id="Mat_cielo"]
+shading_mode = 0
+albedo_texture = SubResource("Tex_cielo")
+disable_fog = true
+
+[sub_resource type="QuadMesh" id="Malla_cielo"]
+size = Vector2(26, 16)
+
+[sub_resource type="StandardMaterial3D" id="Mat_silueta"]
+shading_mode = 0
+albedo_color = Color(0.16, 0.12, 0.13, 1)
+
+[sub_resource type="BoxMesh" id="Malla_torre"]
+
+[sub_resource type="PrismMesh" id="Malla_tejado"]
+
 [sub_resource type="Environment" id="Entorno"]
 background_mode = 1
 background_color = Color(0.04, 0.04, 0.07, 1)
@@ -366,11 +391,216 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 0)
 [node name="M10" parent="Decorado/FondoMuros" instance=ExtResource("37_muro")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14, 0, 0)
 
-[node name="M11" parent="Decorado/FondoMuros" instance=ExtResource("37_muro")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 0, 0)
+[node name="VistaReino" type="Node3D" parent="Decorado"]
 
-[node name="M12" parent="Decorado/FondoMuros" instance=ExtResource("37_muro")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22, 0, 0)
+[node name="Cielo" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19, 5, -13.4)
+cast_shadow = 0
+mesh = SubResource("Malla_cielo")
+surface_material_override/0 = SubResource("Mat_cielo")
+
+[node name="JambaIzquierda" type="CSGBox3D" parent="Decorado/VistaReino"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.6, 4, -4.5)
+size = Vector3(1.2, 9, 1.2)
+material = ExtResource("31_roca")
+
+[node name="JambaDerecha" type="CSGBox3D" parent="Decorado/VistaReino"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 4, -4.5)
+size = Vector3(1.2, 9, 1.2)
+material = ExtResource("31_roca")
+
+[node name="Dintel" type="CSGBox3D" parent="Decorado/VistaReino"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8, 8.3, -4.5)
+size = Vector3(9.6, 1.4, 1.2)
+material = ExtResource("31_roca")
+
+[node name="Torre0" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.56, 0, 0, 0, 1.41, 0, 0, 0, 0.6, 13.20, 1.11, -12.94)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado0" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.68, 0, 0, 0, 0.90, 0, 0, 0, 0.6, 13.20, 2.26, -12.94)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre1" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.48, 0, 0, 0, 1.95, 0, 0, 0, 0.6, 14.30, 1.38, -13.05)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado1" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.57, 0, 0, 0, 0.76, 0, 0, 0, 0.6, 14.30, 2.73, -13.05)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre2" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.47, 0, 0, 0, 1.91, 0, 0, 0, 0.6, 15.10, 1.36, -13.19)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado2" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.56, 0, 0, 0, 0.75, 0, 0, 0, 0.6, 15.10, 2.69, -13.19)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre3" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.60, 0, 0, 0, 1.30, 0, 0, 0, 0.6, 16.20, 1.05, -13.16)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado3" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.72, 0, 0, 0, 0.96, 0, 0, 0, 0.6, 16.20, 2.18, -13.16)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre4" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.60, 0, 0, 0, 2.36, 0, 0, 0, 0.6, 17.00, 1.58, -13.15)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado4" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.72, 0, 0, 0, 0.96, 0, 0, 0, 0.6, 17.00, 3.24, -13.15)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre5" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.53, 0, 0, 0, 2.08, 0, 0, 0, 0.6, 18.10, 1.44, -12.82)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado5" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.63, 0, 0, 0, 0.85, 0, 0, 0, 0.6, 18.10, 2.90, -12.82)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre6" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.90, 0, 0, 0, 4.20, 0, 0, 0, 0.6, 19.00, 2.50, -12.81)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado6" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(1.08, 0, 0, 0, 1.44, 0, 0, 0, 0.6, 19.00, 5.32, -12.81)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre7" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.47, 0, 0, 0, 2.40, 0, 0, 0, 0.6, 19.90, 1.60, -13.08)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado7" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.56, 0, 0, 0, 0.75, 0, 0, 0, 0.6, 19.90, 3.17, -13.08)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre8" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.50, 0, 0, 0, 1.36, 0, 0, 0, 0.6, 21.00, 1.08, -13.08)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado8" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.60, 0, 0, 0, 0.80, 0, 0, 0, 0.6, 21.00, 2.17, -13.08)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre9" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.74, 0, 0, 0, 1.45, 0, 0, 0, 0.6, 21.80, 1.13, -12.97)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado9" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.88, 0, 0, 0, 1.18, 0, 0, 0, 0.6, 21.80, 2.44, -12.97)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre10" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.67, 0, 0, 0, 1.72, 0, 0, 0, 0.6, 22.90, 1.26, -12.98)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado10" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.81, 0, 0, 0, 1.08, 0, 0, 0, 0.6, 22.90, 2.66, -12.98)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre11" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.47, 0, 0, 0, 1.28, 0, 0, 0, 0.6, 23.80, 1.04, -13.12)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado11" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.57, 0, 0, 0, 0.76, 0, 0, 0, 0.6, 23.80, 2.06, -13.12)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre12" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.69, 0, 0, 0, 1.80, 0, 0, 0, 0.6, 24.90, 1.30, -13.07)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado12" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.83, 0, 0, 0, 1.10, 0, 0, 0, 0.6, 24.90, 2.75, -13.07)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Torre13" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.65, 0, 0, 0, 1.83, 0, 0, 0, 0.6, 25.80, 1.32, -13.08)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Tejado13" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(0.79, 0, 0, 0, 1.05, 0, 0, 0, 0.6, 25.80, 2.76, -13.08)
+cast_shadow = 0
+mesh = SubResource("Malla_tejado")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="Muralla" type="MeshInstance3D" parent="Decorado/VistaReino"]
+transform = Transform3D(16, 0, 0, 0, 4, 0, 0, 0, 0.6, 19.5, -1.1, -12.6)
+cast_shadow = 0
+mesh = SubResource("Malla_torre")
+surface_material_override/0 = SubResource("Mat_silueta")
+
+[node name="CierreDerecho" type="CSGBox3D" parent="Decorado/VistaReino"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.3, 3.25, -4.5)
+size = Vector3(9.4, 13.5, 1.2)
+material = ExtResource("31_roca")
+
+[node name="LuzAmanecer" type="OmniLight3D" parent="Decorado/VistaReino"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.8, 4, -3)
+light_color = Color(1, 0.78, 0.55, 1)
+light_energy = 1.4
+omni_range = 11.0
+
+[node name="RayoReino" parent="Decorado/VistaReino" instance=ExtResource("45_rayo")]
+transform = Transform3D(0.94, -0.342, 0, 0.342, 0.94, 0, 0, 0, 1, 19.5, 5, -2)
 
 [node name="Techo" type="CSGBox3D" parent="Decorado"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5, -1.5)
