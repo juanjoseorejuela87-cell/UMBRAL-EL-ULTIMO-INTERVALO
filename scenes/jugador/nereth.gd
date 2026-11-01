@@ -1,14 +1,14 @@
 class_name Nereth
 extends CharacterBody3D
-## Controlador de movimiento de Nereth sobre el plano lateral (X/Y).
-## Diseño de referencia: documentation/GAMEPLAY.md §1.
+## Controlador de Nereth sobre el plano lateral (X/Y): movimiento, esquiva y
+## estado de acción (ataques). Diseño: documentation/GAMEPLAY.md §1–2.
 
 signal salto_iniciado
 signal aterrizado
 signal esquiva_iniciada
 signal esquiva_terminada
 
-enum Estado { SUELO, AIRE, ESQUIVA }
+enum Estado { SUELO, AIRE, ESQUIVA, ACCION }
 
 @export_group("Desplazamiento")
 @export var velocidad_maxima: float = 6.0
@@ -31,11 +31,23 @@ enum Estado { SUELO, AIRE, ESQUIVA }
 @export var inicio_invulnerable: float = 0.04
 @export var fin_invulnerable: float = 0.19
 @export var enfriamiento_esquiva: float = 0.15
+@export var coste_resistencia_esquiva: float = 18.0
+## Durante un ataque, una esquiva pulsada antes de la ventana de cancelación
+## se guarda este tiempo y sale en cuanto la ventana se abre.
+@export var tiempo_buffer_esquiva: float = 0.15
+
+@export_group("Acción")
+## Frenada horizontal durante los ataques (unidades/s²).
+@export var friccion_accion: float = 30.0
 
 var estado: Estado = Estado.AIRE
 ## 1.0 = derecha, -1.0 = izquierda.
 var mirando: float = 1.0
-var invulnerable: bool = false
+var invulnerable: bool = false:
+	set(valor):
+		invulnerable = valor
+		if _caja_dano:
+			_caja_dano.activa = not valor
 
 var _gravedad_subida: float = 0.0
 var _velocidad_salto: float = 0.0
@@ -45,8 +57,13 @@ var _temporizador_buffer: float = 0.0
 var _tiempo_esquiva: float = 0.0
 var _enfriamiento: float = 0.0
 var _esquiva_aerea_disponible: bool = true
+var _buffer_esquiva: float = 0.0
 
+@onready var vida: ComponenteVida = $Vida
+@onready var resistencia: ComponenteResistencia = $Resistencia
+@onready var combate: CombateNereth = $Combate
 @onready var _visual: Node3D = $Visual
+@onready var _caja_dano: CajaDano = $CajaDano
 
 
 func _ready() -> void:
@@ -62,10 +79,14 @@ func _recalcular_salto() -> void:
 
 func _physics_process(delta: float) -> void:
 	_actualizar_temporizadores(delta)
-	if estado == Estado.ESQUIVA:
-		_procesar_esquiva(delta)
-	else:
-		_procesar_movimiento(delta)
+	combate.procesar(delta)
+	match estado:
+		Estado.ESQUIVA:
+			_procesar_esquiva(delta)
+		Estado.ACCION:
+			_procesar_accion(delta)
+		_:
+			_procesar_movimiento(delta)
 	velocity.z = 0.0
 	move_and_slide()
 	global_position.z = _plano_z
@@ -73,10 +94,26 @@ func _physics_process(delta: float) -> void:
 	_visual.scale.x = mirando
 
 
+## Pasa al estado de acción (lo llama CombateNereth al empezar un ataque).
+## direccion: entrada horizontal para girarse antes de atacar.
+func comenzar_accion(direccion: float, impulso: float) -> void:
+	if not is_zero_approx(direccion):
+		mirando = signf(direccion)
+	estado = Estado.ACCION
+	if is_on_floor():
+		velocity.x = impulso * mirando
+
+
+func terminar_accion() -> void:
+	if estado == Estado.ACCION:
+		estado = Estado.SUELO if is_on_floor() else Estado.AIRE
+
+
 func _actualizar_temporizadores(delta: float) -> void:
 	_temporizador_coyote = maxf(_temporizador_coyote - delta, 0.0)
 	_temporizador_buffer = maxf(_temporizador_buffer - delta, 0.0)
 	_enfriamiento = maxf(_enfriamiento - delta, 0.0)
+	_buffer_esquiva = maxf(_buffer_esquiva - delta, 0.0)
 
 
 func _procesar_movimiento(delta: float) -> void:
@@ -88,8 +125,20 @@ func _procesar_movimiento(delta: float) -> void:
 	_aplicar_gravedad(delta)
 	_procesar_salto()
 
-	if Input.is_action_just_pressed(&"esquivar") and _puede_esquivar():
-		_iniciar_esquiva(direccion)
+	if Input.is_action_just_pressed(&"esquivar"):
+		_intentar_esquivar(direccion)
+
+
+func _procesar_accion(delta: float) -> void:
+	if is_on_floor():
+		velocity.x = move_toward(velocity.x, 0.0, friccion_accion * delta)
+	_aplicar_gravedad(delta)
+	if Input.is_action_just_pressed(&"esquivar"):
+		_buffer_esquiva = tiempo_buffer_esquiva
+	if _buffer_esquiva > 0.0 and combate.puede_cancelar() and _puede_esquivar():
+		_buffer_esquiva = 0.0
+		combate.interrumpir()
+		_intentar_esquivar(Input.get_axis(&"mover_izquierda", &"mover_derecha"))
 
 
 func _aplicar_desplazamiento(direccion: float, delta: float) -> void:
@@ -125,10 +174,14 @@ func _procesar_salto() -> void:
 
 
 func _puede_esquivar() -> bool:
-	return _enfriamiento <= 0.0 and (is_on_floor() or _esquiva_aerea_disponible)
+	return _enfriamiento <= 0.0 and (is_on_floor() or _esquiva_aerea_disponible) \
+			and resistencia.puede_actuar()
 
 
-func _iniciar_esquiva(direccion: float) -> void:
+func _intentar_esquivar(direccion: float) -> void:
+	if not _puede_esquivar():
+		return
+	resistencia.consumir(coste_resistencia_esquiva)
 	var sentido: float = signf(direccion) if not is_zero_approx(direccion) else mirando
 	mirando = sentido
 	if not is_on_floor():

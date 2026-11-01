@@ -1,0 +1,48 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/enemigos/muneco_practica/muneco_practica.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/core/combate/componente_vida.gd" id="2_vida"]
+[ext_resource type="Script" path="res://scripts/core/combate/componente_postura.gd" id="3_postura"]
+[ext_resource type="Script" path="res://scripts/core/combate/caja_dano.gd" id="4_caja_dano"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
+radius = 0.45
+height = 1.9
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_cuerpo"]
+radius = 0.45
+height = 1.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_muneco"]
+albedo_color = Color(0.55, 0.3, 0.28, 1)
+
+[node name="MunecoPractica" type="StaticBody3D"]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_script")
+
+[node name="Colision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("CapsuleShape3D_cuerpo")
+
+[node name="Cuerpo" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+mesh = SubResource("CapsuleMesh_cuerpo")
+surface_material_override/0 = SubResource("Mat_muneco")
+
+[node name="Vida" type="Node" parent="."]
+script = ExtResource("2_vida")
+maximo = 200.0
+
+[node name="Postura" type="Node" parent="."]
+script = ExtResource("3_postura")
+
+[node name="CajaDano" type="Area3D" parent="."]
+collision_layer = 32
+collision_mask = 0
+monitoring = false
+script = ExtResource("4_caja_dano")
+
+[node name="FormaDano" type="CollisionShape3D" parent="CajaDano"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("CapsuleShape3D_cuerpo")

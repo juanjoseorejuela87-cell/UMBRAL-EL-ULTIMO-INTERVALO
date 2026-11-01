@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="DatosAtaque" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="1_datos"]
+
+[resource]
+script = ExtResource("1_datos")
+nombre = &"espada_pesado"
+carga_maxima = 0.8
+preparacion = 0.3
+activo = 0.12
+recuperacion = 0.45
+inicio_cancelacion = 0.2
+dano = 28.0
+dano_postura = 30.0
+multiplicador_carga = 1.6
+coste_resistencia = 25.0
+impulso = 3.0
+tamano_caja = Vector3(1.8, 1.4, 1)
+desplazamiento_caja = Vector3(1.05, 1, 0)

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="DatosAtaque" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="1_datos"]
+
+[resource]
+script = ExtResource("1_datos")
+nombre = &"espada_ligero_1"
+preparacion = 0.1
+activo = 0.08
+recuperacion = 0.22
+inicio_cancelacion = 0.05
+dano = 10.0
+dano_postura = 8.0
+coste_resistencia = 12.0
+impulso = 1.5

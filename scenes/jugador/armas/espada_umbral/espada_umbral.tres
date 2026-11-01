@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="DatosArma" format=3]
+
+[ext_resource type="Script" path="res://scripts/core/combate/datos_arma.gd" id="1_arma"]
+[ext_resource type="Script" path="res://scripts/core/combate/datos_ataque.gd" id="7_datos"]
+[ext_resource type="Resource" path="res://scenes/jugador/armas/espada_umbral/ligero_1.tres" id="2_l1"]
+[ext_resource type="Resource" path="res://scenes/jugador/armas/espada_umbral/ligero_2.tres" id="3_l2"]
+[ext_resource type="Resource" path="res://scenes/jugador/armas/espada_umbral/ligero_3.tres" id="4_l3"]
+[ext_resource type="Resource" path="res://scenes/jugador/armas/espada_umbral/pesado.tres" id="5_pesado"]
+[ext_resource type="Resource" path="res://scenes/jugador/armas/espada_umbral/aereo.tres" id="6_aereo"]
+
+[resource]
+script = ExtResource("1_arma")
+nombre = "Espada del Umbral"
+ligeros = Array[ExtResource("7_datos")]([ExtResource("2_l1"), ExtResource("3_l2"), ExtResource("4_l3")])
+pesado = ExtResource("5_pesado")
+aereo = ExtResource("6_aereo")

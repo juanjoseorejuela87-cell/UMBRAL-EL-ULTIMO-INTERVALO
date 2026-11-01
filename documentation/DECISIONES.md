@@ -16,3 +16,7 @@ Estados: **CONFIRMADO** (director) · **PROPUESTA** (adoptada provisionalmente p
 | D-010 | 2026-10-31 | Prioridad de producción: vertical slice de Elyndor | Indicación del director | CONFIRMADO |
 | D-011 | 2026-10-31 | Muerte sin pérdida de moneda; se pierden ecos no registrados | Castigo suave ligado a las Anclas | PROPUESTA |
 | D-012 | 2026-10-31 | Sin addons ni assets de terceros por ahora | Contexto maestro: no dependencias innecesarias | CONFIRMADO |
+| D-013 | 2026-11-01 | Coordinación con Antigravity por `comunicacion/CANAL.md`; Claude puede hacer push de `main` tras cada commit verificado | Indicación del director: trabajar sin él | CONFIRMADO |
+| D-014 | 2026-11-01 | Ataques como recursos `.tres` (`DatosAtaque`/`DatosArma`); componentes reutilizables de vida, postura y resistencia | Las 4 familias de armas y los enemigos comparten el mismo sistema | PROPUESTA |
+| D-015 | 2026-11-01 | Golpear a un enemigo en Ruptura produce automáticamente el Golpe de Umbral (×2,5) | Simple de leer; sin botón extra | PROPUESTA |
+| D-016 | 2026-11-01 | La esquiva pulsada durante un ataque se guarda 0,15 s y sale al abrirse la ventana de cancelación | Respuesta de control: no se pierden pulsaciones | PROPUESTA |

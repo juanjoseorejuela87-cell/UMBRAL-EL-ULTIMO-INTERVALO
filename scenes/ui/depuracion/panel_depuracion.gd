@@ -52,12 +52,4 @@ func _actualizar_informacion() -> void:
 
 
 func _obtener_nombre_estado(estado_val: Nereth.Estado) -> String:
-	match estado_val:
-		Nereth.Estado.SUELO:
-			return "SUELO"
-		Nereth.Estado.AIRE:
-			return "AIRE"
-		Nereth.Estado.ESQUIVA:
-			return "ESQUIVA"
-		_:
-			return "DESCONOCIDO"
+	return Nereth.Estado.keys()[estado_val]

@@ -7,7 +7,8 @@ extends Node
 const ZONA_MUERTA: float = 0.25
 
 ## Acción -> lista de eventos. Enteros = teclas (keycode físico);
-## "boton:N" = botón de mando; "eje:N:signo" = eje de mando.
+## "boton:N" = botón de mando; "eje:N:signo" = eje de mando;
+## "raton:N" = botón de ratón.
 const ACCIONES: Dictionary = {
 	&"mover_izquierda": [KEY_A, KEY_LEFT, "eje:0:-1", "boton:13"],
 	&"mover_derecha": [KEY_D, KEY_RIGHT, "eje:0:1", "boton:14"],
@@ -16,6 +17,8 @@ const ACCIONES: Dictionary = {
 	&"saltar": [KEY_SPACE, "boton:0"],
 	&"esquivar": [KEY_SHIFT, KEY_L, "boton:1"],
 	&"interactuar": [KEY_E, "boton:3"],
+	&"atacar_ligero": [KEY_J, "raton:1", "boton:2"],
+	&"atacar_pesado": [KEY_K, "raton:2", "boton:10"],
 }
 
 
@@ -38,6 +41,10 @@ static func _crear_evento(definicion: Variant) -> InputEvent:
 		tecla.physical_keycode = definicion as Key
 		return tecla
 	var partes: PackedStringArray = (definicion as String).split(":")
+	if partes[0] == "raton":
+		var raton := InputEventMouseButton.new()
+		raton.button_index = int(partes[1]) as MouseButton
+		return raton
 	if partes[0] == "boton":
 		var boton := InputEventJoypadButton.new()
 		boton.button_index = int(partes[1]) as JoyButton

@@ -1,6 +1,11 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/jugador/nereth.gd" id="1_script"]
+[ext_resource type="Script" path="res://scripts/core/combate/componente_vida.gd" id="2_vida"]
+[ext_resource type="Script" path="res://scripts/core/combate/componente_resistencia.gd" id="3_resistencia"]
+[ext_resource type="Script" path="res://scenes/jugador/combate_nereth.gd" id="4_combate"]
+[ext_resource type="Resource" path="res://scenes/jugador/armas/espada_umbral/espada_umbral.tres" id="5_espada"]
+[ext_resource type="Script" path="res://scripts/core/combate/caja_dano.gd" id="6_caja_dano"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
 radius = 0.35
@@ -20,6 +25,9 @@ size = Vector3(0.25, 0.15, 0.3)
 albedo_color = Color(0.95, 0.85, 0.45, 1)
 emission_enabled = true
 emission = Color(0.95, 0.8, 0.4, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_golpe"]
+size = Vector3(1.4, 1, 1)
 
 [node name="Nereth" type="CharacterBody3D"]
 collision_layer = 8
@@ -42,3 +50,35 @@ surface_material_override/0 = SubResource("Mat_cuerpo")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.45, 0)
 mesh = SubResource("BoxMesh_frente")
 surface_material_override/0 = SubResource("Mat_frente")
+
+[node name="Vida" type="Node" parent="."]
+script = ExtResource("2_vida")
+maximo = 100.0
+
+[node name="Resistencia" type="Node" parent="."]
+script = ExtResource("3_resistencia")
+
+[node name="Combate" type="Node" parent="."]
+script = ExtResource("4_combate")
+arma = ExtResource("5_espada")
+
+[node name="CajaGolpe" type="Area3D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 32
+monitorable = false
+monitoring = false
+
+[node name="FormaGolpe" type="CollisionShape3D" parent="CajaGolpe"]
+unique_name_in_owner = true
+shape = SubResource("BoxShape3D_golpe")
+
+[node name="CajaDano" type="Area3D" parent="."]
+collision_layer = 64
+collision_mask = 0
+monitoring = false
+script = ExtResource("6_caja_dano")
+
+[node name="FormaDano" type="CollisionShape3D" parent="CajaDano"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_cuerpo")
