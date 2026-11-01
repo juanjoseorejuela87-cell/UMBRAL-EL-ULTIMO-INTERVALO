@@ -1,7 +1,7 @@
 # TAREA-005 — Greybox del primer tramo de Elyndor: «Barrio Desprendido»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** CAMBIOS
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** todo lo que crees dentro de `scenes/niveles/elyndor/` (escena principal: `scenes/niveles/elyndor/barrio_desprendido.tscn`).
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `scenes/mundo/`, `scenes/ui/`, `project.godot`, `scenes/main/`.
 
@@ -107,3 +107,19 @@ Los seis puntos están aplicados y las distancias de salto ya son correctas (bor
 **Muy recomendable:** amplía `tests/test_barrio_desprendido.gd` con un recorrido real: Nereth, desde el borde de la plaza y siguiendo los pasos (coser P2 → cruzar en el Desfase → volver a la Realidad sobre P2 → saltar), llega al receptor; y la misma maniobra sin coser **no** llega. Es la única forma fiable de que no se nos escapen estos fallos de geometría.
 
 Commit `[antigravity] Barrio Desprendido: revisión 2 (TAREA-005)`, vuelve a `ENTREGADO` y avisa en el canal.
+
+## Entrega de revisión 2 (Antigravity, 2026-11-01) — ENTREGADO
+
+Resueltos los dos problemas detectados en la geometría y añadido el recorrido real completo:
+1. **Elevación del puente del Remiendo:** `PuenteRemiendoAtajo` elevado a y = 6.3 (cara inferior en y = 6.0, espesor 0.6 u). Esto deja una altura libre de 4.0 u sobre Puntada 1 y 3.0 u sobre Puntada 2 (ambas muy por encima del mínimo de 2.2 u), permitiendo a Nereth (1.8 u) transitar y saltar cómodamente en el Desfase sin colisionar con el puente.
+2. **Punto de costura del Remiendo (`punto_costura`):** Asignado `PuntoCosturaAtajo` (Marker3D en x = 77.0, y = 6.3 en el extremo del receptor).
+   - Desde el Rellano del Ancla (x = 35.0), la distancia al punto de costura es de 42.3 u (> 6.0 u), haciendo imposible remendar el atajo desde el inicio.
+   - Desde `SueloReceptorAlto` (x = 77.0..80.0), la distancia es de 3.5 u (<= 6.0 u), permitiendo coserlo como regreso tras superar el tramo.
+3. **Ajuste de espaciado y saltos:** Plataformas ubicadas en x = 69.0 (P1), x = 73.4 (P2) y SueloReceptorAlto empezando en x = 77.0, con huecos de ~2.0 u que cuadran a la perfección con la velocidad y salto de Nereth.
+4. **Velos solo-Desfase ajustados:** `VeloDesfaseAtajo1` (x = 40.5, y = 7.0, h = 8 u) y `VeloDesfaseAtajo2` (x = 76.5, y = 7.5, h = 8 u) sellan completamente el paso por el puente en el Desfase.
+5. **Prueba de recorrido real en `tests/test_barrio_desprendido.gd`:**
+   - Comprueba las alturas libres sobre P1 y P2 (>= 2.2 u).
+   - Valida que con el Ancla dormida el Remiendo no está disponible, y con ella estabilizada solo se alcanza desde el receptor.
+   - Ejecuta la maniobra canónica completa por física: entrada a Desfase -> coser P1 -> salto a P1 -> coser P2 (suelta P1) -> salto a P2 -> retorno a Realidad apoyado en P2 -> salto al receptor alto.
+   - Contraste negativo: verifica que si no se cose P2, intentar volver a Realidad sobre ella hace caer a Nereth al foso.
+   - Resultado: 0 fallos.

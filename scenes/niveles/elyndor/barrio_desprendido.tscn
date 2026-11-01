@@ -170,7 +170,7 @@ size = Vector3(3, 1, 4)
 material = SubResource("Mat_piedra")
 
 [node name="Puntada1" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 69, 1.8, 0)
 use_collision = true
 size = Vector3(3.6, 0.4, 2)
 material = SubResource("Mat_desfase")
@@ -182,7 +182,7 @@ script = ExtResource("6_fase")
 script = ExtResource("7_cosible")
 
 [node name="Puntada2" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75, 2.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73.4, 2.8, 0)
 use_collision = true
 size = Vector3(3.6, 0.4, 2)
 material = SubResource("Mat_desfase")
@@ -194,9 +194,9 @@ script = ExtResource("6_fase")
 script = ExtResource("7_cosible")
 
 [node name="SueloReceptorAlto" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 89, 4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 87.5, 4, 0)
 use_collision = true
-size = Vector3(20, 1, 4)
+size = Vector3(21, 1, 4)
 material = SubResource("Mat_piedra")
 
 [node name="ElementoFase" type="Node" parent="Geometria/SueloReceptorAlto"]
@@ -204,37 +204,41 @@ script = ExtResource("6_fase")
 existe_en = 0
 
 [node name="VeloDesfaseAtajo1" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.5, 5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.5, 7, 0)
 use_collision = true
-size = Vector3(0.6, 6, 4)
+size = Vector3(0.6, 8, 4)
 material = SubResource("Mat_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/VeloDesfaseAtajo1"]
 script = ExtResource("6_fase")
 
 [node name="VeloDesfaseAtajo2" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80.5, 7, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76.5, 7.5, 0)
 use_collision = true
-size = Vector3(0.6, 6, 4)
+size = Vector3(0.6, 8, 4)
 material = SubResource("Mat_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/VeloDesfaseAtajo2"]
 script = ExtResource("6_fase")
 
 [node name="PuenteRemiendoAtajo" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.5, 6.3, 0)
 use_collision = true
-size = Vector3(38, 0.6, 2.5)
+size = Vector3(39, 0.6, 2.5)
 material = SubResource("Mat_remiendo")
 
 [node name="ElementoFase" type="Node" parent="Geometria/PuenteRemiendoAtajo"]
 script = ExtResource("6_fase")
 
-[node name="Cosible" type="Node3D" parent="Geometria/PuenteRemiendoAtajo" node_paths=PackedStringArray("ancla_requerida")]
+[node name="Cosible" type="Node3D" parent="Geometria/PuenteRemiendoAtajo" node_paths=PackedStringArray("ancla_requerida", "punto_costura")]
 script = ExtResource("7_cosible")
 tipo = 1
 id = &"elyndor_barrio_remiendo_atajo"
 ancla_requerida = NodePath("../../../AnclaBarrio")
+punto_costura = NodePath("PuntoCosturaAtajo")
+
+[node name="PuntoCosturaAtajo" type="Marker3D" parent="Geometria/PuenteRemiendoAtajo/Cosible"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 19.5, 0, 0)
 
 [node name="SueloFinal" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 105, 4, 0)

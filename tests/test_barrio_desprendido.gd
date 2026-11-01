@@ -7,14 +7,15 @@ const ESCENA: String = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
 
 var _sala: Node
 var _nereth: Nereth
+var _fase: GestorFase
 var _fallos: int = 0
 
 
 func _initialize() -> void:
 	ConfigControles.registrar()
-	var gestor_fase: GestorFase = GestorFase.global()
-	if gestor_fase:
-		gestor_fase.cambiar(GestorFase.Estado.REALIDAD)
+	_fase = GestorFase.global()
+	if _fase:
+		_fase.cambiar(GestorFase.Estado.REALIDAD)
 
 	_sala = (load(ESCENA) as PackedScene).instantiate()
 	root.add_child(_sala)
@@ -63,6 +64,151 @@ func _ejecutar() -> void:
 	_comprobar(_sala.get_node_or_null("EcoPlaza") != null, "la escena incluye al Eco Rezagado (EcoPlaza)")
 	_comprobar(_sala.get_node_or_null("GuardianReceptor") != null, "la escena incluye al Guardián Partido (GuardianReceptor)")
 
+	# 6. Comprobación de altura libre sobre las Puntadas (hueco >= 2.2 u para Nereth)
+	var puente_atajo: CSGBox3D = _sala.get_node("Geometria/PuenteRemiendoAtajo") as CSGBox3D
+	var p1_box: CSGBox3D = _sala.get_node("Geometria/Puntada1") as CSGBox3D
+	var p2_box: CSGBox3D = _sala.get_node("Geometria/Puntada2") as CSGBox3D
+	var cara_inf_puente: float = puente_atajo.global_position.y - puente_atajo.size.y * 0.5
+	var cara_sup_p1: float = p1_box.global_position.y + p1_box.size.y * 0.5
+	var cara_sup_p2: float = p2_box.global_position.y + p2_box.size.y * 0.5
+	var hueco_p1: float = cara_inf_puente - cara_sup_p1
+	var hueco_p2: float = cara_inf_puente - cara_sup_p2
+	_comprobar(hueco_p1 >= 2.2, "altura libre sobre Puntada 1 suficiente (%.2f u >= 2.2 u)" % hueco_p1)
+	_comprobar(hueco_p2 >= 2.2, "altura libre sobre Puntada 2 suficiente (%.2f u >= 2.2 u)" % hueco_p2)
+
+	# 7. Comprobación de punto de costura en el Remiendo (solo accesible desde el final)
+	var remiendo_cosible: ElementoCosible = puente_atajo.get_node("Cosible") as ElementoCosible
+	var ancla: AnclaContinuidad = _sala.get_node("AnclaBarrio") as AnclaContinuidad
+	_comprobar(remiendo_cosible.punto_costura != null, "el Remiendo del atajo tiene punto_costura asignado")
+
+	# Con el Ancla dormida no está disponible
+	_comprobar(not remiendo_cosible.disponible(), "con el Ancla dormida el Remiendo no está disponible")
+
+	# Estabilizar el Ancla para comprobar la selección de objetivo según distancia
+	ancla.estado = AnclaContinuidad.Estado.ESTABILIZADA
+	_comprobar(remiendo_cosible.disponible(), "con el Ancla estabilizada el Remiendo queda disponible")
+
+	# Desactivar IA de enemigos para que no interrumpan la prueba física de recorrido
+	for e: Node in enemigos:
+		if "ia_activa" in e:
+			e.set("ia_activa", false)
+
+	# Desde el Rellano del Ancla (x = 35): fuera de alcance
+	_nereth.restaurar()
+	_nereth.reaparecer(Vector3(35.0, 1.55, 0.0))
+	await _esperar(5)
+	await _pulsar(&"desfase")
+	await _esperar(10)
+	var dist_ancla: float = remiendo_cosible.distancia_a(_nereth.global_position)
+	_comprobar(dist_ancla > 6.0, "desde el Ancla el Remiendo está fuera de alcance (%.1f u > 6.0 u)" % dist_ancla)
+	_comprobar(_nereth.costura.objetivo != remiendo_cosible, "desde el Ancla no se puede seleccionar el Remiendo")
+
+	# Desde el SueloReceptorAlto (x = 79.5): al alcance
+	_nereth.reaparecer(Vector3(79.5, 4.55, 0.0))
+	await _esperar(10)
+	var dist_receptor: float = remiendo_cosible.distancia_a(_nereth.global_position)
+	_comprobar(dist_receptor <= 6.0, "desde el receptor el Remiendo está al alcance (%.1f u <= 6.0 u)" % dist_receptor)
+	_comprobar(_nereth.costura.objetivo == remiendo_cosible, "desde el receptor el Remiendo es el objetivo de Costura")
+
+	# 8. Recorrido real de la cadena de Puntadas:
+	# A) Puntadas empiezan sin coser
+	var p1_cosible: ElementoCosible = p1_box.get_node("Cosible") as ElementoCosible
+	var p2_cosible: ElementoCosible = p2_box.get_node("Cosible") as ElementoCosible
+	_comprobar(not p1_cosible.esta_cosido(), "Puntada 1 empieza sin coser")
+	_comprobar(not p2_cosible.esta_cosido(), "Puntada 2 empieza sin coser")
+
+	# B) Cadena canónica:
+	# 1. Al borde de la plaza en Desfase con Nereth completamente restaurado
+	_nereth.restaurar()
+	_nereth.reaparecer(Vector3(63.5, 1.05, 0.0))
+	await _esperar(10)
+	if not _fase.en_desfase():
+		await _pulsar(&"desfase")
+		await _esperar(15)
+	_comprobar(_fase.en_desfase(), "Nereth entra en Desfase al borde del foso")
+
+	# 2. Desde el borde, coser Puntada 1
+	_comprobar(_nereth.costura.objetivo == p1_cosible, "desde el borde el objetivo de Costura es Puntada 1")
+	await _mantener(&"coser", 45)
+	_comprobar(p1_cosible.esta_cosido(), "Puntada 1 queda cosida")
+
+	# 3. Salta a Puntada 1 (de x = 63.5 a x = 69.0)
+	Input.action_press(&"mover_derecha")
+	await _esperar(10)
+	Input.action_press(&"saltar")
+	await _esperar(25)
+	Input.action_release(&"saltar")
+	await _esperar(20)
+	Input.action_release(&"mover_derecha")
+	await _esperar(10)
+	_comprobar(_nereth.is_on_floor() and absf(_nereth.global_position.x - 69.0) < 1.8, "Nereth aterriza en Puntada 1 (x = %.1f, y = %.1f)" % [_nereth.global_position.x, _nereth.global_position.y])
+
+	# 4. Desde Puntada 1, como P1 ya está cosida, el objetivo pasa a ser Puntada 2
+	_comprobar(_nereth.costura.objetivo == p2_cosible, "desde Puntada 1 el objetivo de Costura pasa a ser Puntada 2")
+	_nereth.resonancia.actual = 100.0
+	await _mantener(&"coser", 45)
+	_comprobar(p2_cosible.esta_cosido(), "Puntada 2 queda cosida (Puntada 1 se suelta)")
+
+	# 5. Salta a Puntada 2 en Desfase (de x = 69 a x = 73.4)
+	Input.action_press(&"mover_derecha")
+	await _esperar(5)
+	Input.action_press(&"saltar")
+	await _esperar(28)
+	Input.action_release(&"saltar")
+	await _esperar(20)
+	Input.action_release(&"mover_derecha")
+	await _esperar(10)
+	_comprobar(_nereth.is_on_floor() and absf(_nereth.global_position.x - 73.4) < 1.8, "Nereth aterriza en Puntada 2 en Desfase (x = %.1f, y = %.1f)" % [_nereth.global_position.x, _nereth.global_position.y])
+
+	# 6. Vuelve a la Realidad apoyado sobre Puntada 2 (que existe en Realidad por estar cosida)
+	await _pulsar(&"desfase")
+	await _esperar(15)
+	_comprobar(not _fase.en_desfase(), "Nereth vuelve con éxito a la Realidad")
+	_comprobar(_nereth.is_on_floor() and _nereth.global_position.y > 2.5, "Nereth se apoya en Puntada 2 en la Realidad (y = %.1f)" % _nereth.global_position.y)
+
+	# 7. Salta al SueloReceptorAlto (solo-Realidad)
+	Input.action_press(&"mover_derecha")
+	await _esperar(5)
+	Input.action_press(&"saltar")
+	await _esperar(32)
+	Input.action_release(&"saltar")
+	await _esperar(25)
+	Input.action_release(&"mover_derecha")
+	await _esperar(15)
+	_comprobar(_nereth.is_on_floor() and _nereth.global_position.x >= 77.0 and _nereth.global_position.y >= 4.0, "Nereth corona el SueloReceptorAlto con éxito (x = %.1f, y = %.1f)" % [_nereth.global_position.x, _nereth.global_position.y])
+
+	# 9. Contraste negativo: sin coser Puntada 2, intentar apoyarse en la Realidad hace caer al vacío
+	p2_cosible.soltar()
+	_nereth.restaurar()
+	_nereth.reaparecer(Vector3(63.5, 1.05, 0.0))
+	await _esperar(5)
+	if not _fase.en_desfase():
+		await _pulsar(&"desfase")
+		await _esperar(15)
+	# Salto a Puntada 1 en Desfase
+	Input.action_press(&"mover_derecha")
+	await _esperar(10)
+	Input.action_press(&"saltar")
+	await _esperar(25)
+	Input.action_release(&"saltar")
+	await _esperar(20)
+	Input.action_release(&"mover_derecha")
+	await _esperar(10)
+	# Salto a Puntada 2 en Desfase sin coser
+	_comprobar(not p2_cosible.esta_cosido(), "Puntada 2 no está cosida para la prueba de contraste")
+	Input.action_press(&"mover_derecha")
+	await _esperar(5)
+	Input.action_press(&"saltar")
+	await _esperar(28)
+	Input.action_release(&"saltar")
+	await _esperar(20)
+	Input.action_release(&"mover_derecha")
+	await _esperar(10)
+	# Intentar pasar a Realidad sin Puntada cosida: no se sostiene y cae
+	await _pulsar(&"desfase")
+	await _esperar(40)
+	_comprobar(_nereth.global_position.y < 2.0 or not _nereth.is_on_floor(), "sin coser Puntada 2, Nereth no puede sostenerse en Realidad y cae al foso (y = %.1f)" % _nereth.global_position.y)
+
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)
 
@@ -70,6 +216,20 @@ func _ejecutar() -> void:
 func _esperar(frames: int) -> void:
 	for i: int in frames:
 		await physics_frame
+
+
+func _mantener(accion: StringName, frames: int) -> void:
+	Input.action_press(accion)
+	await _esperar(frames)
+	Input.action_release(accion)
+	await _esperar(2)
+
+
+func _pulsar(accion: StringName) -> void:
+	Input.action_press(accion)
+	await _esperar(1)
+	Input.action_release(accion)
+	await _esperar(1)
 
 
 func _comprobar(condicion: bool, descripcion: String) -> void:
