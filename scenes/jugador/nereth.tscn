@@ -10,25 +10,11 @@
 [ext_resource type="Script" path="res://scenes/jugador/fase_nereth.gd" id="8_fase"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/efecto_desfase/efecto_desfase.tscn" id="9_efecto"]
 [ext_resource type="Script" path="res://scenes/jugador/costura_nereth.gd" id="10_costura"]
+[ext_resource type="Script" path="res://scenes/jugador/figura_nereth.gd" id="11_figura"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
 radius = 0.35
 height = 1.8
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_cuerpo"]
-radius = 0.35
-height = 1.8
-
-[sub_resource type="StandardMaterial3D" id="Mat_cuerpo"]
-albedo_color = Color(0.78, 0.74, 0.88, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_frente"]
-size = Vector3(0.25, 0.15, 0.3)
-
-[sub_resource type="StandardMaterial3D" id="Mat_frente"]
-albedo_color = Color(0.95, 0.85, 0.45, 1)
-emission_enabled = true
-emission = Color(0.95, 0.8, 0.4, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_golpe"]
 size = Vector3(1.4, 1, 1)
@@ -45,15 +31,8 @@ shape = SubResource("CapsuleShape3D_cuerpo")
 
 [node name="Visual" type="Node3D" parent="."]
 
-[node name="Cuerpo" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
-mesh = SubResource("CapsuleMesh_cuerpo")
-surface_material_override/0 = SubResource("Mat_cuerpo")
-
-[node name="Frente" type="MeshInstance3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 1.45, 0)
-mesh = SubResource("BoxMesh_frente")
-surface_material_override/0 = SubResource("Mat_frente")
+[node name="Figura" type="Node3D" parent="Visual"]
+script = ExtResource("11_figura")
 
 [node name="Vida" type="Node" parent="."]
 script = ExtResource("2_vida")

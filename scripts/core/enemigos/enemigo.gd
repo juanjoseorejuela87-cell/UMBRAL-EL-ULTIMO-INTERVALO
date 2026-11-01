@@ -96,8 +96,15 @@ func _ready() -> void:
 			if existe_en == ElementoFase.Existencia.DESFASE else GestorFase.CAPA_REALIDAD)
 	_forma_golpe.shape = _forma_golpe.shape.duplicate()
 	_caja_golpe.monitoring = false
-	_material = (_cuerpo.get_active_material(0) as StandardMaterial3D).duplicate()
-	_cuerpo.set_surface_override_material(0, _material)
+	var original: Material = _cuerpo.get_active_material(0)
+	_material = (original as StandardMaterial3D).duplicate()
+	# Las figuras hechas de varias piezas comparten el material del Cuerpo:
+	# todas reciben la copia, así el destello y la telegrafía afectan a la figura entera.
+	for nodo: Node in $Visual.find_children("*", "MeshInstance3D", true, false):
+		var pieza: MeshInstance3D = nodo as MeshInstance3D
+		for i: int in pieza.get_surface_override_material_count():
+			if pieza.get_active_material(i) == original:
+				pieza.set_surface_override_material(i, _material)
 	_caja_dano.golpe_recibido.connect(_al_recibir_golpe)
 	vida.agotada.connect(_morir)
 	postura.rota.connect(_al_romper_postura)

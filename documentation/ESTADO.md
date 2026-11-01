@@ -21,7 +21,7 @@
 | 11 | Audio base (efectos provisionales y ambiente) | Hecho — autoload `Sonido` con 16 efectos sintetizados y 2 ambientes (`tests/test_sonido.gd`, 15/15); ambiente por sala, interfaz y volúmenes (Antigravity, TAREA-009) |
 | 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Hecho — autoload `Graficos` (`tests/test_graficos.gd`) y sección «Gráficos» en la pausa (Antigravity, TAREA-011) — D-017, D-034. Falta probar el reinicio a Forward+ en un PC con gráfica dedicada |
 | 13 | Ajustes narrativos de la demo según el canon (Cámara del Despertar, Ruinas bajo Elyndor, Fragmento de Memoria, frases de Maelis) | Hecho — Cámara del Despertar integrada (inicio del juego, Desfase obligado por un derrumbe; `tests/test_camara_despertar.gd` 7/7); Ruinas reambientadas (Antigravity, TAREA-010); Fragmento de Memoria con recuerdo y frases oficiales de Maelis hecho (`PantallaRecuerdo`). Salón del Prefecto reambientado (arcos apuntados en las 4 puertas, columnas Realidad/Desfase, atmósfera). Ecos de memoria ocultos (A6): `scenes/mundo/eco_memoria/`, visibles solo en el Desfase tras el Fragmento de Memoria; uno en la Cámara y otro en el Salón, con textos provisionales (`tests/test_eco_memoria.gd`, 11/11). Salida del Salón abierta a una vista del reino de Elyndor al amanecer (A5). Ajustes A1–A6 completos; solo faltan los textos definitivos de los ecos (TAREA-001) |
-| 14 | **Rebanada visual**: una sala con acabado de calidad final (guía de arte, kit gótico detallado, iluminación, niebla, posprocesado y un modelo real de Nereth) como referencia para todo el juego | **En curso (Claude)** — hecho: `GUIA_ARTE.md`, atmósfera por estado (`AtmosferaFase`), kit detallado (columna rota, arco apuntado, ventanal, escombros, símbolos), polvo y rayos de luz baratos, sala de referencia `elyndor/camara_despertar.tscn`. Falta: modelo real de Nereth y enemigos, más piezas del kit, aplicar a todas las salas |
+| 14 | **Rebanada visual**: una sala con acabado de calidad final (guía de arte, kit gótico detallado, iluminación, niebla, posprocesado y un modelo real de Nereth) como referencia para todo el juego | **En curso (Claude)** — hecho: `GUIA_ARTE.md`, atmósfera por estado (`AtmosferaFase`), kit detallado (columna rota, arco apuntado, ventanal, escombros, símbolos), polvo y rayos de luz baratos, sala de referencia `elyndor/camara_despertar.tscn`. Figura estilizada provisional de Nereth con primitivas y animación procedural (`scenes/jugador/figura_nereth.gd`: capucha, capa por segmentos, espada, carrera/salto/esquiva/ataque/guardia); figuras de enemigos en TAREA-012 (Antigravity). Falta: modelos definitivos (Nereth en espera del `.glb` del director), más piezas del kit |
 
 ## Encargos a ayudantes
 
@@ -38,6 +38,7 @@
 | [TAREA-009](tareas/TAREA-009-ambiente-y-sonido-ui.md) | Antigravity | ACEPTADO |
 | [TAREA-010](tareas/TAREA-010-ruinas-bajo-elyndor.md) | Antigravity | ACEPTADO |
 | [TAREA-011](tareas/TAREA-011-menu-graficos.md) | Antigravity | ACEPTADO |
+| [TAREA-012](tareas/TAREA-012-figuras-enemigos.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 

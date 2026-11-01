@@ -2,7 +2,8 @@ extends SceneTree
 ## Captura fotogramas de una sala con Nereth en una posición, para revisar el
 ## aspecto visual sin abrir el editor.
 ## Uso (los PNG salen numerados junto a la ruta indicada):
-##   Godot_console.exe --path D:\UMBRAL -s res://tools/captura_sala.gd --write-movie C:\ruta\f.png --fixed-fps 30 --quit-after 40 -- <escena.tscn> <x> <y> [desfase]
+##   Godot_console.exe --path D:\UMBRAL -s res://tools/captura_sala.gd --write-movie C:\ruta\f.png --fixed-fps 30 --quit-after 40 -- <escena.tscn> <x> <y> [desfase] [accion...]
+## Las acciones extra (p. ej. mover_derecha, atacar_ligero) se mantienen pulsadas.
 ## Ejemplo: ... -- res://scenes/niveles/elyndor/salon_prefecto.tscn 19 0.5 desfase
 
 
@@ -29,5 +30,8 @@ func _preparar() -> void:
 		var camara: Node = current_scene.find_child("CamaraLateral", true, false)
 		if camara and camara.has_method(&"saltar_a_objetivo"):
 			camara.call(&"saltar_a_objetivo")
-	if args.size() > 3 and args[3] == "desfase":
-		GestorFase.global().cambiar(GestorFase.Estado.DESFASE)
+	for i: int in range(3, args.size()):
+		if args[i] == "desfase":
+			GestorFase.global().cambiar(GestorFase.Estado.DESFASE)
+		elif InputMap.has_action(StringName(args[i])):
+			Input.action_press(StringName(args[i]))
