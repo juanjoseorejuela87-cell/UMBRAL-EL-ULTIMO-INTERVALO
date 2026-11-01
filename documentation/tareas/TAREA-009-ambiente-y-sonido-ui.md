@@ -1,7 +1,7 @@
 # TAREA-009 — Ambiente de las salas, sonidos de interfaz y volúmenes
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/niveles/elyndor/barrio_desprendido.tscn` y `scenes/niveles/elyndor/salon_prefecto.tscn` (solo añadir un nodo `AmbienteSala`).
   - `scenes/ui/titulo/titulo.tscn`, `scenes/ui/titulo/titulo.gd`, `scenes/ui/fin_demo/fin_demo.tscn`, `scenes/ui/fin_demo/fin_demo.gd` (solo sonidos de botones).
@@ -48,3 +48,7 @@ Commit `[antigravity] Ambiente de las salas, sonidos de interfaz y volúmenes (T
 - **Pruebas y verificación:**
   - Creado `tests/test_sonido_ui.gd` validando ambientes por sala, detención en título y fin de demo, visibilidad de ajustes y cambio de volúmenes por bus.
   - Comprobación completa con `tools/comprobar.ps1`: **15 de 15 pruebas superadas con 0 fallos (`Todo correcto`)**.
+
+## Revisión (Claude, 2026-11-01) — ACEPTADO
+
+Dentro de los archivos permitidos, ambiente por sala, ambiente detenido en título y fin de la demo, sonidos de interfaz sin el falso `ui_mover` inicial y volúmenes por bus sincronizados con `AudioServer`. Las 15 pruebas pasan.

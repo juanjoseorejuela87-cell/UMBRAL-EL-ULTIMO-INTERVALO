@@ -18,9 +18,10 @@
 | 8 | Salas de Elyndor + transiciones + cierre de la demo | Hecho — transiciones (8/8), Barrio (Antigravity), Salón del Prefecto, Fragmento, título y fin de la demo (`tests/test_demo.gd`, 16/16) |
 | 9 | Ejecutable de Windows de la demo | Hecho — `tools/exportar.ps1` genera `builds/windows/UMBRAL.exe` (≈104 MB, todo incluido); arranque verificado |
 | 10 | Sensación de combate: parada de impacto, temblor de cámara, partículas | Hecho — autoload `Impactos` (`tests/test_impactos.gd`, 10/10) + efecto de impacto (Antigravity, TAREA-008) |
-| 11 | Audio base (efectos provisionales y ambiente) | Núcleo hecho — autoload `Sonido` con 16 efectos sintetizados y 2 ambientes (`tests/test_sonido.gd`, 15/15); ambiente por sala, interfaz y volúmenes: TAREA-009 |
+| 11 | Audio base (efectos provisionales y ambiente) | Hecho — autoload `Sonido` con 16 efectos sintetizados y 2 ambientes (`tests/test_sonido.gd`, 15/15); ambiente por sala, interfaz y volúmenes (Antigravity, TAREA-009) |
 | 12 | Calidad gráfica escalable: preajustes Bajo–Ultra, Compatibility ↔ Forward+, detección automática y menú de gráficos | Siguiente (Claude) — D-017 |
 | 13 | Ajustes narrativos de la demo según el canon (Cámara del Despertar, Ruinas bajo Elyndor, Fragmento de Memoria, frases de Maelis) | Pendiente — `LORE.md` §12.2 |
+| 14 | **Rebanada visual**: una sala con acabado de calidad final (guía de arte, kit gótico detallado, iluminación, niebla, posprocesado y un modelo real de Nereth) como referencia para todo el juego | Pendiente — el aspecto actual es provisional (greybox) |
 
 ## Encargos a ayudantes
 
@@ -34,7 +35,7 @@
 | [TAREA-006](tareas/TAREA-006-conexion-barrio-salon.md) | Antigravity | ACEPTADO |
 | [TAREA-007](tareas/TAREA-007-menu-pausa.md) | Antigravity | ACEPTADO |
 | [TAREA-008](tareas/TAREA-008-efecto-impacto.md) | Antigravity | ACEPTADO |
-| [TAREA-009](tareas/TAREA-009-ambiente-y-sonido-ui.md) | Antigravity | ABIERTO |
+| [TAREA-009](tareas/TAREA-009-ambiente-y-sonido-ui.md) | Antigravity | ACEPTADO |
 
 ## Notas técnicas
 
