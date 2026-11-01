@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3]
+
+[ext_resource type="Texture2D" path="res://assets/texturas/medieval_blocks_02/medieval_blocks_02_color_1k.jpg" id="1_color"]
+[ext_resource type="Texture2D" path="res://assets/texturas/medieval_blocks_02/medieval_blocks_02_normal_1k.jpg" id="2_normal"]
+[ext_resource type="Texture2D" path="res://assets/texturas/medieval_blocks_02/medieval_blocks_02_rugosidad_1k.jpg" id="3_rugosidad"]
+
+[resource]
+resource_name = "piedra_remiendo"
+albedo_color = Color(1, 0.86, 0.6, 1)
+albedo_texture = ExtResource("1_color")
+roughness_texture = ExtResource("3_rugosidad")
+emission_enabled = true
+emission = Color(0.65, 0.45, 0.15, 1)
+emission_energy_multiplier = 0.35
+normal_enabled = true
+normal_texture = ExtResource("2_normal")
+uv1_scale = Vector3(0.5, 0.5, 0.5)
+uv1_triplanar = true
+uv1_world_triplanar = true

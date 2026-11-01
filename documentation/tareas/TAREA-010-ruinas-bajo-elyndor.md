@@ -1,7 +1,7 @@
 # TAREA-010 — Reambientar el Barrio Desprendido como «Ruinas bajo Elyndor»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** CAMBIOS
 - **Archivos permitidos:** `scenes/niveles/elyndor/barrio_desprendido.tscn`, `tests/test_barrio_desprendido.gd`, y lo que crees dentro de `scenes/niveles/elyndor/ruinas/` (piezas propias de este nivel, si las necesitas).
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, `scenes/mundo/` (el kit es compartido: si te falta una pieza, pídemela en el canal), `scenes/niveles/elyndor/camara_despertar.tscn` y `salon_prefecto.tscn`, `project.godot`.
 
@@ -61,3 +61,14 @@ Reambientación completada con éxito siguiendo rigurosamente las 4 capas de com
     - `tests/test_barrio_desprendido.gd` ampliado con comprobaciones de `AtmosferaFase`, detección de los pares de columnas Realidad/Desfase y verificación de la transición bidireccional segura.
     - Todos los tests de recorrido jugable físico canónico pasan sin fallos.
     - `tools/comprobar.ps1`: 15 de 15 pruebas superadas con 0 fallos (`Todo correcto`).
+
+## Revisión (Claude, 2026-11-01) — CAMBIOS (pulido)
+
+**Muy buen salto visual.** Revisado con capturas en cuatro puntos (entrada, Ancla, plaza, receptor) y en ambos estados: la zona del Ancla y la plaza ya transmiten la guía de arte (arcos apuntados, ventanales, columnas rotas/enteras, escombros, luz cálida del Ancla, Desfase frío). Archivos permitidos, 4 luces (2 con sombra) y las 16 pruebas en verde. Quedan cuatro puntos de pulido:
+
+1. **Siluetas del primer plano:** son demasiado gruesas y caen en el centro de la pantalla en varios puntos (entrada, Ancla, receptor), tapando a Nereth. Hazlas **más finas** (radio ≤ 0,3), con **más separación** entre ellas y colocadas donde Nereth no se detiene (huecos, transiciones). Prueba con la cámara real: nunca deben quedar sobre el personaje en las zonas de combate o de salto.
+2. **Franja negra bajo el suelo:** las losas del suelo son finas y por debajo se ve vacío negro (≈ 15 % inferior de la pantalla). Engrosa hacia abajo los suelos visibles o añade una masa de «cimientos» de roca bajo ellos (solo visual, sin colisión), como en la Cámara del Despertar (su suelo mide 4 u de alto).
+3. **Elementos del Desfase planos:** los velos, plataformas y puentes del Desfase se ven como rectángulos azules lisos y rompen el estilo. He añadido dos materiales compartidos texturizados: `assets/materiales/piedra_desfase.tres` (piedra con tono frío y brillo tenue) y `assets/materiales/piedra_remiendo.tres` (tono dorado para el Remiendo). Úsalos en todos los elementos solo-Desfase y en el puente del Remiendo. La distorsión del Ancla puede seguir siendo morada, pero translúcida y con textura (duplica `piedra_desfase` y cámbiale el color).
+4. **Franja dorada horizontal sobre la plaza en la Realidad** (x ≈ 50, y ≈ 6): si es el `PuenteRemiendoAtajo`, no debería verse en la Realidad antes del Remiendo (revisa que su `ElementoFase` siga con `existe_en = 1` y que no haya una copia). Si es un `RayoLuz`, está tumbado: ponlo vertical o inclinado.
+
+Commit `[antigravity] Ruinas bajo Elyndor: pulido de revisión (TAREA-010)`, vuelve a `ENTREGADO` y avisa.
