@@ -9,7 +9,9 @@
 [ext_resource type="Script" path="res://scripts/core/costura/elemento_cosible.gd" id="7_cosible"]
 [ext_resource type="Script" path="res://scripts/core/fase/zona_presion.gd" id="8_presion"]
 [ext_resource type="Script" path="res://scripts/core/zona_caida.gd" id="9_caida"]
-[ext_resource type="PackedScene" path="res://scenes/enemigos/muneco_practica/muneco_practica.tscn" id="10_muneco"]
+[ext_resource type="PackedScene" path="res://scenes/enemigos/vigia_hueco/vigia_hueco.tscn" id="10_vigia"]
+[ext_resource type="PackedScene" path="res://scenes/enemigos/eco_rezagado/eco_rezagado.tscn" id="11_eco"]
+[ext_resource type="PackedScene" path="res://scenes/enemigos/guardian_partido/guardian_partido.tscn" id="12_guardian"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_piedra"]
 albedo_color = Color(0.32, 0.31, 0.36, 1)
@@ -34,7 +36,7 @@ emission_energy_multiplier = 0.5
 
 [sub_resource type="StandardMaterial3D" id="Mat_distorsion"]
 transparency = 1
-albedo_color = Color(0.65, 0.3, 0.85, 0.35)
+albedo_color = Color(0.65, 0.3, 0.85, 0.5)
 emission_enabled = true
 emission = Color(0.5, 0.2, 0.7, 1)
 emission_energy_multiplier = 0.8
@@ -42,8 +44,11 @@ emission_energy_multiplier = 0.8
 [sub_resource type="BoxShape3D" id="Box_presion"]
 size = Vector3(22, 7, 4)
 
-[sub_resource type="BoxShape3D" id="Box_caida"]
-size = Vector3(140, 3, 8)
+[sub_resource type="BoxShape3D" id="Box_caida_inicio"]
+size = Vector3(55, 3, 8)
+
+[sub_resource type="BoxShape3D" id="Box_caida_foso"]
+size = Vector3(45, 3, 8)
 
 [sub_resource type="Environment" id="Entorno"]
 background_mode = 1
@@ -147,9 +152,9 @@ size = Vector3(10, 1, 4)
 material = SubResource("Mat_piedra")
 
 [node name="DistorsionAncla" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39, 3, 0)
-use_collision = false
-size = Vector3(2.5, 4, 2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.5, 3.5, 0)
+use_collision = true
+size = Vector3(1.5, 5, 4)
 material = SubResource("Mat_distorsion")
 
 [node name="SueloPlaza" type="CSGBox3D" parent="Geometria"]
@@ -167,7 +172,7 @@ material = SubResource("Mat_piedra")
 [node name="Puntada1" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 70, 1.8, 0)
 use_collision = true
-size = Vector3(3.2, 0.4, 2)
+size = Vector3(3.6, 0.4, 2)
 material = SubResource("Mat_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/Puntada1"]
@@ -177,9 +182,9 @@ script = ExtResource("6_fase")
 script = ExtResource("7_cosible")
 
 [node name="Puntada2" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 78, 3.2, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75, 2.9, 0)
 use_collision = true
-size = Vector3(3.2, 0.4, 2)
+size = Vector3(3.6, 0.4, 2)
 material = SubResource("Mat_desfase")
 
 [node name="ElementoFase" type="Node" parent="Geometria/Puntada2"]
@@ -189,10 +194,32 @@ script = ExtResource("6_fase")
 script = ExtResource("7_cosible")
 
 [node name="SueloReceptorAlto" type="CSGBox3D" parent="Geometria"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 90, 4, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 89, 4, 0)
 use_collision = true
-size = Vector3(18, 1, 4)
+size = Vector3(20, 1, 4)
 material = SubResource("Mat_piedra")
+
+[node name="ElementoFase" type="Node" parent="Geometria/SueloReceptorAlto"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="VeloDesfaseAtajo1" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40.5, 5, 0)
+use_collision = true
+size = Vector3(0.6, 6, 4)
+material = SubResource("Mat_desfase")
+
+[node name="ElementoFase" type="Node" parent="Geometria/VeloDesfaseAtajo1"]
+script = ExtResource("6_fase")
+
+[node name="VeloDesfaseAtajo2" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80.5, 7, 0)
+use_collision = true
+size = Vector3(0.6, 6, 4)
+material = SubResource("Mat_desfase")
+
+[node name="ElementoFase" type="Node" parent="Geometria/VeloDesfaseAtajo2"]
+script = ExtResource("6_fase")
 
 [node name="PuenteRemiendoAtajo" type="CSGBox3D" parent="Geometria"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 4, 0)
@@ -241,12 +268,14 @@ script = ExtResource("8_presion")
 [node name="Forma" type="CollisionShape3D" parent="ZonaPresionPlaza"]
 shape = SubResource("Box_presion")
 
-[node name="MunecoPlaza1" parent="." instance=ExtResource("10_muneco")]
+[node name="VigiaPlaza" parent="." instance=ExtResource("10_vigia")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 0)
 
-[node name="MunecoPlaza2" parent="." instance=ExtResource("10_muneco")]
+[node name="EcoPlaza" parent="." instance=ExtResource("11_eco")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 0)
-peso = 2
+
+[node name="GuardianReceptor" parent="." instance=ExtResource("12_guardian")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94, 4.5, 0)
 
 [node name="PuntoReaparicionInicial" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.2, 0)
@@ -254,15 +283,25 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.2, 0)
 [node name="PuntoReaparicionPlaza" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 1.2, 0)
 
-[node name="ZonaCaida" type="Area3D" parent="." node_paths=PackedStringArray("punto_reaparicion")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 45, -7, 0)
+[node name="ZonaCaidaInicial" type="Area3D" parent="." node_paths=PackedStringArray("punto_reaparicion")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, -7, 0)
 collision_layer = 0
 collision_mask = 8
 script = ExtResource("9_caida")
 punto_reaparicion = NodePath("../PuntoReaparicionInicial")
 
-[node name="Forma" type="CollisionShape3D" parent="ZonaCaida"]
-shape = SubResource("Box_caida")
+[node name="Forma" type="CollisionShape3D" parent="ZonaCaidaInicial"]
+shape = SubResource("Box_caida_inicio")
+
+[node name="ZonaCaidaFoso" type="Area3D" parent="." node_paths=PackedStringArray("punto_reaparicion")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 75, -7, 0)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("9_caida")
+punto_reaparicion = NodePath("../PuntoReaparicionPlaza")
+
+[node name="Forma" type="CollisionShape3D" parent="ZonaCaidaFoso"]
+shape = SubResource("Box_caida_foso")
 
 [node name="Nereth" parent="." instance=ExtResource("1_nereth")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.2, 0)

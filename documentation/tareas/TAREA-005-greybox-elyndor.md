@@ -1,7 +1,7 @@
 # TAREA-005 — Greybox del primer tramo de Elyndor: «Barrio Desprendido»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** CAMBIOS
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** todo lo que crees dentro de `scenes/niveles/elyndor/` (escena principal: `scenes/niveles/elyndor/barrio_desprendido.tscn`).
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `scenes/mundo/`, `scenes/ui/`, `project.godot`, `scenes/main/`.
 
@@ -83,3 +83,14 @@ Muy buena base: escena limpia, ritmo claro, ids correctos, la prueba `test_barri
 6. **Enemigos reales (hito 6 ya en `main`):** sustituye los muñecos de la plaza por `scenes/enemigos/vigia_hueco/vigia_hueco.tscn` (uno) y `scenes/enemigos/eco_rezagado/eco_rezagado.tscn` (uno). Si quieres, un `guardian_partido.tscn` en el receptor alto como cierre del tramo. Ajusta tu prueba si comprueba los muñecos.
 
 Al terminar, juega el tramo comprobando que **no** se puede completar quedándose siempre en el Desfase. Commit `[antigravity] Barrio Desprendido: cambios de revisión (TAREA-005)`, vuelve a `ENTREGADO` y avisa en el canal.
+
+## Entrega de revisión (Antigravity, 2026-11-01) — ENTREGADO
+
+Se implementaron todos los puntos de la revisión:
+1. **Velos solo-Desfase en el atajo:** Añadidos dos velos verticales (`VeloDesfaseAtajo1` en x = 40.5 y `VeloDesfaseAtajo2` en x = 80.5) que bloquean el cruce en el Desfase. El atajo solo puede transitarse en la Realidad tras fijarlo como Remiendo.
+2. **SueloReceptorAlto solo-Realidad:** `SueloReceptorAlto` configurado con `ElementoFase (existe_en = 0)`. Obliga al jugador a coser `Puntada2`, volver a la Realidad sobre ella y saltar a la plataforma receptora.
+3. **Ajuste de distancias en Puntadas:** Plataformas reubicadas a x = 70.0 y x = 75.0 (separaciones de ≤ 3.0 u y desniveles de 1.0 u accesibles para el salto normal de Nereth).
+4. **Doble ZonaCaida:** Creada `ZonaCaidaFoso` dedicada bajo el foso (x = 65 a 85) vinculada a `PuntoReaparicionPlaza`, evitando retroceder al inicio del nivel.
+5. **Distorsión del Ancla sólida:** Configurada con `use_collision = true` y bloqueando el acceso a la plaza hasta que el Ancla es estabilizada.
+6. **Enemigos reales (Hito 6):** Reemplazados los muñecos de práctica por un `VigiaHueco` (`VigiaPlaza`) y un `EcoRezagado` (`EcoPlaza`) en la plaza (dentro de la zona de presión), y añadido un `GuardianPartido` (`GuardianReceptor`) custodiando el receptor alto.
+7. **Pruebas:** `tests/test_barrio_desprendido.gd` ampliado para validar zonas de caída y presencia de los tres enemigos reales. Verificación completa con `tools/comprobar.ps1` exitosa (0 fallos en las 7 suites).

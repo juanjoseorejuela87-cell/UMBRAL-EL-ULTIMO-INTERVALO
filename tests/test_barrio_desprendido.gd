@@ -54,7 +54,14 @@ func _ejecutar() -> void:
 	var presiones: Array[Node] = _sala.find_children("*", "ZonaPresion", true, false)
 	var caidas: Array[Node] = _sala.find_children("*", "ZonaCaida", true, false)
 	_comprobar(presiones.size() >= 1, "la escena tiene zona de presión configurada")
-	_comprobar(caidas.size() >= 1, "la escena tiene zona de caída configurada")
+	_comprobar(caidas.size() >= 2, "la escena tiene al menos dos zonas de caída configuradas (%d encontradas)" % caidas.size())
+
+	# 5. Comprobar presencia de enemigos reales del hito 6
+	var enemigos: Array[Node] = _sala.find_children("*", "Enemigo", true, false)
+	_comprobar(enemigos.size() >= 3, "la escena contiene al menos tres enemigos reales (%d encontrados)" % enemigos.size())
+	_comprobar(_sala.get_node_or_null("VigiaPlaza") != null, "la escena incluye al Vigía Hueco (VigiaPlaza)")
+	_comprobar(_sala.get_node_or_null("EcoPlaza") != null, "la escena incluye al Eco Rezagado (EcoPlaza)")
+	_comprobar(_sala.get_node_or_null("GuardianReceptor") != null, "la escena incluye al Guardián Partido (GuardianReceptor)")
 
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)
