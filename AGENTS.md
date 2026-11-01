@@ -65,4 +65,10 @@ D:\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\UMBRAL --import
 D:\Godot_v4.7.2-stable_win64_console.exe --headless --path D:\UMBRAL --quit-after 120
 ```
 
+Comprobación completa (sincroniza con `--ff-only`, muestra el estado de los encargos y ejecuta todas las pruebas de `tests/`):
+
+```
+powershell -ExecutionPolicy Bypass -File D:\UMBRAL\tools\comprobar.ps1
+```
+
 Una entrega sin errores ni avisos nuevos en la salida es requisito para `ENTREGADO`.
