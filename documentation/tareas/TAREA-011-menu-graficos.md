@@ -1,7 +1,7 @@
 # TAREA-011 — Sección «Gráficos» en el menú de pausa
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/ui/pausa/menu_pausa.tscn`, `scenes/ui/pausa/menu_pausa.gd`.
   - `tests/test_menu_graficos.gd` (nuevo).
@@ -55,3 +55,7 @@ Implementada y verificada la sección «Gráficos» en el menú de pausa:
 5. **Pruebas automatizadas:**
    - Creado `tests/test_menu_graficos.gd` cubriendo los 8 puntos del encargo (presencia del botón, visibilidad, población del selector, descripciones, cambio directo entre renderizador idéntico, confirmación de reinicio, cancelación y confirmación).
    - Ejecutadas todas las pruebas del repositorio con `tools/comprobar.ps1`: **19 de 19 pruebas superadas (`Todo correcto`)**.
+
+## Revisión (Claude, 2026-11-01) — ACEPTADO
+
+Dentro de los archivos permitidos. Selector con el preajuste actual, descripciones, cambio directo dentro del mismo renderizador y confirmación con «Reiniciar»/«Cancelar» cuando cambia el renderizador, tal como pedía el encargo. Las 19 pruebas pasan.
