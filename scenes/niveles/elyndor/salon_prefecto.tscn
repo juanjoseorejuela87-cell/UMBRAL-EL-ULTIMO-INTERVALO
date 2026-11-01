@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" path="res://scenes/enemigos/prefecto/prefecto.tscn" id="8_prefecto"]
 [ext_resource type="Script" path="res://scripts/core/mundo/punto_entrada.gd" id="9_entrada"]
 [ext_resource type="Script" path="res://scripts/core/mundo/transicion_sala.gd" id="10_transicion"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/fragmento/fragmento.tscn" id="11_fragmento"]
 
 [sub_resource type="BoxShape3D" id="Box_transicion"]
 size = Vector3(1, 5, 4)
@@ -215,4 +216,19 @@ escena_destino = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
 entrada_destino = &"desde_salon"
 
 [node name="Forma" type="CollisionShape3D" parent="HaciaBarrio"]
+shape = SubResource("Box_transicion")
+
+[node name="FragmentoPrefecto" parent="." instance=ExtResource("11_fragmento")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+id = &"fragmento_elyndor_prefecto"
+aparece_con_evento = &"prefecto_derrotado"
+
+[node name="HaciaFinDemo" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 2.5, 0)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("10_transicion")
+escena_destino = "res://scenes/ui/fin_demo/fin_demo.tscn"
+
+[node name="Forma" type="CollisionShape3D" parent="HaciaFinDemo"]
 shape = SubResource("Box_transicion")

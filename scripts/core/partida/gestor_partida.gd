@@ -6,6 +6,8 @@ extends Node
 
 signal guardada
 signal descanso_realizado
+signal evento_registrado(id: StringName)
+signal fragmento_obtenido(id: StringName)
 
 const VERSION_GUARDADO: int = 1
 ## Grupo de nodos que vuelven a su estado inicial al descansar en un Ancla
@@ -17,6 +19,8 @@ var anclas_estabilizadas: Array[StringName] = []
 var remiendos: Array[StringName] = []
 ## Acontecimientos únicos ya ocurridos (jefes derrotados, puertas abiertas...).
 var eventos: Array[StringName] = []
+## Fragmentos de Continuidad recogidos.
+var fragmentos: Array[StringName] = []
 var ancla_actual: StringName = &""
 var escena_ancla: String = ""
 var posicion_reaparicion: Vector3 = Vector3.ZERO
@@ -70,6 +74,29 @@ func registrar_evento(id: StringName) -> void:
 	if not evento_ocurrido(id):
 		eventos.append(id)
 		guardar()
+		evento_registrado.emit(id)
+
+
+func fragmento_obtenido_ya(id: StringName) -> bool:
+	return id in fragmentos
+
+
+func registrar_fragmento(id: StringName) -> void:
+	if not fragmento_obtenido_ya(id):
+		fragmentos.append(id)
+		guardar()
+		fragmento_obtenido.emit(id)
+
+
+func existe_partida() -> bool:
+	return FileAccess.file_exists(ruta_guardado)
+
+
+## Empieza de cero: vacía la memoria y borra el archivo de guardado.
+func nueva_partida() -> void:
+	borrar_memoria()
+	if existe_partida():
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(ruta_guardado))
 
 
 ## Descanso en un Ancla: restaura a Nereth, fija la reaparición, reinicia la
@@ -106,6 +133,7 @@ func guardar() -> bool:
 		"anclas_estabilizadas": anclas_estabilizadas.map(func(id: StringName) -> String: return String(id)),
 		"remiendos": remiendos.map(func(id: StringName) -> String: return String(id)),
 		"eventos": eventos.map(func(id: StringName) -> String: return String(id)),
+		"fragmentos": fragmentos.map(func(id: StringName) -> String: return String(id)),
 		"ancla_actual": String(ancla_actual),
 		"escena_ancla": escena_ancla,
 		"posicion_reaparicion": [posicion_reaparicion.x, posicion_reaparicion.y, posicion_reaparicion.z],
@@ -136,6 +164,8 @@ func cargar() -> bool:
 		remiendos.append(StringName(str(id)))
 	for id: Variant in d.get("eventos", []):
 		eventos.append(StringName(str(id)))
+	for id: Variant in d.get("fragmentos", []):
+		fragmentos.append(StringName(str(id)))
 	ancla_actual = StringName(str(d.get("ancla_actual", "")))
 	escena_ancla = str(d.get("escena_ancla", ""))
 	var p: Array = d.get("posicion_reaparicion", [0.0, 0.0, 0.0])
@@ -149,6 +179,7 @@ func borrar_memoria() -> void:
 	anclas_estabilizadas.clear()
 	remiendos.clear()
 	eventos.clear()
+	fragmentos.clear()
 	ancla_actual = &""
 	escena_ancla = ""
 	posicion_reaparicion = Vector3.ZERO
