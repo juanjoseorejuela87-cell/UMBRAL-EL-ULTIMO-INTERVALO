@@ -1,0 +1,146 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/jugador/nereth.tscn" id="1_nereth"]
+[ext_resource type="Script" path="res://scenes/camara/camara_lateral.gd" id="2_camara"]
+[ext_resource type="PackedScene" path="res://scenes/ui/depuracion/panel_depuracion.tscn" id="3_panel"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/ancla/ancla.tscn" id="4_ancla"]
+[ext_resource type="Script" path="res://scripts/core/fase/elemento_fase.gd" id="5_elemento"]
+[ext_resource type="Script" path="res://scripts/core/costura/elemento_cosible.gd" id="6_cosible"]
+[ext_resource type="Script" path="res://scripts/core/zona_caida.gd" id="7_caida"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="8_hud"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_piedra"]
+albedo_color = Color(0.34, 0.33, 0.38, 1)
+
+[sub_resource type="StandardMaterial3D" id="Mat_desfase"]
+albedo_color = Color(0.45, 0.6, 0.95, 1)
+emission_enabled = true
+emission = Color(0.25, 0.35, 0.8, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_remiendo"]
+albedo_color = Color(0.75, 0.62, 0.4, 1)
+emission_enabled = true
+emission = Color(0.6, 0.45, 0.15, 1)
+emission_energy_multiplier = 0.5
+
+[sub_resource type="BoxShape3D" id="Box_caida"]
+size = Vector3(70, 2, 6)
+
+[sub_resource type="Environment" id="Entorno"]
+background_mode = 1
+background_color = Color(0.05, 0.05, 0.08, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.5, 0.5, 0.62, 1)
+ambient_light_energy = 0.6
+
+[node name="SalaCostura" type="Node3D"]
+
+[node name="Entorno" type="WorldEnvironment" parent="."]
+environment = SubResource("Entorno")
+
+[node name="Sol" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.643, -0.766, 0, 0.766, 0.643, 0, 10, 5)
+light_energy = 1.1
+shadow_enabled = true
+
+[node name="Geometria" type="Node3D" parent="."]
+
+[node name="SueloA" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13, -0.5, 0)
+use_collision = true
+size = Vector3(14, 1, 4)
+material = SubResource("Mat_piedra")
+
+[node name="PlataformaCosible" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 2.5, 0)
+use_collision = true
+size = Vector3(2, 0.4, 2)
+material = SubResource("Mat_desfase")
+
+[node name="ElementoFase" type="Node" parent="Geometria/PlataformaCosible"]
+script = ExtResource("5_elemento")
+
+[node name="Cosible" type="Node3D" parent="Geometria/PlataformaCosible"]
+script = ExtResource("6_cosible")
+
+[node name="PuenteCosible" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, -0.5, 0)
+use_collision = true
+size = Vector3(6, 1, 2)
+material = SubResource("Mat_desfase")
+
+[node name="ElementoFase" type="Node" parent="Geometria/PuenteCosible"]
+script = ExtResource("5_elemento")
+
+[node name="Cosible" type="Node3D" parent="Geometria/PuenteCosible"]
+script = ExtResource("6_cosible")
+
+[node name="SueloB" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -0.5, 0)
+use_collision = true
+size = Vector3(10, 1, 4)
+material = SubResource("Mat_piedra")
+
+[node name="PuenteRemiendo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13, -0.5, 0)
+use_collision = true
+size = Vector3(6, 1, 3)
+material = SubResource("Mat_remiendo")
+
+[node name="ElementoFase" type="Node" parent="Geometria/PuenteRemiendo"]
+script = ExtResource("5_elemento")
+
+[node name="Cosible" type="Node3D" parent="Geometria/PuenteRemiendo" node_paths=PackedStringArray("ancla_requerida")]
+script = ExtResource("6_cosible")
+tipo = 1
+id = &"pruebas_remiendo_puente"
+ancla_requerida = NodePath("../../../AnclaRemiendo")
+
+[node name="SueloC" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, -0.5, 0)
+use_collision = true
+size = Vector3(10, 1, 4)
+material = SubResource("Mat_piedra")
+
+[node name="MuroIzquierdo" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.5, 5, 0)
+use_collision = true
+size = Vector3(1, 10, 4)
+material = SubResource("Mat_piedra")
+
+[node name="MuroDerecho" type="CSGBox3D" parent="Geometria"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26.5, 5, 0)
+use_collision = true
+size = Vector3(1, 10, 4)
+material = SubResource("Mat_piedra")
+
+[node name="AnclaRemiendo" parent="." instance=ExtResource("4_ancla")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+id = &"pruebas_ancla_remiendo"
+
+[node name="PuntoReaparicion" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.2, 0)
+
+[node name="ZonaCaida" type="Area3D" parent="." node_paths=PackedStringArray("punto_reaparicion")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, -8, 0)
+collision_layer = 0
+collision_mask = 8
+script = ExtResource("7_caida")
+punto_reaparicion = NodePath("../PuntoReaparicion")
+
+[node name="Forma" type="CollisionShape3D" parent="ZonaCaida"]
+shape = SubResource("Box_caida")
+
+[node name="Nereth" parent="." instance=ExtResource("1_nereth")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.2, 0)
+
+[node name="Camara" type="Camera3D" parent="." node_paths=PackedStringArray("objetivo")]
+script = ExtResource("2_camara")
+objetivo = NodePath("../Nereth")
+
+[node name="PanelDepuracion" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_panel")]
+objetivo = NodePath("../Nereth")
+
+[node name="HudJuego" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("8_hud")]
+objetivo = NodePath("../Nereth")

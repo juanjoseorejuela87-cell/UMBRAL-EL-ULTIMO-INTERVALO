@@ -14,6 +14,7 @@ const GRUPO_REINICIO: StringName = &"reinicio_descanso"
 
 var ruta_guardado: String = "user://partida.json"
 var anclas_estabilizadas: Array[StringName] = []
+var remiendos: Array[StringName] = []
 var ancla_actual: StringName = &""
 var escena_ancla: String = ""
 var posicion_reaparicion: Vector3 = Vector3.ZERO
@@ -44,6 +45,20 @@ func estabilizar_ancla(id: StringName) -> void:
 		anclas_estabilizadas.append(id)
 
 
+func remiendo_hecho(id: StringName) -> bool:
+	return id in remiendos
+
+
+## Un Remiendo es permanente: se registra y se guarda en el acto.
+func registrar_remiendo(id: StringName) -> void:
+	if id == &"":
+		push_warning("Remiendo sin id: no se guardará.")
+		return
+	if not remiendo_hecho(id):
+		remiendos.append(id)
+		guardar()
+
+
 ## Descanso en un Ancla: restaura a Nereth, fija la reaparición, reinicia la
 ## zona y guarda.
 func descansar(nereth: Nereth, id: StringName, posicion: Vector3) -> void:
@@ -70,6 +85,7 @@ func guardar() -> bool:
 	var datos: Dictionary = {
 		"version": VERSION_GUARDADO,
 		"anclas_estabilizadas": anclas_estabilizadas.map(func(id: StringName) -> String: return String(id)),
+		"remiendos": remiendos.map(func(id: StringName) -> String: return String(id)),
 		"ancla_actual": String(ancla_actual),
 		"escena_ancla": escena_ancla,
 		"posicion_reaparicion": [posicion_reaparicion.x, posicion_reaparicion.y, posicion_reaparicion.z],
@@ -96,6 +112,8 @@ func cargar() -> bool:
 	borrar_memoria()
 	for id: Variant in d.get("anclas_estabilizadas", []):
 		anclas_estabilizadas.append(StringName(str(id)))
+	for id: Variant in d.get("remiendos", []):
+		remiendos.append(StringName(str(id)))
 	ancla_actual = StringName(str(d.get("ancla_actual", "")))
 	escena_ancla = str(d.get("escena_ancla", ""))
 	var p: Array = d.get("posicion_reaparicion", [0.0, 0.0, 0.0])
@@ -107,6 +125,7 @@ func cargar() -> bool:
 ## Vacía el estado en memoria (no toca el archivo).
 func borrar_memoria() -> void:
 	anclas_estabilizadas.clear()
+	remiendos.clear()
 	ancla_actual = &""
 	escena_ancla = ""
 	posicion_reaparicion = Vector3.ZERO

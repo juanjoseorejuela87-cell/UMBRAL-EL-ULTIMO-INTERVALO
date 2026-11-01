@@ -68,6 +68,7 @@ var _aturdimiento: float = 0.0
 @onready var resonancia: ComponenteResonancia = $Resonancia
 @onready var combate: CombateNereth = $Combate
 @onready var fase: FaseNereth = $Fase
+@onready var costura: CosturaNereth = $Costura
 @onready var _visual: Node3D = $Visual
 @onready var _caja_dano: CajaDano = $CajaDano
 
@@ -88,6 +89,7 @@ func _recalcular_salto() -> void:
 func _physics_process(delta: float) -> void:
 	_actualizar_temporizadores(delta)
 	fase.procesar(delta)
+	costura.procesar(delta)
 	combate.procesar(delta)
 	match estado:
 		Estado.ESQUIVA:
@@ -124,6 +126,7 @@ func reaparecer(posicion: Vector3) -> void:
 ## control libre (descanso en un Ancla, reaparición).
 func restaurar() -> void:
 	combate.interrumpir()
+	costura.cancelar()
 	vida.restaurar()
 	resistencia.restaurar()
 	resonancia.restaurar()

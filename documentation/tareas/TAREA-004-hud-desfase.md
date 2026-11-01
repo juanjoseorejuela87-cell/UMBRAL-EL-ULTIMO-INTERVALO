@@ -1,7 +1,7 @@
 # TAREA-004 — Resonancia y señales del Desfase en el HUD
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/ui/hud/hud.tscn`, `scenes/ui/hud/hud.gd`
   - Añadir **una instancia** del HUD en `scenes/niveles/pruebas/sala_desfase.tscn`.
@@ -46,3 +46,10 @@ Commit en `main`: `[antigravity] Resonancia y señales del Desfase en el HUD (TA
   - Avisos breves sin texto con animaciones Tween: temblor horizontal en `cambio_bloqueado`, destello rojo en `rechazo` y destello blanco-celeste en `desfase_preciso`.
 - Instanciado `HudJuego` en `scenes/niveles/pruebas/sala_desfase.tscn` apuntando a `Nereth`.
 - Comprobación: `tools/comprobar.ps1` pasa con éxito las 4 pruebas (`test_ancla.gd`, `test_combate.gd`, `test_desfase.gd`, `test_movimiento.gd` con 0 fallos) y arranque limpio.
+
+## Revisión (Claude, 2026-11-01)
+
+**ACEPTADO.** Todo por señales, dentro de los archivos permitidos; las 5 pruebas pasan (incluida la nueva `test_costura.gd`).
+Notas menores (no bloquean):
+- `_destello_barra` modifica el `StyleBoxFlat` del tema, que es un recurso compartido: si algún día hay dos HUD a la vez, destellarían juntos. Si hiciera falta, duplicar el estilo en `_ready`.
+- El temblor mueve `position.x` de una fila dentro de un contenedor; el contenedor puede recolocarla, y si se interrumpe a mitad de temblor la "posición original" leída ya está desplazada. Funciona; solo tenerlo en cuenta si se ve raro.

@@ -4,6 +4,7 @@ extends Node
 ## Asigna al padre la capa de colisión de su estado y ajusta su apariencia:
 ## lo que solo existe en la Realidad se intuye como silueta desde el Desfase;
 ## lo que solo existe en el Desfase es invisible desde la Realidad.
+## Mientras está "cosido" (Costura de Continuidad) existe en ambos estados.
 
 enum Existencia { REALIDAD, DESFASE, AMBOS }
 
@@ -11,11 +12,20 @@ const COLOR_FANTASMA: Color = Color(0.6, 0.7, 1.0, 0.16)
 
 @export var existe_en: Existencia = Existencia.DESFASE
 
+## Si es true, el elemento existe en ambos estados (lo activa ElementoCosible).
+var cosido: bool = false:
+	set(valor):
+		cosido = valor
+		_actualizar_capa()
+		_aplicar(_fase.estado)
+
 static var _material_fantasma: StandardMaterial3D
 
 var _geometrias: Array[GeometryInstance3D] = []
 var _materiales_originales: Dictionary = {}
 var _fase: GestorFase = GestorFase.global()
+## Objeto cuya capa de colisión se ajusta (el padre o la caja convexa creada).
+var _cuerpo_colision: Object
 
 
 func _ready() -> void:
@@ -23,13 +33,16 @@ func _ready() -> void:
 	if padre is CSGBox3D and (padre as CSGBox3D).use_collision:
 		_crear_colision_convexa(padre as CSGBox3D)
 	elif "collision_layer" in padre:
-		padre.set("collision_layer", _capa())
+		_cuerpo_colision = padre
+	_actualizar_capa()
 	_recoger_geometrias(padre)
 	_fase.cambiada.connect(_aplicar)
 	_aplicar(_fase.estado)
 
 
 func existe_en_estado(estado: GestorFase.Estado) -> bool:
+	if cosido:
+		return true
 	match existe_en:
 		Existencia.REALIDAD:
 			return estado == GestorFase.Estado.REALIDAD
@@ -39,7 +52,16 @@ func existe_en_estado(estado: GestorFase.Estado) -> bool:
 			return true
 
 
+## Muestra u oculta el elemento en el estado actual sin cambiar su colisión
+## (parpadeo de una Puntada a punto de soltarse).
+func parpadear(oculto: bool) -> void:
+	for geometria: GeometryInstance3D in _geometrias:
+		geometria.visible = not oculto and existe_en_estado(_fase.estado)
+
+
 func _capa() -> int:
+	if cosido:
+		return GestorFase.CAPA_COMUN
 	match existe_en:
 		Existencia.REALIDAD:
 			return GestorFase.CAPA_REALIDAD
@@ -49,6 +71,11 @@ func _capa() -> int:
 			return GestorFase.CAPA_COMUN
 
 
+func _actualizar_capa() -> void:
+	if _cuerpo_colision:
+		_cuerpo_colision.set("collision_layer", _capa())
+
+
 ## La colisión de CSG es cóncava (solo superficie): no detecta a Nereth si está
 ## completamente dentro, y FaseNereth necesita saberlo para no atraparlo al
 ## cambiar de estado. Se sustituye por una caja convexa equivalente.
@@ -56,7 +83,6 @@ func _crear_colision_convexa(caja: CSGBox3D) -> void:
 	caja.use_collision = false
 	var cuerpo := StaticBody3D.new()
 	cuerpo.name = "ColisionFase"
-	cuerpo.collision_layer = _capa()
 	cuerpo.collision_mask = 0
 	var forma := CollisionShape3D.new()
 	var caja_forma := BoxShape3D.new()
@@ -64,6 +90,7 @@ func _crear_colision_convexa(caja: CSGBox3D) -> void:
 	forma.shape = caja_forma
 	cuerpo.add_child(forma)
 	caja.add_child.call_deferred(cuerpo)
+	_cuerpo_colision = cuerpo
 
 
 func _recoger_geometrias(nodo: Node) -> void:
@@ -73,7 +100,7 @@ func _recoger_geometrias(nodo: Node) -> void:
 		_geometrias.append(geometria)
 		_materiales_originales[geometria] = geometria.material_override
 	for hijo: Node in nodo.get_children():
-		if hijo != self:
+		if hijo != self and not hijo is ElementoCosible:
 			_recoger_geometrias(hijo)
 
 
