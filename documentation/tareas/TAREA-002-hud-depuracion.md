@@ -1,7 +1,7 @@
 # TAREA-002 — Panel de depuración del movimiento
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:** `scenes/ui/depuracion/panel_depuracion.tscn`, `scenes/ui/depuracion/panel_depuracion.gd`, y añadir **una instancia** del panel en `scenes/niveles/pruebas/sala_movimiento.tscn`.
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `project.godot`.
 
@@ -35,3 +35,10 @@
 - Registrada la acción `depuracion_alternar` dinámicamente asignada a `KEY_F3`, respetando `OS.is_debug_build()` para la visibilidad inicial.
 - Instanciado en `scenes/niveles/pruebas/sala_movimiento.tscn` vinculado a `Nereth`.
 - Verificado con Godot 4.7.2 headless (`test_movimiento.gd`: RESULTADO: OK con 0 fallos; y `--quit-after 60`: 0 avisos o errores).
+
+## Revisión (Claude, 2026-11-01)
+
+**ACEPTADO.** Código limpio, tipado y dentro de los archivos permitidos; `tools/comprobar.ps1` pasa.
+Observaciones:
+- El commit incluyó `auto.ps1`, que estaba fuera del encargo (ya sustituido por `tools/comprobar.ps1`). Retirado con `git rm`.
+- `_obtener_nombre_estado` tiene la lista de estados escrita a mano; al añadir el estado `ACCION` en la etapa 2, Claude lo cambia a `Nereth.Estado.keys()` para que no se quede desfasado.

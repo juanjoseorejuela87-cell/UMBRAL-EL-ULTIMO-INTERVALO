@@ -8,3 +8,6 @@
 # Sistema operativo
 Thumbs.db
 desktop.ini
+
+# Estado local de Claude Code
+.claude/scheduled_tasks.lock

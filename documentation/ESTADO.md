@@ -22,7 +22,7 @@
 | Encargo | Ayudante | Estado |
 |---|---|---|
 | [TAREA-001](tareas/TAREA-001-textos-elyndor.md) | ChatGPT | ABIERTO |
-| [TAREA-002](tareas/TAREA-002-hud-depuracion.md) | Antigravity | ABIERTO |
+| [TAREA-002](tareas/TAREA-002-hud-depuracion.md) | Antigravity | ACEPTADO |
 
 ## Notas técnicas
 
