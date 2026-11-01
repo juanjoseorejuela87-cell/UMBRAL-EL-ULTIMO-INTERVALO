@@ -1,7 +1,7 @@
 # TAREA-005 — Greybox del primer tramo de Elyndor: «Barrio Desprendido»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** todo lo que crees dentro de `scenes/niveles/elyndor/` (escena principal: `scenes/niveles/elyndor/barrio_desprendido.tscn`).
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `scenes/mundo/`, `scenes/ui/`, `project.godot`, `scenes/main/`.
 
@@ -56,4 +56,15 @@ Commit en `main`: `[antigravity] Greybox de Elyndor: Barrio Desprendido (TAREA-0
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+- Creado el greybox del primer tramo de Elyndor en `scenes/niveles/elyndor/barrio_desprendido.tscn` (~135 u de longitud de izquierda a derecha con desnivel progresivo de y = -0.5 a y = 4.0):
+  1. **Entrada (x = -21 a 0):** Carrera inicial y desniveles con escalón para practicar salto corto y largo.
+  2. **Calle cortada (x = 0 a 18):** El suelo real se trunca sobre el abismo; requiere alternar al Desfase para cruzar por el puente etéreo de 6 u (`PuenteDesfaseCalle`).
+  3. **Fachada caída (x = 18 a 32):** Muro solo-Realidad que se atraviesa en Desfase, seguido inmediatamente de un muro solo-Desfase que exige retornar a la Realidad.
+  4. **Primera Ancla (x = 35):** `AnclaBarrio` (`id = elyndor_barrio_ancla_plaza`) en rellano protegido con distorsión visible que se retira al estabilizarla.
+  5. **Plaza de combate (x = 42 a 64):** Zona abierta con `ZonaPresionPlaza` que activa el régimen de Amenaza, custodiada por 2 muñecos de práctica provisionales.
+  6. **Cadena de Puntadas (x = 64 a 86):** Foso ancho que requiere enlazar 2 plataformas solo-Desfase con `ElementoCosible` (tipo Puntada) para alcanzar el rellano superior (y = 4.0).
+  7. **Atajo de Remiendo (x = 40 a 86):** Pasarela superior continua (`PuenteRemiendoAtajo`, tipo Remiendo) que reconecta permanentemente la zona final con el Ancla una vez estabilizada.
+  8. **Pórtico final (x = 105 a 114):** Arquitectura de transición gótica previa al límite de sala.
+  - Abismos cubiertos por `ZonaCaida` con dos `Marker3D` de reaparición contextual.
+  - Incluye `HudJuego`, `PanelDepuracion` y cámara con seguimiento suave.
+- Creada prueba automática de consistencia en `tests/test_barrio_desprendido.gd`.
