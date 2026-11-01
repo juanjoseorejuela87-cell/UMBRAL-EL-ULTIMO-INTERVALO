@@ -57,6 +57,22 @@ func _ejecutar() -> void:
 	_comprobar(absf(db - linear_to_db(0.5)) < 0.01, "se puede ajustar el volumen de cada bus")
 	_sonido.fijar_volumen(GestorSonido.BUS_EFECTOS, 1.0)
 
+	# Música sintetizada: se compone en segundo plano, en bucle y con fundidos
+	var inicio: int = Time.get_ticks_msec()
+	_sonido.musica(&"prefecto", 0.1)
+	while not _sonido.musica_sonando() and Time.get_ticks_msec() - inicio < 40000:
+		await process_frame
+	print("  (música compuesta en %d ms)" % (Time.get_ticks_msec() - inicio))
+	_comprobar(_sonido.musica_lista(&"prefecto") and _sonido.musica_sonando(), "la música del Prefecto se compone y empieza a sonar")
+	var pista: AudioStreamWAV = _sonido._cache[&"musica_prefecto"] as AudioStreamWAV
+	var esperado_musica: int = int(CompositorMusica.duracion(&"prefecto") * CompositorMusica.FRECUENCIA)
+	_comprobar(pista.loop_mode == AudioStreamWAV.LOOP_FORWARD and absi(pista.data.size() / 2 - esperado_musica) <= 1 and _tiene_sonido(pista.data),
+		"la música dura %.1f s y está en bucle" % CompositorMusica.duracion(&"prefecto"))
+	_comprobar(_sonido._musica.bus == GestorSonido.BUS_MUSICA, "la música suena por el bus Música")
+	_sonido.musica(&"", 0.1)
+	await _esperar(20)
+	_comprobar(not _sonido.musica_sonando() and _sonido.musica_actual() == &"", "la música se apaga con un fundido")
+
 	# Conexión con Nereth: saltar suena
 	var sala: Node = (load(SALA) as PackedScene).instantiate()
 	root.add_child(sala)

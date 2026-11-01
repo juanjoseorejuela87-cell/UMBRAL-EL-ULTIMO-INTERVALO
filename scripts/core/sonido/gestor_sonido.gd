@@ -41,6 +41,9 @@ const AMBIENTES: Dictionary = {
 const DURACION_AMBIENTE: float = 4.0
 
 @export var reproductores: int = 12
+## Volumen de la música en reproducción plena y nivel de silencio de los fundidos.
+@export var volumen_musica_db: float = -4.0
+@export var silencio_db: float = -40.0
 ## Sustitutos con grabación real: nombre -> AudioStream.
 @export var archivos: Dictionary = {}
 
@@ -49,6 +52,10 @@ var _reproductores: Array[AudioStreamPlayer] = []
 var _siguiente: int = 0
 var _ambiente: AudioStreamPlayer
 var _ambiente_actual: StringName = &""
+var _musica: AudioStreamPlayer
+var _musica_actual: StringName = &""
+var _tween_musica: Tween
+var _composiciones: Dictionary = {}
 
 static var _instancia: GestorSonido
 
@@ -75,6 +82,15 @@ func _ready() -> void:
 	_ambiente.bus = BUS_AMBIENTE
 	_ambiente.volume_db = -10.0
 	add_child(_ambiente)
+	_musica = AudioStreamPlayer.new()
+	_musica.bus = BUS_MUSICA
+	add_child(_musica)
+
+
+func _exit_tree() -> void:
+	for tarea: int in _composiciones.values():
+		WorkerThreadPool.wait_for_task_completion(tarea)
+	_composiciones.clear()
 
 
 ## Reproduce un efecto. `variacion` cambia el tono al azar (±) para que las
@@ -106,6 +122,71 @@ func ambiente(nombre: StringName) -> void:
 
 func ambiente_actual() -> StringName:
 	return _ambiente_actual
+
+
+## Cambia la música con un fundido (&"" la apaga). Si la pista aún no está
+## compuesta, se compone en segundo plano y empieza al terminar.
+func musica(nombre: StringName, fundido: float = 1.5) -> void:
+	if nombre == _musica_actual:
+		return
+	_musica_actual = nombre
+	if nombre == &"" or not CompositorMusica.PISTAS.has(nombre):
+		_fundir_musica(silencio_db, fundido, true)
+		return
+	if _cache.has(_clave_musica(nombre)):
+		_arrancar_musica(nombre, fundido)
+	else:
+		preparar_musica(nombre)
+
+
+func musica_actual() -> StringName:
+	return _musica_actual
+
+
+func musica_sonando() -> bool:
+	return _musica.playing
+
+
+## Compone una pista por adelantado (p. ej. al entrar en la sala del jefe).
+func preparar_musica(nombre: StringName) -> void:
+	if _cache.has(_clave_musica(nombre)) or _composiciones.has(nombre) 			or not CompositorMusica.PISTAS.has(nombre):
+		return
+	_composiciones[nombre] = WorkerThreadPool.add_task(func() -> void:
+		var wav: AudioStreamWAV = CompositorMusica.componer(nombre)
+		_musica_compuesta.call_deferred(nombre, wav))
+
+
+func musica_lista(nombre: StringName) -> bool:
+	return _cache.has(_clave_musica(nombre))
+
+
+func _musica_compuesta(nombre: StringName, wav: AudioStreamWAV) -> void:
+	if _composiciones.has(nombre):
+		WorkerThreadPool.wait_for_task_completion(_composiciones[nombre])
+		_composiciones.erase(nombre)
+	_cache[_clave_musica(nombre)] = wav
+	if _musica_actual == nombre:
+		_arrancar_musica(nombre, 1.5)
+
+
+func _arrancar_musica(nombre: StringName, fundido: float) -> void:
+	_musica.stream = _cache[_clave_musica(nombre)]
+	_musica.volume_db = silencio_db
+	_musica.play()
+	_fundir_musica(volumen_musica_db, fundido, false)
+
+
+func _fundir_musica(hasta_db: float, duracion: float, detener: bool) -> void:
+	if _tween_musica:
+		_tween_musica.kill()
+	_tween_musica = create_tween()
+	_tween_musica.tween_property(_musica, "volume_db", hasta_db, maxf(duracion, 0.01))
+	if detener:
+		_tween_musica.tween_callback(_musica.stop)
+
+
+func _clave_musica(nombre: StringName) -> StringName:
+	return StringName("musica_" + String(nombre))
 
 
 ## Volumen lineal (0–1) de un bus.

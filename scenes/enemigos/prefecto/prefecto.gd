@@ -13,6 +13,7 @@ signal atrapado
 signal derrotado_definitivamente
 
 const EVENTO_DERROTA: StringName = &"prefecto_derrotado"
+const MUSICA: StringName = &"prefecto"
 const ESCENA_ECO: PackedScene = preload("res://scenes/enemigos/eco_rezagado/eco_rezagado.tscn")
 
 @export_group("Prefecto")
@@ -66,6 +67,19 @@ func _ready() -> void:
 		collision_layer = 0
 		_caja_dano.activa = false
 		_abrir_salida()
+	else:
+		# La música del combate se compone en segundo plano al entrar en la sala.
+		GestorSonido.global().preparar_musica(MUSICA)
+
+
+func _exit_tree() -> void:
+	if GestorSonido.global() and GestorSonido.global().musica_actual() == MUSICA:
+		GestorSonido.global().musica(&"", 0.8)
+
+
+func _entrar_en_alerta() -> void:
+	super._entrar_en_alerta()
+	GestorSonido.global().musica(MUSICA)
 
 
 func puede_desgarrarse() -> bool:
@@ -280,6 +294,7 @@ func _morir() -> void:
 	_cambiar_suelos(ElementoFase.Existencia.AMBOS)
 	_abrir_salida()
 	GestorPartida.global().registrar_evento(EVENTO_DERROTA)
+	GestorSonido.global().musica(&"", 3.0)
 	derrotado_definitivamente.emit()
 
 
@@ -301,3 +316,4 @@ func reiniciar() -> void:
 	_cambiar_suelos(ElementoFase.Existencia.AMBOS)
 	super.reiniciar()
 	_actualizar_marca()
+	GestorSonido.global().musica(&"", 1.0)
