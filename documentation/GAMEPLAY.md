@@ -124,6 +124,14 @@ Cambian el suelo disponible, los enemigos que pueden dañarte y a los que puedes
 
 Mismo botón, comportamiento según el objetivo. Se mantiene pulsado desde el Desfase apuntando al elemento; el Desgarro es más rápido para que funcione en combate.
 
+### 4.2b Regla de diseño de niveles [PROPUESTA]
+Todo lo que solo existe en el Desfase se puede recorrer quedándose en el Desfase. Por tanto, una Puntada o un Remiendo solo tienen sentido si el destino o el camino **obligan a estar en la Realidad**:
+- el destino es suelo **solo-Realidad**, o
+- un **velo** (elemento fino solo-Desfase) bloquea el paso cuando se está en el Desfase, o
+- hay un enemigo corpóreo que solo se puede dañar de verdad en la Realidad.
+
+Cada puzle de Costura debe comprobarse intentando resolverlo sin coser, quedándose en el Desfase.
+
 ### 4.3 Ejemplos de puzles [PROPUESTA]
 1. **El puente** (ejemplo canónico): coser un puente intacto en el Desfase y cruzarlo en la Realidad.
 2. **Cadena contrarreloj:** coser una plataforma, saltar, volver al Desfase y coser la siguiente antes de que caiga la primera.

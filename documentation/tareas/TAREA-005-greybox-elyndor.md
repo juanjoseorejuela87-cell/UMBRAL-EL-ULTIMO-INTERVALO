@@ -1,7 +1,7 @@
 # TAREA-005 — Greybox del primer tramo de Elyndor: «Barrio Desprendido»
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** CAMBIOS
 - **Archivos permitidos:** todo lo que crees dentro de `scenes/niveles/elyndor/` (escena principal: `scenes/niveles/elyndor/barrio_desprendido.tscn`).
 - **No tocar:** `scenes/jugador/`, `scripts/core/`, `scenes/mundo/`, `scenes/ui/`, `project.godot`, `scenes/main/`.
 
@@ -68,3 +68,18 @@ Commit en `main`: `[antigravity] Greybox de Elyndor: Barrio Desprendido (TAREA-0
   - Abismos cubiertos por `ZonaCaida` con dos `Marker3D` de reaparición contextual.
   - Incluye `HudJuego`, `PanelDepuracion` y cámara con seguimiento suave.
 - Creada prueba automática de consistencia en `tests/test_barrio_desprendido.gd`.
+
+## Revisión (Claude, 2026-11-01) — CAMBIOS
+
+Muy buena base: escena limpia, ritmo claro, ids correctos, la prueba `test_barrio_desprendido.gd` pasa y las 7 pruebas siguen en verde. Los cambios vienen sobre todo de un fallo de diseño que **también estaba en mi encargo**:
+
+> **Regla:** todo lo que solo existe en el Desfase se puede recorrer *quedándose en el Desfase*. La Puntada y el Remiendo solo tienen sentido si el destino o el camino **obligan a estar en la Realidad** (suelo solo-Realidad, o un «velo» solo-Desfase que bloquea el paso en el Desfase). Lo añado a `GAMEPLAY.md` §4.
+
+1. **Atajo de Remiendo (crítico):** desde `RellanoAncla` se salta al `PuenteRemiendoAtajo` en el Desfase y se llega al final sin coser nada: se puede saltar medio nivel. Añade dos **velos solo-Desfase** (cajas finas, `existe_en = 1`, de suelo a ~6 u de alto): uno en x ≈ 40,5 sobre el rellano y otro en x ≈ 80,5 en el extremo del receptor. Así el puente solo se puede recorrer en la Realidad, es decir, después del Remiendo.
+2. **Cadena de Puntadas:** las plataformas se saltan en el Desfase sin coser. Haz `SueloReceptorAlto` **solo-Realidad** (`ElementoFase`, `existe_en = 0`). El jugador cose `Puntada2`, cruza en el Desfase, vuelve a la Realidad sobre `Puntada2` (que ya existe en ambos) y salta al receptor. Con una sola Puntada activa funciona.
+3. **Salto imposible:** de `Puntada1` (termina en x = 71,6) a `Puntada2` (empieza en x = 76,4) hay 4,8 u y +1,4 de altura; Nereth salta ≈ 3,6 u. Acércalas a ≤ 3,2 u de hueco.
+4. **Reaparición:** caer en el foso de las Puntadas devuelve a x = −16. Añade una segunda `ZonaCaida` bajo el foso (x 66–80) que use `PuntoReaparicionPlaza`.
+5. **Distorsión del Ancla:** tiene `use_collision = false`, así que es solo decorativa. Ponla con colisión y bloqueando el paso a la plaza, para que estabilizar el Ancla abra el camino.
+6. **Enemigos reales (hito 6 ya en `main`):** sustituye los muñecos de la plaza por `scenes/enemigos/vigia_hueco/vigia_hueco.tscn` (uno) y `scenes/enemigos/eco_rezagado/eco_rezagado.tscn` (uno). Si quieres, un `guardian_partido.tscn` en el receptor alto como cierre del tramo. Ajusta tu prueba si comprueba los muñecos.
+
+Al terminar, juega el tramo comprobando que **no** se puede completar quedándose siempre en el Desfase. Commit `[antigravity] Barrio Desprendido: cambios de revisión (TAREA-005)`, vuelve a `ENTREGADO` y avisa en el canal.
