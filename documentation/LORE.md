@@ -279,7 +279,7 @@ No son finales «bueno, malo y neutral»: cada uno responde a una pregunta disti
 | A3 | El Fragmento se llama genéricamente «Fragmento de Continuidad» (`fragmento_elyndor_prefecto`) | Es el **Fragmento de Memoria** | Mostrar el nombre «Fragmento de Memoria» y la frase de Maelis al recogerlo | HECHO |
 | A4 | La pantalla de fin de la demo usa un texto genérico | Frases oficiales: «Si has despertado, significa que el último intervalo no se ha cerrado» y «No recuperes los fragmentos sin comprender lo que estás devolviendo» | Usarlas en el recuerdo del Fragmento y al salir de Elyndor | HECHO |
 | A5 | El Salón del Prefecto es una sala cerrada | Es **una enorme entrada que conecta las ruinas subterráneas con el antiguo reino** | Al reambientar, que la salida tras el Prefecto dé al reino de Elyndor (fin de la demo) | PROPUESTA |
-| A6 | Ecos de memoria solo previstos como coleccionables | El Fragmento de Memoria **permite reconocer ecos que antes estaban ocultos** | Los ecos ocultos de Elyndor solo se ven tras obtener el Fragmento de Memoria (primera habilidad de comprensión) | PROPUESTA |
+| A6 | Ecos de memoria solo previstos como coleccionables | El Fragmento de Memoria **permite reconocer ecos que antes estaban ocultos** | Los ecos ocultos de Elyndor solo se ven tras obtener el Fragmento de Memoria (primera habilidad de comprensión) | HECHO (mecánica `EcoMemoria`; textos provisionales hasta TAREA-001) |
 
 ### 12.3 Pendientes que la historia deja abiertos [PENDIENTE]
 - Condiciones jugables de los finales y qué «decisiones narrativas» las alimentan.

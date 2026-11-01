@@ -26,7 +26,8 @@ static func mostrar(arbol: SceneTree, titulo: String, vision: String, frase: Str
 func presentar(titulo: String, vision: String, frase: String) -> void:
 	_titulo.text = titulo
 	_vision.text = vision
-	_frase.text = "«%s»" % frase
+	_frase.text = "«%s»" % frase if frase != "" else ""
+	_frase.visible = frase != ""
 	for nodo: CanvasItem in [_velo, _titulo, _vision, _frase]:
 		nodo.modulate.a = 0.0
 	var tween: Tween = create_tween()

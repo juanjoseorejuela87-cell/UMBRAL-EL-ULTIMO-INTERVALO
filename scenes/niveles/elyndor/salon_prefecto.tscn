@@ -29,6 +29,7 @@
 [ext_resource type="Script" path="res://scenes/mundo/kit_gotico/escombros.gd" id="43_escombros"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/polvo.tscn" id="44_polvo"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/rayo_luz.tscn" id="45_rayo"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/eco_memoria/eco_memoria.tscn" id="46_eco"]
 
 [sub_resource type="BoxShape3D" id="Box_transicion"]
 size = Vector3(1, 5, 4)
@@ -259,6 +260,12 @@ escena_destino = "res://scenes/ui/fin_demo/fin_demo.tscn"
 
 [node name="Forma" type="CollisionShape3D" parent="HaciaFinDemo"]
 shape = SubResource("Box_transicion")
+
+[node name="EcoPuertasAbiertas" parent="." instance=ExtResource("46_eco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
+id = &"elyndor_puertas_abiertas"
+titulo = "Eco: las puertas abiertas"
+texto = "Las cuatro puertas del salón, abiertas de par en par. Una figura con armadura se aparta para dejar pasar a una fila de habitantes que bajan con faroles hacia las ruinas. Nadie le teme. Inclina la cabeza ante cada uno."
 
 [node name="AmbienteSala" type="Node" parent="."]
 script = ExtResource("13_ambiente")
