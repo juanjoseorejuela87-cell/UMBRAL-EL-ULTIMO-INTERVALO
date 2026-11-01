@@ -8,18 +8,18 @@ signal ataque_iniciado(datos: DatosAtaque)
 signal golpe_conectado(info: InfoGolpe, objetivo: CajaDano)
 signal ataque_terminado
 
-enum Fase { NINGUNA, CARGA, PREPARACION, ACTIVO, RECUPERACION }
+enum Etapa { NINGUNA, CARGA, PREPARACION, ACTIVO, RECUPERACION }
 
 @export var arma: DatosArma
 @export var tiempo_buffer_ataque: float = 0.25
 @export var multiplicador_golpe_umbral: float = 2.5
 
-var fase: Fase = Fase.NINGUNA
+var etapa: Etapa =Etapa.NINGUNA
 var ataque_actual: DatosAtaque
 ## Posición en la cadena ligera del ataque actual (0 = primero).
 var indice_cadena: int = -1
 
-var _tiempo_fase: float = 0.0
+var _tiempo_etapa: float = 0.0
 var _carga: float = 0.0
 var _multiplicador: float = 1.0
 var _buffer_ligero: float = 0.0
@@ -37,13 +37,13 @@ func _ready() -> void:
 
 
 func atacando() -> bool:
-	return fase != Fase.NINGUNA
+	return etapa != Etapa.NINGUNA
 
 
 ## True cuando la recuperación ya permite cancelar con esquiva.
 func puede_cancelar() -> bool:
-	return fase == Fase.CARGA \
-			or (fase == Fase.RECUPERACION and _tiempo_fase >= ataque_actual.inicio_cancelacion)
+	return etapa == Etapa.CARGA \
+			or (etapa == Etapa.RECUPERACION and _tiempo_etapa >= ataque_actual.inicio_cancelacion)
 
 
 ## Corta el ataque en curso (esquiva, golpe recibido...).
@@ -60,32 +60,32 @@ func procesar(delta: float) -> void:
 	if Input.is_action_just_pressed(&"atacar_pesado"):
 		_buffer_pesado = tiempo_buffer_ataque
 
-	_tiempo_fase += delta
-	match fase:
-		Fase.NINGUNA:
+	_tiempo_etapa += delta
+	match etapa:
+		Etapa.NINGUNA:
 			if _nereth.estado == Nereth.Estado.SUELO or _nereth.estado == Nereth.Estado.AIRE:
 				_intentar_iniciar(-1)
-		Fase.CARGA:
+		Etapa.CARGA:
 			_carga += delta
 			if not Input.is_action_pressed(&"atacar_pesado") or _carga >= ataque_actual.carga_maxima:
 				var proporcion: float = clampf(_carga / ataque_actual.carga_maxima, 0.0, 1.0)
 				_multiplicador = lerpf(1.0, ataque_actual.multiplicador_carga, proporcion)
-				_cambiar_fase(Fase.PREPARACION)
-		Fase.PREPARACION:
-			if _tiempo_fase >= ataque_actual.preparacion:
+				_cambiar_etapa(Etapa.PREPARACION)
+		Etapa.PREPARACION:
+			if _tiempo_etapa >= ataque_actual.preparacion:
 				_activar_caja()
-				_cambiar_fase(Fase.ACTIVO)
-		Fase.ACTIVO:
+				_cambiar_etapa(Etapa.ACTIVO)
+		Etapa.ACTIVO:
 			_detectar_golpes()
-			if _tiempo_fase >= ataque_actual.activo:
+			if _tiempo_etapa >= ataque_actual.activo:
 				_caja_golpe.monitoring = false
-				_cambiar_fase(Fase.RECUPERACION)
-		Fase.RECUPERACION:
+				_cambiar_etapa(Etapa.RECUPERACION)
+		Etapa.RECUPERACION:
 			var encadenable: bool = ataque_actual != arma.aereo
-			if encadenable and _tiempo_fase >= ataque_actual.inicio_cancelacion \
+			if encadenable and _tiempo_etapa >= ataque_actual.inicio_cancelacion \
 					and _intentar_iniciar(indice_cadena):
 				return
-			if _tiempo_fase >= ataque_actual.recuperacion:
+			if _tiempo_etapa >= ataque_actual.recuperacion:
 				_terminar(true)
 
 
@@ -117,7 +117,7 @@ func _intentar_iniciar(indice_previo: int) -> bool:
 	_multiplicador = 1.0
 	var direccion: float = Input.get_axis(&"mover_izquierda", &"mover_derecha")
 	_nereth.comenzar_accion(direccion, datos.impulso)
-	_cambiar_fase(Fase.CARGA if datos.carga_maxima > 0.0 else Fase.PREPARACION)
+	_cambiar_etapa(Etapa.CARGA if datos.carga_maxima > 0.0 else Etapa.PREPARACION)
 	ataque_iniciado.emit(datos)
 	return true
 
@@ -148,14 +148,14 @@ func _detectar_golpes() -> void:
 			golpe_conectado.emit(info, caja)
 
 
-func _cambiar_fase(nueva: Fase) -> void:
-	fase = nueva
-	_tiempo_fase = 0.0
+func _cambiar_etapa(nueva: Etapa) -> void:
+	etapa = nueva
+	_tiempo_etapa = 0.0
 
 
 func _terminar(devolver_control: bool) -> void:
 	_caja_golpe.monitoring = false
-	fase = Fase.NINGUNA
+	etapa = Etapa.NINGUNA
 	ataque_actual = null
 	indice_cadena = -1
 	if devolver_control:

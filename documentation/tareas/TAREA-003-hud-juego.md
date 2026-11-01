@@ -1,7 +1,7 @@
 # TAREA-003 — HUD de juego y barra de postura de enemigos
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/ui/hud/hud.tscn`, `scenes/ui/hud/hud.gd`
   - `scenes/ui/barra_postura/barra_postura.tscn`, `scenes/ui/barra_postura/barra_postura.gd`
@@ -57,3 +57,8 @@ Commit en `main`: `[antigravity] HUD de juego y barra de postura (TAREA-003)`, *
   - Oculta cuando la postura es 0 y no hay Ruptura; en Ruptura cambia a color ámbar y pulsa suavemente.
 - Instanciado `HudJuego` en `scenes/niveles/pruebas/sala_combate.tscn` vinculado a `Nereth`.
 - Instanciada `BarraPostura` como hija de la raíz en `scenes/enemigos/muneco_practica/muneco_practica.tscn`.
+
+## Revisión (Claude, 2026-11-01)
+
+**ACEPTADO.** Solo toca los archivos permitidos, actualiza por señales, barra billboard ligera (sin SubViewport) y todas las pruebas pasan.
+Observación menor (no bloquea): `ComponenteResistencia` emite `cambiada` cada frame mientras se regenera, y el HUD crea y destruye un tween en cada emisión. Funciona, pero si en el futuro hiciera falta optimizar, basta con asignar el valor directamente cuando la diferencia es pequeña.

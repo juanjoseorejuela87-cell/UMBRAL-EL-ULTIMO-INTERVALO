@@ -19,6 +19,7 @@ const ACCIONES: Dictionary = {
 	&"interactuar": [KEY_E, "boton:3"],
 	&"atacar_ligero": [KEY_J, "raton:1", "boton:2"],
 	&"atacar_pesado": [KEY_K, "raton:2", "boton:10"],
+	&"desfase": [KEY_Q, KEY_I, "boton:9"],
 }
 
 

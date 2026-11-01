@@ -8,7 +8,7 @@ signal aterrizado
 signal esquiva_iniciada
 signal esquiva_terminada
 
-enum Estado { SUELO, AIRE, ESQUIVA, ACCION }
+enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO }
 
 @export_group("Desplazamiento")
 @export var velocidad_maxima: float = 6.0
@@ -43,11 +43,13 @@ enum Estado { SUELO, AIRE, ESQUIVA, ACCION }
 var estado: Estado = Estado.AIRE
 ## 1.0 = derecha, -1.0 = izquierda.
 var mirando: float = 1.0
-var invulnerable: bool = false:
-	set(valor):
-		invulnerable = valor
-		if _caja_dano:
-			_caja_dano.activa = not valor
+## Invulnerable durante la parte central de la esquiva.
+var invulnerable_esquiva: bool = false
+## Invulnerable durante la transición entre Realidad y Desfase (la gestiona FaseNereth).
+var invulnerable_transicion: bool = false
+var invulnerable: bool:
+	get:
+		return invulnerable_esquiva or invulnerable_transicion
 
 var _gravedad_subida: float = 0.0
 var _velocidad_salto: float = 0.0
@@ -58,10 +60,13 @@ var _tiempo_esquiva: float = 0.0
 var _enfriamiento: float = 0.0
 var _esquiva_aerea_disponible: bool = true
 var _buffer_esquiva: float = 0.0
+var _aturdimiento: float = 0.0
 
 @onready var vida: ComponenteVida = $Vida
 @onready var resistencia: ComponenteResistencia = $Resistencia
+@onready var resonancia: ComponenteResonancia = $Resonancia
 @onready var combate: CombateNereth = $Combate
+@onready var fase: FaseNereth = $Fase
 @onready var _visual: Node3D = $Visual
 @onready var _caja_dano: CajaDano = $CajaDano
 
@@ -69,6 +74,7 @@ var _buffer_esquiva: float = 0.0
 func _ready() -> void:
 	_plano_z = global_position.z
 	_recalcular_salto()
+	combate.golpe_conectado.connect(_al_conectar_golpe)
 
 
 ## Deriva gravedad y velocidad inicial a partir de altura y tiempo hasta la cima.
@@ -79,19 +85,37 @@ func _recalcular_salto() -> void:
 
 func _physics_process(delta: float) -> void:
 	_actualizar_temporizadores(delta)
+	fase.procesar(delta)
 	combate.procesar(delta)
 	match estado:
 		Estado.ESQUIVA:
 			_procesar_esquiva(delta)
 		Estado.ACCION:
 			_procesar_accion(delta)
+		Estado.ATURDIDO:
+			_procesar_aturdido(delta)
 		_:
 			_procesar_movimiento(delta)
 	velocity.z = 0.0
 	move_and_slide()
 	global_position.z = _plano_z
 	_actualizar_estado_suelo()
+	_caja_dano.activa = not invulnerable
 	_visual.scale.x = mirando
+
+
+## Deja a Nereth sin control durante un tiempo (Rechazo, golpes fuertes).
+func aturdir(duracion: float) -> void:
+	combate.interrumpir()
+	invulnerable_esquiva = false
+	_aturdimiento = duracion
+	estado = Estado.ATURDIDO
+
+
+## Recoloca a Nereth (zonas de caída, Anclas).
+func reaparecer(posicion: Vector3) -> void:
+	global_position = Vector3(posicion.x, posicion.y, _plano_z)
+	velocity = Vector3.ZERO
 
 
 ## Pasa al estado de acción (lo llama CombateNereth al empezar un ataque).
@@ -139,6 +163,20 @@ func _procesar_accion(delta: float) -> void:
 		_buffer_esquiva = 0.0
 		combate.interrumpir()
 		_intentar_esquivar(Input.get_axis(&"mover_izquierda", &"mover_derecha"))
+
+
+func _procesar_aturdido(delta: float) -> void:
+	if is_on_floor():
+		velocity.x = move_toward(velocity.x, 0.0, friccion_accion * delta)
+	_aplicar_gravedad(delta)
+	_aturdimiento -= delta
+	if _aturdimiento <= 0.0:
+		estado = Estado.SUELO if is_on_floor() else Estado.AIRE
+
+
+func _al_conectar_golpe(_info: InfoGolpe, _objetivo: CajaDano) -> void:
+	if combate.ataque_actual:
+		resonancia.ganar(combate.ataque_actual.ganancia_resonancia)
 
 
 func _aplicar_desplazamiento(direccion: float, delta: float) -> void:
@@ -194,14 +232,14 @@ func _intentar_esquivar(direccion: float) -> void:
 
 func _procesar_esquiva(delta: float) -> void:
 	_tiempo_esquiva += delta
-	invulnerable = _tiempo_esquiva >= inicio_invulnerable and _tiempo_esquiva < fin_invulnerable
+	invulnerable_esquiva = _tiempo_esquiva >= inicio_invulnerable and _tiempo_esquiva < fin_invulnerable
 	velocity.y = 0.0
 	if _tiempo_esquiva >= duracion_esquiva:
 		_terminar_esquiva()
 
 
 func _terminar_esquiva() -> void:
-	invulnerable = false
+	invulnerable_esquiva = false
 	velocity.x = clampf(velocity.x, -velocidad_maxima, velocidad_maxima)
 	_enfriamiento = enfriamiento_esquiva
 	estado = Estado.SUELO if is_on_floor() else Estado.AIRE

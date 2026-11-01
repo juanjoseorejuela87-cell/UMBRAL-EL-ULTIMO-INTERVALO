@@ -52,12 +52,25 @@ foreach ($t in $tareas) {
 Titulo "[3/3] Pruebas automaticas de Godot..."
 $fallidas = 0
 $pruebas = Get-ChildItem -Path (Join-Path $raiz "tests") -Filter "test_*.gd"
+$limiteSegundos = 120
 foreach ($p in $pruebas) {
     Write-Host "  > $($p.Name)"
-    & $godot --headless --path $raiz -s "res://tests/$($p.Name)"
-    if ($LASTEXITCODE -ne 0) {
+    # Un error de compilacion deja la prueba colgada sin llamar a quit():
+    # se limita el tiempo y se cuenta como fallo.
+    $salida = Join-Path $env:TEMP "umbral_$($p.BaseName).log"
+    $proceso = Start-Process -FilePath $godot -ArgumentList "--headless", "--path", $raiz, "-s", "res://tests/$($p.Name)" `
+        -NoNewWindow -PassThru -RedirectStandardOutput $salida -RedirectStandardError "$salida.err"
+    $null = $proceso.Handle  # sin esto PowerShell no conserva ExitCode
+    $terminado = $proceso.WaitForExit($limiteSegundos * 1000)
+    Get-Content $salida -Encoding UTF8 | Select-Object -Skip 2 | ForEach-Object { Write-Host $_ }
+    Get-Content "$salida.err" -Encoding UTF8 | Where-Object { $_ -match "ERROR" } | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
+    if (-not $terminado) {
+        $proceso.Kill()
         $fallidas++
-        Write-Host "  FALLO: $($p.Name) (codigo $LASTEXITCODE)" -ForegroundColor Red
+        Write-Host "  FALLO: $($p.Name) no termino en $limiteSegundos s (error de compilacion?)" -ForegroundColor Red
+    } elseif ($proceso.ExitCode -ne 0) {
+        $fallidas++
+        Write-Host "  FALLO: $($p.Name) (codigo $($proceso.ExitCode))" -ForegroundColor Red
     }
 }
 

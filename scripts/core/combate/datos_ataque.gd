@@ -22,6 +22,8 @@ extends Resource
 ## Multiplicador de daño y postura con la carga completa.
 @export var multiplicador_carga: float = 1.6
 @export var coste_resistencia: float = 12.0
+## Resonancia que gana Nereth al conectar (clave en régimen de Amenaza).
+@export var ganancia_resonancia: float = 4.0
 ## Velocidad hacia delante al empezar el ataque (solo en suelo).
 @export var impulso: float = 1.5
 

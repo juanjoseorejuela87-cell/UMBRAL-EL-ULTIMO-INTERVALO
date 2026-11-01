@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/efectos/efecto_desfase/efecto_desfase.gd" id="1_script"]
+
+[sub_resource type="CanvasItemMaterial" id="Mat_multiplicar"]
+blend_mode = 3
+
+[node name="EfectoDesfase" type="CanvasLayer"]
+layer = -1
+script = ExtResource("1_script")
+
+[node name="Tinte" type="ColorRect" parent="."]
+material = SubResource("Mat_multiplicar")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2

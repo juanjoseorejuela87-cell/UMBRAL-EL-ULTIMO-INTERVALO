@@ -6,6 +6,9 @@
 [ext_resource type="Script" path="res://scenes/jugador/combate_nereth.gd" id="4_combate"]
 [ext_resource type="Resource" path="res://scenes/jugador/armas/espada_umbral/espada_umbral.tres" id="5_espada"]
 [ext_resource type="Script" path="res://scripts/core/combate/caja_dano.gd" id="6_caja_dano"]
+[ext_resource type="Script" path="res://scripts/core/fase/componente_resonancia.gd" id="7_resonancia"]
+[ext_resource type="Script" path="res://scenes/jugador/fase_nereth.gd" id="8_fase"]
+[ext_resource type="PackedScene" path="res://scenes/efectos/efecto_desfase/efecto_desfase.tscn" id="9_efecto"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
 radius = 0.35
@@ -57,6 +60,14 @@ maximo = 100.0
 
 [node name="Resistencia" type="Node" parent="."]
 script = ExtResource("3_resistencia")
+
+[node name="Resonancia" type="Node" parent="."]
+script = ExtResource("7_resonancia")
+
+[node name="Fase" type="Node" parent="."]
+script = ExtResource("8_fase")
+
+[node name="EfectoDesfase" parent="." instance=ExtResource("9_efecto")]
 
 [node name="Combate" type="Node" parent="."]
 script = ExtResource("4_combate")
