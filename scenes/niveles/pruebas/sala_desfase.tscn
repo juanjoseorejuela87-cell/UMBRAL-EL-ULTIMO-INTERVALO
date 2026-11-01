@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://scripts/core/fase/elemento_fase.gd" id="5_elemento"]
 [ext_resource type="Script" path="res://scripts/core/fase/zona_presion.gd" id="6_presion"]
 [ext_resource type="Script" path="res://scripts/core/zona_caida.gd" id="7_caida"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud/hud.tscn" id="8_hud"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_piedra"]
 albedo_color = Color(0.34, 0.33, 0.38, 1)
@@ -158,4 +159,7 @@ script = ExtResource("2_camara")
 objetivo = NodePath("../Nereth")
 
 [node name="PanelDepuracion" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("3_panel")]
+objetivo = NodePath("../Nereth")
+
+[node name="HudJuego" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("8_hud")]
 objetivo = NodePath("../Nereth")

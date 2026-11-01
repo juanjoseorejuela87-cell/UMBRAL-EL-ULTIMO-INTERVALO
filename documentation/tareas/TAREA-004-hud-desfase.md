@@ -1,7 +1,7 @@
 # TAREA-004 — Resonancia y señales del Desfase en el HUD
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - `scenes/ui/hud/hud.tscn`, `scenes/ui/hud/hud.gd`
   - Añadir **una instancia** del HUD en `scenes/niveles/pruebas/sala_desfase.tscn`.
@@ -39,4 +39,10 @@ Commit en `main`: `[antigravity] Resonancia y señales del Desfase en el HUD (TA
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+- Activada y configurada `BarraResonancia` (`scenes/ui/hud/hud.tscn`, `scenes/ui/hud/hud.gd`):
+  - Barra azul-violeta entre vida y resistencia, reactiva por señales a `cambiada(actual, maximo)`.
+  - Régimen de Amenaza: visualiza el límite de recuperación pasiva al 30 % con marca `MarcaLimite` y resalta con borde sutil `BordeAmenaza`.
+  - Indicador de Desfase: rombo/icono que se ilumina en color lila brillante cuando `GestorFase.global().en_desfase()` es true.
+  - Avisos breves sin texto con animaciones Tween: temblor horizontal en `cambio_bloqueado`, destello rojo en `rechazo` y destello blanco-celeste en `desfase_preciso`.
+- Instanciado `HudJuego` en `scenes/niveles/pruebas/sala_desfase.tscn` apuntando a `Nereth`.
+- Comprobación: `tools/comprobar.ps1` pasa con éxito las 4 pruebas (`test_ancla.gd`, `test_combate.gd`, `test_desfase.gd`, `test_movimiento.gd` con 0 fallos) y arranque limpio.
