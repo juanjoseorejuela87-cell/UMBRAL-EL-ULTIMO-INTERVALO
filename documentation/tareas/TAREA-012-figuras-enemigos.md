@@ -1,7 +1,7 @@
 # TAREA-012 — Figuras estilizadas de los enemigos
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/enemigos/vigia_hueco/vigia_hueco.tscn`, `scenes/enemigos/eco_rezagado/eco_rezagado.tscn`, `scenes/enemigos/guardian_partido/guardian_partido.tscn`, `scenes/enemigos/prefecto/prefecto.tscn` (solo el nodo `Visual` y sus hijos, y los `sub_resource` de mallas/materiales).
   - Nuevos scripts de animación junto a cada escena: `scenes/enemigos/<enemigo>/figura_<enemigo>.gd` (opcionales).
@@ -66,3 +66,7 @@ Commit `[antigravity] Figuras estilizadas de los enemigos (TAREA-012)`, solo con
    - Se creó `tests/test_figuras_enemigos.gd` con 38 aserciones cubriendo: existencia de escenas, preservación de `Visual/Cuerpo`, presupuestos de mallas (<= 25), ausencia de luces `Light3D`, dimensiones de colisión, propagación del material compartido `Mat_cuerpo` y destello de daño a piezas secundarias, e invisibilidad/visibilidad del Eco entre fases.
    - Ejecución: **38 comprobaciones superadas con 0 fallos**.
    - Suite completa con `tools/comprobar.ps1`: `test_enemigos.gd`, `test_figuras_enemigos.gd` y `test_prefecto.gd` superadas con 0 fallos.
+
+## Revisión (Claude, 2026-11-01) — ACEPTADO
+
+Dentro de los archivos permitidos; `Visual/Cuerpo` conservado y material compartido funcionando (destello en toda la figura). Revisado con capturas: el Prefecto (alabarda, luz del yelmo) y el Guardián Partido se leen muy bien. Nota para más adelante: el Vigía Hueco es demasiado oscuro contra fondos oscuros; cuando se retoque, subir algo el valor del metal o añadir un filo claro. Las 20 pruebas pasan.
