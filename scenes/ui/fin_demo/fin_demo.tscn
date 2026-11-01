@@ -47,7 +47,9 @@ autowrap_mode = 3
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.65, 0.82, 1)
 theme_override_font_sizes/font_size = 20
-text = "Fin de la demo. El resto del mundo aún se está deshaciendo."
+text = "«No recuperes los fragmentos sin comprender lo que estás devolviendo».
+
+Fin de la demo."
 horizontal_alignment = 1
 autowrap_mode = 3
 

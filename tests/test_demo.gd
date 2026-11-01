@@ -47,6 +47,11 @@ func _ejecutar() -> void:
 	nereth.reaparecer(fragmento.global_position + Vector3(0.0, 0.1, 0.0))
 	await _esperar(5)
 	_comprobar(_partida.fragmento_obtenido_ya(&"fragmento_elyndor_prefecto") and not fragmento.visible, "tocar el Fragmento lo recoge y queda guardado")
+	var recuerdo: PantallaRecuerdo = null
+	for hijo: Node in salon.get_children():
+		if hijo is PantallaRecuerdo:
+			recuerdo = hijo
+	_comprobar(recuerdo != null and recuerdo.texto_frase().contains("el último intervalo no se ha cerrado"), "al tocarlo, Nereth vive el recuerdo con la frase oficial")
 
 	# --- Salida al fin de la demo ---
 	nereth.reaparecer(Vector3(21.0, 0.1, 0.0))
@@ -56,6 +61,7 @@ func _ejecutar() -> void:
 	var fin: PantallaFinDemo = current_scene as PantallaFinDemo
 	_comprobar(fin != null and fin.resumen.text.contains("Fragmentos de Continuidad: 1"), "el resumen cuenta el Fragmento")
 	_comprobar(fin != null and fin.resumen.text.contains("derrotado"), "el resumen registra la derrota del Prefecto")
+	_comprobar(fin != null and (fin.get_node("Centro/Texto") as Label).text.contains("No recuperes los fragmentos"), "al salir de Elyndor se oye a Maelis")
 
 	# --- Vuelta al título y continuar ---
 	_partida.escena_ancla = SALON

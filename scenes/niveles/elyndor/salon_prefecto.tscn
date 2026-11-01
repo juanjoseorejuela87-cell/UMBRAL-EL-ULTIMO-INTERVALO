@@ -226,6 +226,9 @@ shape = SubResource("Box_transicion")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 id = &"fragmento_elyndor_prefecto"
 aparece_con_evento = &"prefecto_derrotado"
+nombre = "Fragmento de Memoria"
+vision = "Una ciudad antigua. Una sala gigantesca. Una mujer observa una estructura luminosa."
+frase = "Si has despertado, significa que el último intervalo no se ha cerrado."
 
 [node name="HaciaFinDemo" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, 2.5, 0)

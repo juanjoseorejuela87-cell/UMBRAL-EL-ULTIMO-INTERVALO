@@ -13,6 +13,14 @@ signal recogido(id: StringName)
 @export var velocidad_giro: float = 1.2
 @export var amplitud_flotacion: float = 0.15
 
+@export_group("Recuerdo")
+## Nombre que se muestra al recogerlo (p. ej. «Fragmento de Memoria»).
+@export var nombre: String = "Fragmento de Continuidad"
+## Visión ajena que acompaña al Fragmento (breve).
+@export_multiline var vision: String = ""
+## Frase del recuerdo; si está vacía no se muestra ningún recuerdo.
+@export_multiline var frase: String = ""
+
 var _tiempo: float = 0.0
 var _altura_base: float = 0.0
 
@@ -47,6 +55,8 @@ func _al_entrar(cuerpo: Node3D) -> void:
 		return
 	GestorPartida.global().registrar_fragmento(id)
 	GestorSonido.global().reproducir(&"fragmento", 0.0, 0.0)
+	if frase != "":
+		PantallaRecuerdo.mostrar(get_tree(), nombre, vision, frase)
 	_desactivar()
 	recogido.emit(id)
 
