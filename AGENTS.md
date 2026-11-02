@@ -23,6 +23,7 @@ Etiquetas de estado en la documentación: **[CONFIRMADO]** (decidido por el dire
 | **Claude Code** | Programador principal y arquitecto | Arquitectura, sistemas núcleo (`scripts/core/`, jugador, Desfase, Costura, Anclas, combate), revisión e integración de todo lo que entregan los ayudantes, documentación de diseño. |
 | **Google Antigravity** | Ayudante de implementación | Tareas acotadas dentro del repo: salas de prueba, enemigos a partir de plantillas existentes, herramientas de editor, pruebas, UI. Solo trabaja sobre un encargo de `documentation/tareas/`. |
 | **ChatGPT** | Ayudante creativo y de redacción | Textos: diálogos, descripciones de objetos, ecos de memoria, nombres, conceptos de enemigos y jefes, *prompts* de arte. Entrega texto; no edita código del núcleo. |
+| **IA de modelado** (por incorporar) | Ayudante de modelos 3D | Modelos de personajes, enemigos y escenario según `documentation/ESPECIFICACION_MODELOS.md` y las hojas de personaje de `documentation/arte/`. Entrega `.glb` en `assets/modelos/` con su licencia en `assets/LICENCIAS.md`; no edita escenas ni código. Trabaja sobre encargos de `documentation/tareas/`. |
 
 El director del proyecto (humano) tiene la última palabra sobre cualquier decisión.
 

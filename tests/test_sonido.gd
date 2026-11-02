@@ -84,15 +84,30 @@ func _ejecutar() -> void:
 	await _esperar(20)
 	_comprobar(not _sonido.musica_sonando() and _sonido.musica_actual() == &"", "la música se apaga con un fundido")
 
+	# Composiciones en segundo plano terminadas: con un hilo componiendo, la
+	# física va a saltos y la prueba de controles sería poco fiable.
+	var espera: int = Time.get_ticks_msec()
+	while not _sonido._composiciones.is_empty() and Time.get_ticks_msec() - espera < 40000:
+		await process_frame
+
 	# Conexión con Nereth: saltar suena
 	var sala: Node = (load(SALA) as PackedScene).instantiate()
 	root.add_child(sala)
 	await _esperar(30)
+	# Con el equipo cargado puede tardar más en tocar suelo; sin suelo el salto
+	# quedaría en el búfer y sonaría después de la comprobación.
+	var jugador: Nereth = sala.find_children("*", "Nereth", true, false)[0] as Nereth
+	for i: int in 300:
+		if jugador.is_on_floor():
+			break
+		await physics_frame
+	_olvidar(&"salto")
 	await _pulsar(&"saltar")
-	_comprobar(_sonando(&"salto"), "al saltar suena el efecto de salto")
+	_comprobar(_lanzado(&"salto"), "al saltar suena el efecto de salto")
 	await _esperar(40)
+	_olvidar(&"esquiva")
 	await _pulsar(&"esquivar")
-	_comprobar(_sonando(&"esquiva"), "al esquivar suena el efecto de esquiva")
+	_comprobar(_lanzado(&"esquiva"), "al esquivar suena el efecto de esquiva")
 
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)
@@ -103,6 +118,27 @@ func _tiene_sonido(datos: PackedByteArray) -> bool:
 		if datos.decode_s16(i) != 0:
 			return true
 	return false
+
+
+## Si el efecto se ha lanzado: algún reproductor lo tiene asignado. No se
+## exige que siga sonando porque efectos de 0,08 s pueden acabar antes de la
+## comprobación cuando el equipo va cargado.
+func _lanzado(nombre: StringName) -> bool:
+	var flujo: AudioStream = _sonido.obtener(nombre)
+	for hijo: Node in _sonido.get_children():
+		var reproductor: AudioStreamPlayer = hijo as AudioStreamPlayer
+		if reproductor and reproductor.stream == flujo:
+			return true
+	return false
+
+
+func _olvidar(nombre: StringName) -> void:
+	var flujo: AudioStream = _sonido.obtener(nombre)
+	for hijo: Node in _sonido.get_children():
+		var reproductor: AudioStreamPlayer = hijo as AudioStreamPlayer
+		if reproductor and reproductor.stream == flujo:
+			reproductor.stop()
+			reproductor.stream = null
 
 
 func _sonando(nombre: StringName) -> bool:

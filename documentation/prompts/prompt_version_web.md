@@ -22,7 +22,7 @@ Hace siglos, los Arquitectos (una civilización avanzada) intentaron detener el 
 - La REALIDAD: el mundo actual, en ruinas, cálido, polvoriento, denso.
 - El DESFASE: el mundo que debería haber sido, intacto, frío, azulado, nítido y silencioso.
 
-La protagonista es NERETH, que despierta en una estructura subterránea bajo el reino de Elyndor sin saber cuánto tiempo ha estado allí. Puede moverse entre los dos estados. Una voz, Maelis, le habla en momentos clave. Elyndor es un reino que olvida: sus habitantes pierden recuerdos y las campanas suenan solas.
+El protagonista es NERETH, que despierta en una estructura subterránea bajo el reino de Elyndor sin saber cuánto tiempo ha estado allí. Puede moverse entre los dos estados. Una voz, Maelis, le habla en momentos clave. Elyndor es un reino que olvida: sus habitantes pierden recuerdos y las campanas suenan solas.
 
 Frases oficiales que debes usar tal cual:
 - Al obtener el Fragmento de Memoria: «Si has despertado, significa que el último intervalo no se ha cerrado.»
@@ -48,7 +48,7 @@ A) DESFASE (el corazón del juego)
 - Con Q, Nereth cambia de estado. Cada estado tiene su propia geometría: hay plataformas, puentes y muros que solo existen en la Realidad, otros solo en el Desfase, y elementos comunes.
 - Lo que no existe en el estado actual se dibuja como un fantasma translúcido (si es de la Realidad visto desde el Desfase) o directamente no se ve (si es del Desfase visto desde la Realidad).
 - Al cambiar: destello, distorsión breve de pantalla, cambio de paleta (cálido ↔ frío) y de sonido ambiente (en el Desfase todo suena más apagado, con eco).
-- RESONANCIA: barra 0–100. Sube estando en el Desfase. Si llega a 100, Nereth sufre un «Rechazo»: es expulsada a la Realidad y queda aturdida 1 s. Baja en la Realidad.
+- RESONANCIA: barra 0–100. Sube estando en el Desfase. Si llega a 100, Nereth sufre un «Rechazo»: es expulsado a la Realidad y queda aturdido 1 s. Baja en la Realidad.
 - Si cambias de estado estando dentro de un objeto sólido del otro estado, no se permite el cambio (sacudida y sonido de error).
 - «Desfase preciso»: cambiar de estado justo cuando un ataque te va a golpear lo esquiva sin coste.
 
@@ -79,7 +79,7 @@ E) ANCLAS DE CONTINUIDAD (puntos de guardado)
 ═══════════════════════════════
 5. JEFE: EL PREFECTO DE LAS PUERTAS
 ═══════════════════════════════
-Antiguo protector de Elyndor. Recibió la orden de impedir que nadie se acercara a las estructuras antiguas y ha olvidado que su función original era permitir el paso de los habitantes. No reconoce a Nereth, pero percibe algo extraño en ella y la considera una amenaza. Armadura monumental, alabarda, luz fría en el yelmo.
+Antiguo protector de Elyndor. Recibió la orden de impedir que nadie se acercara a las estructuras antiguas y ha olvidado que su función original era permitir el paso de los habitantes. No reconoce a Nereth, pero percibe algo extraño en él y lo considera una amenaza. Armadura monumental, alabarda, luz fría en el yelmo.
 - Fase 1 (100–65 %): combate puro. Barrido, estocada cargada y golpe al suelo con onda. Ataques telegrafiados y parables.
 - Fase 2 (65–30 %): se teletransporta entre 4 puertas de la sala. La puerta por la que saldrá solo se ve en el Desfase. Coser la puerta de entrada (Costura) le tiende una trampa y lo deja en Ruptura.
 - Fase 3 (30–0 %): pasa a ser bifásico (casi inmune en la Realidad). Los suelos laterales solo existen en el Desfase. Cada 12 s lanza el «Cierre», un ataque de toda la sala que solo se evita esquivando con precisión o escondiéndose tras una puerta cosida.
@@ -100,7 +100,7 @@ Extra: después de obtener el Fragmento de Memoria, aparecen en el Desfase «eco
 - Vista lateral con 4 capas de profundidad: fondo lejano (muy oscuro, siluetas de catedral), fondo medio (muros, columnas, arcos góticos), capa de juego, primer plano (siluetas finas y oscuras de columnas y cadenas que pasan por delante, con parallax más rápido).
 - REALIDAD: piedra rota, paleta cálida (ocres, marrones, ámbar), polvo flotando, rayos de luz diagonales, niebla cálida. Columnas rotas.
 - DESFASE: la misma arquitectura pero intacta (columnas enteras, arcos completos), paleta fría (azules, blanco pálido), aire limpio, partículas que suben lentamente, viñeta azul.
-- Nereth: silueta esbelta con capa que ondea (simulación simple por puntos), detalles de luz dorada. Animaciones por código: correr, saltar, esquivar, 3 golpes, golpe pesado, guardia, aturdida.
+- Nereth (hombre, 1,82 m, atlético y delgado, 25–30 años aparentes): pelo negro despeinado sobre la cara, cuello alto, armadura ligera oscura con filos plateados, fragmentos que flotan alrededor del hombro izquierdo, marcas de Continuidad que brillan en violeta en el brazo, tela hecha jirones que parece deshilacharse. Paleta: Realidad negro y grises; Desfase violeta y azul eléctrico; Costura blanco, beige y dorado. Animaciones por código: correr, saltar, esquivar, 3 golpes, golpe pesado, guardia, aturdida.
 - Iluminación falsa con degradados radiales y modo de mezcla aditivo para antorchas, símbolos y golpes.
 - Interfaz sobria: vida (roja oscura), resistencia (gris), Resonancia (arco azul que se vuelve inestable y tiembla cerca de 100). Fuente con serifa elegante.
 

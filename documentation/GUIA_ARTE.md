@@ -73,7 +73,13 @@ Cada sala se construye en **capas de profundidad** (Z):
 
 ## 7. Personajes (para cuando lleguen los modelos)
 
-- **Nereth:** silueta delgada y alta, ropa en capas desgastada de varias épocas (su cuerpo contiene restos de distintos acontecimientos), sin armadura pesada. Detalles que brillan débilmente en azul-blanco cuando está en el Desfase. Cara parcialmente oculta.
+- **Nereth [CONFIRMADO — hoja de personaje del director, 2026-11-02; imagen en `documentation/arte/nereth_hoja_personaje.png`]:** «Anomalía de Continuidad que camina entre los restos de un mundo que se deshace. No pertenece a la Realidad. No pertenece al Desfase. Él es el intervalo que los une.»
+  - Hombre, 1,82 m, atlético y delgado, 25–30 años aparentes. Pelo negro despeinado que le cae sobre la cara; cuello alto.
+  - Armadura ligera oscura con filos plateados, combinada con tela y **placas flotantes**. **Fragmentos suspendidos** que orbitan alrededor del hombro izquierdo y responden a la Resonancia. **Marcas de Continuidad** en brazo y guantelete que se iluminan al interactuar con la realidad alterada. La tela parece **deshilacharse y recomponerse** según el estado.
+  - **Estados:** Realidad = energía contenida, fragmentos casi inmóviles, colores fríos y discretos; Desfase = energía desbordada, fragmentos en movimiento, violeta intenso; Costura de Continuidad = líneas de luz blanca y dorada que unen y estabilizan.
+  - **Paleta:** Realidad negro y grises; Desfase violeta, índigo y azul eléctrico; Costura blanco, beige y dorado.
+  - **Espada del Umbral:** hoja larga y quebrada, forjada con restos de múltiples eras; vetas violetas. **Símbolo de Continuidad** (círculo con radios) grabado en equipo y piel.
+  - Notas: no es completamente humano ni completamente sobrenatural; elegancia, misterio y tragedia; la silueta debe reconocerse a distancia y a contraluz.
 - **Maelis:** se ve solo como eco: figura traslúcida dorada, vestimenta de investigadora de los Arquitectos.
 - **El Prefecto:** alto y rígido, armadura de guardia ceremonial deteriorada, llave-alabarda; partes de su armadura existen solo en un estado (conexiones visibles en el Desfase).
 - **Enemigos de Elyndor:** habitantes y guardias atrapados en bucles, deformados por la repetición, nunca monstruos genéricos.

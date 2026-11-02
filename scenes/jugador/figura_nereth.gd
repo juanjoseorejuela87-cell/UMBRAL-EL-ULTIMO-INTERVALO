@@ -1,17 +1,18 @@
 class_name FiguraNereth
 extends Node3D
 ## Figura provisional estilizada de Nereth (hito 14), hecha con primitivas
-## mientras llega el modelo definitivo: capucha, capa por segmentos, espada del
+## mientras llega el modelo definitivo: pelo negro, capa por segmentos, espada del
 ## Umbral y animación procedural (carrera, salto, esquiva, ataque, guardia).
 ## Barata (≈20 mallas, sin huesos); solo lee el estado de Nereth, no lo cambia.
 ## Debe ser hija del nodo Visual de Nereth (Visual voltea con scale.x).
 
 @export_group("Colores")
-@export var color_capa: Color = Color(0.16, 0.18, 0.27)
-@export var color_ropa: Color = Color(0.3, 0.27, 0.33)
-@export var color_piel: Color = Color(0.86, 0.8, 0.76)
-@export var color_dorado: Color = Color(0.95, 0.78, 0.38)
-@export var color_hoja: Color = Color(0.78, 0.82, 0.9)
+@export var color_capa: Color = Color(0.07, 0.07, 0.09)
+@export var color_ropa: Color = Color(0.14, 0.14, 0.17)
+@export var color_piel: Color = Color(0.84, 0.8, 0.78)
+## Marcas de Continuidad (violeta, hoja de personaje del director).
+@export var color_dorado: Color = Color(0.55, 0.32, 1.0)
+@export var color_hoja: Color = Color(0.62, 0.62, 0.7)
 
 @export_group("Animación")
 @export var frecuencia_paso: float = 11.0
@@ -137,14 +138,15 @@ func _construir() -> void:
 	capucha.height = 0.31
 	capucha.radial_segments = 12
 	capucha.rings = 6
-	_malla(_torso, capucha, capa, Vector3(-0.035, 0.77, 0), "Capucha")
+	_malla(_torso, capucha, capa, Vector3(-0.035, 0.77, 0), "Pelo")
 	var pico := CylinderMesh.new()
 	pico.top_radius = 0.0
 	pico.bottom_radius = 0.09
 	pico.height = 0.22
 	pico.radial_segments = 8
-	var punta := _malla(_torso, pico, capa, Vector3(-0.16, 0.8, 0), "PuntaCapucha")
-	punta.rotation.z = 1.9
+	# Mechón de pelo negro que cae sobre la cara (hoja de personaje: sin capucha).
+	var mechon := _malla(_torso, pico, capa, Vector3(0.1, 0.78, 0), "Mechon")
+	mechon.rotation.z = -2.5
 	var broche := SphereMesh.new()
 	broche.radius = 0.03
 	broche.height = 0.06
