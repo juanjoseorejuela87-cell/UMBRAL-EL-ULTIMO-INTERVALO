@@ -28,6 +28,12 @@
 [ext_resource type="Script" path="res://scenes/mundo/kit_gotico/cadena.gd" id="26_cadena"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/eco_memoria/eco_memoria.tscn" id="27_eco"]
 [ext_resource type="Script" path="res://scripts/core/sonido/ambiente_sala.gd" id="28_ambiente"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/estatua_arquitecto_rota.tscn" id="30_estatua_rota"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/estatua_arquitecto.tscn" id="31_estatua"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/brasero_apagado.tscn" id="32_brasero_apagado"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/brasero.tscn" id="33_brasero"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/vidriera_rota.tscn" id="34_vidriera_rota"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/vidriera.tscn" id="35_vidriera"]
 
 [sub_resource type="Environment" id="Entorno"]
 background_mode = 1
@@ -410,3 +416,45 @@ script = ExtResource("26_cadena")
 eslabones = 16
 tamano_eslabon = 0.24
 material = SubResource("Mat_silueta")
+
+[node name="DecoradoKit" type="Node3D" parent="."]
+
+[node name="EstatuaDaisRealidad" parent="DecoradoKit" instance=ExtResource("30_estatua_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0, -2.2)
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/EstatuaDaisRealidad"]
+script = ExtResource("4_fase")
+existe_en = 0
+
+[node name="EstatuaDaisDesfase" parent="DecoradoKit" instance=ExtResource("31_estatua")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.8, 0, -2.2)
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/EstatuaDaisDesfase"]
+script = ExtResource("4_fase")
+existe_en = 1
+
+[node name="FondoVidriera" type="CSGBox3D" parent="DecoradoKit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 4, -3.8)
+size = Vector3(4.5, 8.5, 0.4)
+material = ExtResource("16_sillares")
+
+[node name="VidrieraRealidad" parent="DecoradoKit" instance=ExtResource("34_vidriera_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -3.4)
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/VidrieraRealidad"]
+script = ExtResource("4_fase")
+existe_en = 0
+
+[node name="VidrieraDesfase" parent="DecoradoKit" instance=ExtResource("35_vidriera")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.5, 0, -3.4)
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/VidrieraDesfase"]
+script = ExtResource("4_fase")
+existe_en = 1
+
+[node name="BraseroApagadoDais" parent="DecoradoKit" instance=ExtResource("32_brasero_apagado")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, -1.2)
+
+[node name="BraseroCamara" parent="DecoradoKit" instance=ExtResource("33_brasero")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -1.4)
+con_luz = false

@@ -30,6 +30,11 @@
 [ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/polvo.tscn" id="44_polvo"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/atmosfera/rayo_luz.tscn" id="45_rayo"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/eco_memoria/eco_memoria.tscn" id="46_eco"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/barandilla_rota.tscn" id="47_barandilla_rota"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/barandilla.tscn" id="48_barandilla"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/brasero.tscn" id="49_brasero"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/reja.tscn" id="50_reja"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/muro_roto.tscn" id="51_muro_roto"]
 
 [sub_resource type="BoxShape3D" id="Box_transicion"]
 size = Vector3(1, 5, 4)
@@ -646,3 +651,49 @@ transform = Transform3D(0.94, 0.342, 0, -0.342, 0.94, 0, 0, 0, 1, 0.5, 8.6, -0.8
 
 [node name="Polvo" parent="Decorado" instance=ExtResource("44_polvo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -0.5)
+
+[node name="DecoradoKit" type="Node3D" parent="."]
+
+[node name="BarandillaFosoRealidad" parent="DecoradoKit" instance=ExtResource("47_barandilla_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.2, 0, -1.2)
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/BarandillaFosoRealidad"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="BarandillaFosoDesfase" parent="DecoradoKit" instance=ExtResource("48_barandilla")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.2, 0, -1.2)
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/BarandillaFosoDesfase"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="FondoMuroRoto" type="CSGBox3D" parent="DecoradoKit"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 3, -4)
+size = Vector3(5, 6.5, 0.4)
+material = ExtResource("31_roca")
+
+[node name="MuroFondoRealidad" parent="DecoradoKit" instance=ExtResource("51_muro_roto")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -3.5)
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/MuroFondoRealidad"]
+script = ExtResource("6_fase")
+existe_en = 0
+
+[node name="MuroFondoDesfase" parent="DecoradoKit" instance=ExtResource("37_muro")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -18, 0, -3.5)
+use_collision = false
+
+[node name="ElementoFase" type="Node" parent="DecoradoKit/MuroFondoDesfase"]
+script = ExtResource("6_fase")
+existe_en = 1
+
+[node name="BraseroSalidaIzq" parent="DecoradoKit" instance=ExtResource("49_brasero")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.5, 0, -1.4)
+con_luz = true
+
+[node name="BraseroSalidaDer" parent="DecoradoKit" instance=ExtResource("49_brasero")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5, 0, -1.4)
+
+[node name="RejaFondo" parent="DecoradoKit" instance=ExtResource("50_reja")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22, 0, -3.8)

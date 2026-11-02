@@ -120,6 +120,45 @@ func _ejecutar() -> void:
 	_comprobar(not (sala2.get_node("Geometria/PuertaSalida") as CSGBox3D).visible, "al recargar, la salida sigue abierta")
 	sala2.queue_free()
 
+	# Comprobaciones de TAREA-019: DecoradoKit en el Salón del Prefecto
+	var esc_salon: PackedScene = load("res://scenes/niveles/elyndor/salon_prefecto.tscn") as PackedScene
+	var inst_salon: Node = esc_salon.instantiate() if esc_salon else null
+	_comprobar(inst_salon != null, "la escena del Salón del Prefecto carga correctamente")
+	if inst_salon:
+		var decorado_kit: Node = inst_salon.get_node_or_null("DecoradoKit")
+		_comprobar(decorado_kit != null, "existe el nodo contenedor DecoradoKit en el Salón del Prefecto")
+		if decorado_kit:
+			var elems_fase: Array[Node] = decorado_kit.find_children("*", "ElementoFase", true, false)
+			var c_real: int = 0
+			var c_desf: int = 0
+			for ef_node: Node in elems_fase:
+				var ef: ElementoFase = ef_node as ElementoFase
+				if ef.existe_en == ElementoFase.Existencia.REALIDAD:
+					c_real += 1
+				elif ef.existe_en == ElementoFase.Existencia.DESFASE:
+					c_desf += 1
+			var pares: int = mini(c_real, c_desf)
+			_comprobar(pares >= 2, "DecoradoKit en el Salón cuenta con al menos 2 parejas Realidad/Desfase (%d encontradas)" % pares)
+
+			# Como mucho un brasero con luz puntual activa
+			var braseros: Array[Node] = decorado_kit.find_children("*", "Brasero", true, false)
+			if braseros.is_empty():
+				braseros = decorado_kit.find_children("*Brasero*", "", true, false)
+			var con_luz_cuenta: int = 0
+			for b: Node in braseros:
+				if b.get("con_luz") == true:
+					con_luz_cuenta += 1
+			_comprobar(con_luz_cuenta <= 1, "DecoradoKit en el Salón tiene como mucho un brasero con luz puntual (%d con luz)" % con_luz_cuenta)
+
+			# Sin colisiones añadidas
+			var colision: bool = false
+			for h: Node in decorado_kit.find_children("*", "", true, false):
+				if h is CollisionObject3D or h is CollisionShape3D or (h is CSGShape3D and (h as CSGShape3D).use_collision):
+					colision = true
+					break
+			_comprobar(not colision, "ninguna pieza del DecoradoKit en el Salón añade colisiones")
+		inst_salon.free()
+
 	_borrar_archivo()
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)

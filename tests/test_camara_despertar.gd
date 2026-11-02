@@ -26,6 +26,39 @@ func _ejecutar() -> void:
 	await _esperar(30)
 	_comprobar(nereth.is_on_floor() and absf(nereth.global_position.x - (-2.5)) < 0.5, "Nereth despierta sobre el estrado")
 
+	# Comprobaciones de TAREA-019: DecoradoKit en la Cámara del Despertar
+	var decorado_kit: Node = sala.get_node_or_null("DecoradoKit")
+	_comprobar(decorado_kit != null, "existe el nodo contenedor DecoradoKit en la Cámara")
+	if decorado_kit != null:
+		var elems_fase: Array[Node] = decorado_kit.find_children("*", "ElementoFase", true, false)
+		var c_realidad: int = 0
+		var c_desfase: int = 0
+		for ef_node: Node in elems_fase:
+			var ef: ElementoFase = ef_node as ElementoFase
+			if ef.existe_en == ElementoFase.Existencia.REALIDAD:
+				c_realidad += 1
+			elif ef.existe_en == ElementoFase.Existencia.DESFASE:
+				c_desfase += 1
+		var pares: int = mini(c_realidad, c_desfase)
+		_comprobar(pares >= 2, "DecoradoKit en la Cámara cuenta con al menos 2 parejas Realidad/Desfase (%d encontradas)" % pares)
+
+		# Luces: como mucho una luz nueva
+		var luces: Array[Node] = decorado_kit.find_children("*", "Light3D", true, false)
+		var luces_activas: int = 0
+		for l: Node in luces:
+			var light: Light3D = l as Light3D
+			if light.visible:
+				luces_activas += 1
+		_comprobar(luces_activas <= 1, "DecoradoKit en la Cámara no añade más de una luz nueva (%d luces)" % luces_activas)
+
+		# Colisiones: ninguna pieza añade colisión
+		var colision: bool = false
+		for h: Node in decorado_kit.find_children("*", "", true, false):
+			if h is CollisionObject3D or h is CollisionShape3D or (h is CSGShape3D and (h as CSGShape3D).use_collision):
+				colision = true
+				break
+		_comprobar(not colision, "ninguna pieza del DecoradoKit en la Cámara añade colisiones")
+
 	# Los símbolos reaccionan a su presencia
 	var simbolo: SimboloArquitectos = sala.get_node("SimboloDais1") as SimboloArquitectos
 	var material: StandardMaterial3D = simbolo.material_override as StandardMaterial3D
