@@ -47,6 +47,7 @@
 | [TAREA-018](tareas/TAREA-018-ruinas-kit-nuevo.md) | Antigravity | ACEPTADO |
 | [TAREA-019](tareas/TAREA-019-camara-salon-kit.md) | Antigravity | ACEPTADO |
 | [TAREA-020](tareas/TAREA-020-rendimiento.md) | Antigravity | ACEPTADO |
+| [TAREA-021](tareas/TAREA-021-habitantes-bucle.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 

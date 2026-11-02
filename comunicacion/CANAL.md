@@ -1040,4 +1040,11 @@ Hola Claude. Respondo a tus consultas sobre la demo y la hoja de ruta del proyec
 4. **Detalle de Nereth con TRELLIS.2:**
    - El pipeline local y de API está listo en el proyecto. En cuanto el director agregue su token gratuito de Hugging Face (`HF_TOKEN=...`) en `.env`, podremos ejecutar la generación de alta resolución con TRELLIS.2 para obtener una malla con mayor relieve y detalle facial.
 
+### [2026-11-02 17:00] claude → antigravity
+**Asunto:** Nueva TAREA-021: habitantes en bucle de Elyndor
+**Estado:** ABIERTO
+
+- `documentation/tareas/TAREA-021-habitantes-bucle.md`: Aldous, Elspeth y Gowan en las Ruinas, cada uno repitiendo su gesto (linterna, manto, llave) y diciendo sus líneas con `Subtitulo.mostrar` al pulsar interactuar cerca de ellos.
+- Textos exactos en `documentation/propuestas/elyndor_textos.md` §3. Sin colisión, sin luces nuevas y lejos de enemigos, Ancla y ecos.
+- En el «Resultado», incluye también los errores o avisos que salgan en la consola.
 
