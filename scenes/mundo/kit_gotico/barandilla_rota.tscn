@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materiales/sillares.tres" id="1_sillares"]
+[ext_resource type="Material" path="res://assets/materiales/piedra_castillo.tres" id="2_piedra"]
+
+[node name="BarandillaRota" type="CSGCombiner3D"]
+
+[node name="Zocalo" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+size = Vector3(4, 0.25, 0.4)
+material = ExtResource("1_sillares")
+
+[node name="PasamanosIntacto" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 1.0, 0)
+size = Vector3(2.0, 0.18, 0.45)
+material = ExtResource("1_sillares")
+
+[node name="PasamanosCaido" type="CSGBox3D" parent="."]
+transform = Transform3D(0.92, -0.39, 0, 0.39, 0.92, 0, 0, 0, 1, 0.8, 0.65, 0.05)
+size = Vector3(1.6, 0.18, 0.45)
+material = ExtResource("1_sillares")
+
+[node name="PosteIzq" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.85, 0.55, 0)
+size = Vector3(0.3, 0.95, 0.45)
+material = ExtResource("1_sillares")
+
+[node name="PosteDerPartido" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.85, 0.35, 0)
+size = Vector3(0.3, 0.5, 0.45)
+material = ExtResource("1_sillares")
+
+[node name="Balaustre1" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3, 0.55, 0)
+radius = 0.1
+height = 0.75
+sides = 8
+material = ExtResource("2_piedra")
+
+[node name="Balaustre2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.78, 0.55, 0)
+radius = 0.1
+height = 0.75
+sides = 8
+material = ExtResource("2_piedra")
+
+[node name="Balaustre3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.966, -0.259, 0, 0.259, 0.966, 0, 0, 0, 1, -0.24, 0.53, 0)
+radius = 0.1
+height = 0.72
+sides = 8
+material = ExtResource("2_piedra")
+
+[node name="BalaustreVolcado" type="CSGCylinder3D" parent="."]
+transform = Transform3D(0.174, 0.985, 0, -0.985, 0.174, 0, 0, 0, 1, 0.5, 0.35, 0.12)
+radius = 0.09
+height = 0.7
+sides = 8
+material = ExtResource("2_piedra")
+
+[node name="EscombroPiedra" type="CSGBox3D" parent="."]
+transform = Transform3D(0.866, 0.5, 0, -0.5, 0.866, 0, 0, 0, 1, 1.2, 0.25, 0.1)
+size = Vector3(0.25, 0.2, 0.3)
+material = ExtResource("1_sillares")

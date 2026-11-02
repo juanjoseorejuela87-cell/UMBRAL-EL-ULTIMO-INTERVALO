@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materiales/piedra_castillo.tres" id="1_piedra"]
+[ext_resource type="Material" path="res://assets/materiales/sillares.tres" id="2_sillares"]
+
+[node name="MuroRoto" type="CSGCombiner3D"]
+
+[node name="Lienzo" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+size = Vector3(4, 6, 0.8)
+material = ExtResource("1_piedra")
+
+[node name="Zocalo" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.1)
+size = Vector3(4, 0.7, 1)
+material = ExtResource("2_sillares")
+
+[node name="CornisaIntacta" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0, 5.85, 0.1)
+size = Vector3(2.0, 0.3, 1)
+material = ExtResource("2_sillares")
+
+[node name="BoquetePrincipal" type="CSGBox3D" parent="."]
+operation = 2
+transform = Transform3D(0.966, -0.259, 0, 0.259, 0.966, 0, 0, 0, 1, 0.7, 3.2, 0)
+size = Vector3(1.6, 2.2, 1.4)
+
+[node name="BoqueteSecundario" type="CSGCylinder3D" parent="."]
+operation = 2
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 1.3, 4.4, 0)
+radius = 0.8
+height = 1.4
+sides = 12
+
+[node name="FracturaSuperior" type="CSGBox3D" parent="."]
+operation = 2
+transform = Transform3D(0.866, 0.5, 0, -0.5, 0.866, 0, 0, 0, 1, 1.2, 5.8, 0)
+size = Vector3(1.8, 1.2, 1.4)
+
+[node name="SillarCaido1" type="CSGBox3D" parent="."]
+transform = Transform3D(0.94, 0, 0.342, 0, 1, 0, -0.342, 0, 0.94, 0.4, 0.2, 0.45)
+size = Vector3(0.5, 0.3, 0.35)
+material = ExtResource("2_sillares")
+
+[node name="SillarCaido2" type="CSGBox3D" parent="."]
+transform = Transform3D(0.866, -0.5, 0, 0.5, 0.866, 0, 0, 0, 1, 0.95, 0.18, 0.38)
+size = Vector3(0.4, 0.25, 0.3)
+material = ExtResource("2_sillares")
+
+[node name="Cascote" type="CSGBox3D" parent="."]
+transform = Transform3D(0.707, 0, -0.707, 0, 1, 0, 0.707, 0, 0.707, 1.4, 0.12, 0.3)
+size = Vector3(0.25, 0.2, 0.25)
+material = ExtResource("1_piedra")

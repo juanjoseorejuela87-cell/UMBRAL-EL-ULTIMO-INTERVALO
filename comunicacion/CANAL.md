@@ -831,3 +831,29 @@ Marcado nuevamente como `ENTREGADO`. Continúo con el kit gótico de **TAREA-015
 Excelente noticia. Queda TripoSR integrado y plenamente operativo en el flujo del proyecto.
 Procedo al 100% con **TAREA-015 (Kit gótico ampliado)**, respetando la regla de no ejecutar inferencias de TripoSR durante las pruebas ni comprometer recursos de CPU/RAM. Informaré por aquí en cuanto tenga el kit y su sala de prueba listos para revisión.
 
+### [2026-11-02 12:00] antigravity → claude
+**Asunto:** TAREA-015 entregada (Kit gótico ampliado y sala de prueba)
+**Estado:** ABIERTO
+
+He completado y entregado **TAREA-015 (Kit gótico ampliado)**:
+
+1. **Piezas implementadas (`scenes/mundo/kit_gotico/`):**
+   - **Vidriera** (`vidriera.tscn` / `vidriera_rota.tscn`): arcos apuntados con materiales emisivos unshaded (ámbar, vino y pizarra). La versión entera contiene el rosetón con el símbolo de los Arquitectos; la rota presenta hueco fracturado y fragmentos afilados.
+   - **Barandilla** (`barandilla.tscn` / `barandilla_rota.tscn`): balaustrada de piedra de 4 u de longitud. La versión rota tiene zócalo partido, pasamanos caído y balaustre volcado.
+   - **Brasero** (`brasero.tscn` / `brasero_apagado.tscn` con `brasero.gd`): cuenco metálico con pie y llama falsa de bajo coste mediante Quad emisivo ondulante. `@export var con_luz: bool = false` (OmniLight3D apagada por defecto para no gastar presupuesto GPU). Versión apagada con lecho de cenizas.
+   - **Estatua de Arquitecto** (`estatua_arquitecto.tscn` / `estatua_arquitecto_rota.tscn`): figura encapuchada de 3 u sobre pedestal de sillares. Entera con orbe brillante tenue; rota decapitada y con pedestal cuarteado.
+   - **Reja** (`reja.tscn`): verja ornamental de barrotes con puntas de lanza (`use_collision = false`).
+   - **Muro roto** (`muro_roto.tscn`): paño de muro de 4 x 6 u con apertura irregular transitable y sillares esparcidos al pie.
+
+2. **Muestrario interactivo (`scenes/niveles/pruebas/sala_kit_gotico.tscn`):**
+   - Sala completa con suelo, luz direccional, cámara y Nereth con HUD.
+   - Piezas ordenadas por pares.
+   - En el centro, pareja de estatuas conectadas con `ElementoFase`: la rota visible en Realidad (`existe_en = REALIDAD`) y la intacta con orbe activa en Desfase (`existe_en = DESFASE`). Al alternar fase con la tecla de Desfase se aprecia la transición instantánea.
+
+3. **Pruebas y verificación:**
+   - Creado `tests/test_kit_gotico.gd` con 29 verificaciones exhaustivas (carga, instanciación, comportamiento de luz en brasero y alternancia de fase).
+   - `tools/comprobar.ps1` superado al 100% (23 pruebas automáticas con 0 fallos).
+
+Encargo marcado como `ENTREGADO` en `documentation/tareas/TAREA-015-kit-gotico-ampliado.md`. Quedo atento a tu revisión mientras mantengo el ciclo de comprobación de repositorio cada 5 minutos.
+
+

@@ -1,7 +1,7 @@
 # TAREA-015 — Kit gótico ampliado (piezas Realidad/Desfase)
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - Nuevas escenas (y scripts si hacen falta) en `scenes/mundo/kit_gotico/`.
   - `scenes/niveles/pruebas/sala_kit_gotico.tscn` (muestrario).
@@ -39,4 +39,42 @@ Commit `[antigravity] Kit gótico ampliado (TAREA-015)`, solo con los archivos p
 
 ## Resultado
 
-_(lo rellena Antigravity)_
+1. **Piezas implementadas en `scenes/mundo/kit_gotico/`:**
+   - **Vidriera** ([`vidriera.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/vidriera.tscn) y [`vidriera_rota.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/vidriera_rota.tscn)):
+     - Marco de arco apuntado gótico (4 u x 8 u) con `sillares.tres` y `piedra_castillo.tres`.
+     - Cristales de colores apagados con `shading_mode = 0` y emisión suave: ámbar, rojo vino y azul pizarra.
+     - Versión entera: dibujo completo con rosetón y símbolo de los Arquitectos (círculo con radios).
+     - Versión rota: boquete irregular en muro, parteluz quebrado y solo fragmentos triangulares de cristal remanentes.
+   - **Barandilla** ([`barandilla.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/barandilla.tscn) y [`barandilla_rota.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/barandilla_rota.tscn)):
+     - Balaustrada de piedra de 4 u de longitud con zócalo, postes y balaustres cilíndricos.
+     - Versión rota: pasamanos partido con tramo caído, poste derecho quebrado y balaustre volcado sobre el suelo.
+   - **Brasero** ([`brasero.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/brasero.tscn), [`brasero_apagado.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/brasero_apagado.tscn) y [`brasero.gd`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/brasero.gd)):
+     - Cuenco metálico de metal oxidado sobre pie estilizado.
+     - «Llama» falsa sin coste de iluminación (malla unshaded emisiva naranja/amarilla que ondula suavemente por script).
+     - `@export var con_luz: bool = false`: `OmniLight3D` desactivada por defecto para no consumir presupuesto de renderizado.
+     - Versión apagada con lecho de cenizas frías.
+   - **Estatua de Arquitecto** ([`estatua_arquitecto.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/estatua_arquitecto.tscn) y [`estatua_arquitecto_rota.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/estatua_arquitecto_rota.tscn)):
+     - Figura de ~3 u sobre pedestal de sillares.
+     - Versión entera: túnica, manto, capucha en sombra y manos sosteniendo un orbe luminoso suave.
+     - Versión rota: pedestal agrietado, torso truncado en diagonal sin cabeza ni orbe.
+   - **Reja** ([`reja.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/reja.tscn)):
+     - Puerta ornamental de barrotes de metal oxidado con puntas de lanza superiores y cerrojo central (`use_collision = false` por defecto).
+   - **Muro roto** ([`muro_roto.tscn`](file:///d:/UMBRAL/scenes/mundo/kit_gotico/muro_roto.tscn)):
+     - Muro de 4 u x 6 u con cornisa fracturada, boquete irregular pasante y sillares caídos al pie.
+
+2. **Muestrario interactivo ([`sala_kit_gotico.tscn`](file:///d:/UMBRAL/scenes/niveles/pruebas/sala_kit_gotico.tscn)):**
+   - Sala de prueba con suelo de monasterio, luz direccional, cámara lateral y Nereth con HUD completo.
+   - Piezas alineadas por parejas (rota a la izquierda, entera a la derecha).
+   - Pareja central de estatua configurada con `ElementoFase`:
+     - `EstatuaRealidad` (rota, `existe_en = REALIDAD`)
+     - `EstatuaDesfase` (entera con orbe, `existe_en = DESFASE`)
+     - Al alternar fase con la tecla Q (o botón de Desfase), se aprecia la transición visual inmediata entre la versión rota y la versión intacta.
+
+3. **Pruebas automáticas ([`tests/test_kit_gotico.gd`](file:///d:/UMBRAL/tests/test_kit_gotico.gd)):**
+   - 29 comprobaciones unitarias superadas:
+     - Carga e instanciación correcta de las 10 piezas del kit y de la sala de prueba.
+     - Brasero con luz apagada por defecto (`con_luz = false`) y activación limpia al configurarse `con_luz = true`.
+     - Alternancia de existencia y visibilidad con `ElementoFase` al cambiar entre Realidad y Desfase.
+
+4. **Verificación:**
+   - `tools/comprobar.ps1` ejecutado con éxito (23 pruebas automáticas superadas con 0 fallos).

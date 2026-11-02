@@ -1,0 +1,74 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/mundo/kit_gotico/brasero.gd" id="1_script"]
+[ext_resource type="Material" path="res://assets/materiales/metal_oxidado.tres" id="2_metal"]
+
+[sub_resource type="StandardMaterial3D" id="Mat_llama"]
+shading_mode = 0
+albedo_color = Color(1, 0.65, 0.2, 1)
+emission_enabled = true
+emission = Color(1, 0.55, 0.15, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="PrismMesh" id="Mesh_llama"]
+material = SubResource("Mat_llama")
+size = Vector3(0.35, 0.6, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="Mat_carbones"]
+albedo_color = Color(0.18, 0.14, 0.12, 1)
+emission_enabled = true
+emission = Color(0.6, 0.2, 0.05, 1)
+emission_energy_multiplier = 0.5
+
+[node name="Brasero" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Estructura" type="CSGCombiner3D" parent="."]
+
+[node name="Basa" type="CSGCylinder3D" parent="Estructura"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+radius = 0.4
+height = 0.1
+sides = 12
+material = ExtResource("2_metal")
+
+[node name="Fuste" type="CSGCylinder3D" parent="Estructura"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+radius = 0.12
+height = 0.9
+sides = 10
+material = ExtResource("2_metal")
+
+[node name="CuencoExterior" type="CSGCylinder3D" parent="Estructura"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+radius = 0.5
+height = 0.35
+sides = 14
+material = ExtResource("2_metal")
+
+[node name="CuencoInterior" type="CSGCylinder3D" parent="Estructura"]
+operation = 2
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+radius = 0.44
+height = 0.25
+sides = 14
+material = ExtResource("2_metal")
+
+[node name="Carbones" type="CSGCylinder3D" parent="Estructura"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.18, 0)
+radius = 0.42
+height = 0.08
+sides = 12
+material = SubResource("Mat_carbones")
+
+[node name="Llama" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+cast_shadow = 0
+mesh = SubResource("Mesh_llama")
+
+[node name="Luz" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+visible = false
+light_color = Color(1, 0.65, 0.3, 1)
+light_energy = 1.2
+omni_range = 5.0

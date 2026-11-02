@@ -1,0 +1,125 @@
+[gd_scene format=3]
+
+[ext_resource type="Material" path="res://assets/materiales/metal_oxidado.tres" id="1_metal"]
+
+[node name="Reja" type="CSGCombiner3D"]
+
+[node name="PosteIzq" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.15, 1.8, 0)
+size = Vector3(0.12, 3.6, 0.12)
+material = ExtResource("1_metal")
+
+[node name="PosteDer" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 1.8, 0)
+size = Vector3(0.12, 3.6, 0.12)
+material = ExtResource("1_metal")
+
+[node name="TravesanoInferior" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+size = Vector3(2.4, 0.1, 0.1)
+material = ExtResource("1_metal")
+
+[node name="TravesanoMedio" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+size = Vector3(2.4, 0.08, 0.08)
+material = ExtResource("1_metal")
+
+[node name="TravesanoSuperior" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.3, 0)
+size = Vector3(2.4, 0.1, 0.1)
+material = ExtResource("1_metal")
+
+[node name="Barrote1" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 1.8, 0)
+radius = 0.035
+height = 3.3
+sides = 8
+material = ExtResource("1_metal")
+
+[node name="Punta1" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.85, 3.55, 0)
+radius = 0.05
+height = 0.2
+sides = 6
+cone = true
+material = ExtResource("1_metal")
+
+[node name="Barrote2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.51, 1.8, 0)
+radius = 0.035
+height = 3.3
+sides = 8
+material = ExtResource("1_metal")
+
+[node name="Punta2" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.51, 3.55, 0)
+radius = 0.05
+height = 0.2
+sides = 6
+cone = true
+material = ExtResource("1_metal")
+
+[node name="Barrote3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, 1.8, 0)
+radius = 0.035
+height = 3.3
+sides = 8
+material = ExtResource("1_metal")
+
+[node name="Punta3" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17, 3.55, 0)
+radius = 0.05
+height = 0.2
+sides = 6
+cone = true
+material = ExtResource("1_metal")
+
+[node name="Barrote4" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, 1.8, 0)
+radius = 0.035
+height = 3.3
+sides = 8
+material = ExtResource("1_metal")
+
+[node name="Punta4" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.17, 3.55, 0)
+radius = 0.05
+height = 0.2
+sides = 6
+cone = true
+material = ExtResource("1_metal")
+
+[node name="Barrote5" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51, 1.8, 0)
+radius = 0.035
+height = 3.3
+sides = 8
+material = ExtResource("1_metal")
+
+[node name="Punta5" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51, 3.55, 0)
+radius = 0.05
+height = 0.2
+sides = 6
+cone = true
+material = ExtResource("1_metal")
+
+[node name="Barrote6" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 1.8, 0)
+radius = 0.035
+height = 3.3
+sides = 8
+material = ExtResource("1_metal")
+
+[node name="Punta6" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 3.55, 0)
+radius = 0.05
+height = 0.2
+sides = 6
+cone = true
+material = ExtResource("1_metal")
+
+[node name="Cerrojo" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0.06)
+size = Vector3(0.3, 0.18, 0.12)
+material = ExtResource("1_metal")
