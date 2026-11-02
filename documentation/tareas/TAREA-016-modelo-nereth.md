@@ -1,7 +1,7 @@
 # TAREA-016 — Modelo 3D de Nereth
 
-- **Ayudante:** IA de modelado (por incorporar)
-- **Estado:** ABIERTO (pendiente de que el director guarde la hoja de personaje en el repositorio)
+- **Ayudante:** Claude con Blender (D-037); opcionalmente base generada con TRELLIS.2 (MIT) a partir de la vista frontal de la hoja
+- **Estado:** ABIERTO
 - **Archivos permitidos:** `assets/modelos/nereth/` (nuevo) y `assets/LICENCIAS.md` (añadir filas).
 - **No tocar:** escenas, código, `scenes/jugador/` (Claude integra el modelo).
 

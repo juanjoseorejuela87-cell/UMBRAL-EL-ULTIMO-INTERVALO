@@ -19,3 +19,7 @@ El juego se va a **vender** (D-032). Solo se admiten recursos cuya licencia perm
 2. Recursos generados con IA: anotar herramienta, versión o modelo, licencia de sus resultados y, si es posible, el prompt o la imagen de partida.
 3. Al publicar en tiendas (p. ej. Steam), declarar el uso de contenido generado con IA según sus normas.
 4. Las licencias cambian: si una herramienta cambia sus condiciones, lo ya descargado conserva la licencia anotada; lo nuevo se revisa de nuevo.
+
+## Herramientas
+
+- **Blender 5.2** (GPL-3.0-or-later, Blender Foundation): herramienta de modelado. Según la propia Blender Foundation, la licencia GPL no se aplica a las obras creadas con Blender: los modelos que produce son propiedad del autor y pueden usarse comercialmente.

@@ -5,6 +5,10 @@ extends SceneTree
 
 
 func _initialize() -> void:
+	_preparar.call_deferred()
+
+
+func _preparar() -> void:
 	var args: PackedStringArray = OS.get_cmdline_user_args()
 	if args.is_empty():
 		push_error("Falta la ruta del modelo")

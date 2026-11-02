@@ -42,7 +42,7 @@
 | [TAREA-013](tareas/TAREA-013-titulo-3d.md) | Antigravity | ACEPTADO |
 | [TAREA-014](tareas/TAREA-014-opciones-compartidas.md) | Antigravity | ACEPTADO |
 | [TAREA-015](tareas/TAREA-015-kit-gotico-ampliado.md) | Antigravity | ABIERTO |
-| [TAREA-016](tareas/TAREA-016-modelo-nereth.md) | IA de modelado (por incorporar) | ABIERTO |
+| [TAREA-016](tareas/TAREA-016-modelo-nereth.md) | Claude (Blender) | ABIERTO |
 
 ## Notas técnicas
 
@@ -61,6 +61,7 @@
 - Combate: ataques definidos como recursos (`DatosAtaque`) agrupados por arma (`DatosArma`) en `scenes/jugador/armas/`. Capas de física 6 (`dano_enemigo`) y 7 (`dano_jugador`) para cajas de golpe/daño.
 - Pendiente para más adelante: plataformas atravesables desde abajo (Godot 3D no tiene colisión de un sentido; requiere solución propia).
 - Capturas sin editor: `tools/captura_sala.gd` (ver cabecera) saca fotogramas PNG de una sala con Nereth en una posición, en Realidad o Desfase.
+- Modelos 3D: Blender 5.2 sin ventana con scripts de `tools/blender/` (D-037); requisitos en `documentation/ESPECIFICACION_MODELOS.md`; revisión con `tools/vista_modelo.gd`.
 - Pruebas automáticas: `Godot_console.exe --headless --path D:\UMBRAL -s res://tests/<prueba>.gd` (código de salida = fallos).
 
 ## Pendiente del director
