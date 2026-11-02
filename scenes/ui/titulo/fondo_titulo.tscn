@@ -26,7 +26,7 @@ albedo_color = Color(0.02, 0.018, 0.025, 1)
 roughness = 1.0
 
 [sub_resource type="QuadMesh" id="Malla_simbolo_dais"]
-size = Vector2(1.2, 1.2)
+size = Vector2(1.5, 1.5)
 
 [node name="FondoTitulo" type="SubViewportContainer"]
 anchors_preset = 15
@@ -48,75 +48,87 @@ unique_name_in_owner = true
 environment = SubResource("Entorno_titulo")
 
 [node name="Luna" type="DirectionalLight3D" parent="SubViewport"]
-transform = Transform3D(0.866025, 0, 0.5, 0.25, 0.866025, -0.433013, -0.433013, 0.5, 0.75, 0, 10, 5)
+transform = Transform3D(0.866025, 0, 0.5, 0.25, 0.866025, -0.433013, -0.433013, 0.5, 0.75, 0, 12, 6)
 light_color = Color(0.72, 0.78, 0.92, 1)
 light_energy = 0.85
 
 [node name="Camara" type="Camera3D" parent="SubViewport"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 0.996195, 0.0871557, 0, -0.0871557, 0.996195, 0, 1.45, 4)
+transform = Transform3D(1, 0, 0, 0, 0.990268, 0.139173, 0, -0.139173, 0.990268, 0, 2.2, 7.8)
 current = true
-fov = 46.0
+fov = 44.0
 
 [node name="Escenario" type="Node3D" parent="SubViewport"]
 
 [node name="EstradoPeldano" type="CSGBox3D" parent="SubViewport/Escenario"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, -0.2)
-size = Vector3(5.4, 0.25, 4.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, -0.6)
+size = Vector3(7.4, 0.25, 4.8)
 material = ExtResource("2_sillares")
 
 [node name="EstradoSuperior" type="CSGBox3D" parent="SubViewport/Escenario"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, -0.2)
-size = Vector3(3.8, 0.25, 3.4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, -0.6)
+size = Vector3(5.6, 0.25, 3.8)
 material = ExtResource("2_sillares")
 
 [node name="SimboloDais" type="MeshInstance3D" parent="SubViewport/Escenario"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.505, -0.2)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.505, -0.6)
 cast_shadow = 0
 mesh = SubResource("Malla_simbolo_dais")
 
 [node name="ArcoFondo" parent="SubViewport/Escenario" instance=ExtResource("5_arco")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.2)
 
 [node name="VentanalIzq" parent="SubViewport/Escenario" instance=ExtResource("6_ventanal")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.6, 0, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, -4.6)
 
 [node name="VentanalDer" parent="SubViewport/Escenario" instance=ExtResource("6_ventanal")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6, 0, -3.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, -4.6)
 
 [node name="MuroFondo" parent="SubViewport/Escenario" instance=ExtResource("7_muro")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.6)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5.6)
 
 [node name="FondoLejano" type="CSGBox3D" parent="SubViewport/Escenario"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, -12)
-size = Vector3(50, 16, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, -14)
+size = Vector3(60, 20, 1)
 material = SubResource("Mat_fondo_silueta")
 
 [node name="ColumnasRotas" type="Node3D" parent="SubViewport/Escenario"]
 
-[node name="ColumnaRotaIzq" parent="SubViewport/Escenario/ColumnasRotas" instance=ExtResource("3_columna_rota")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, -1.2)
+[node name="ColumnaRotaIzqExt" parent="SubViewport/Escenario/ColumnasRotas" instance=ExtResource("3_columna_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 0, -1.8)
 
-[node name="ColumnaRotaDer" parent="SubViewport/Escenario/ColumnasRotas" instance=ExtResource("3_columna_rota")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.6, 0, -1.2)
+[node name="ColumnaRotaIzqInt" parent="SubViewport/Escenario/ColumnasRotas" instance=ExtResource("3_columna_rota")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0, -2.5)
+
+[node name="ColumnaRotaDerInt" parent="SubViewport/Escenario/ColumnasRotas" instance=ExtResource("3_columna_rota")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.1, 0, -2.5)
+
+[node name="ColumnaRotaDerExt" parent="SubViewport/Escenario/ColumnasRotas" instance=ExtResource("3_columna_rota")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.2, 0, -1.8)
 
 [node name="ColumnasFantasma" type="Node3D" parent="SubViewport/Escenario"]
 unique_name_in_owner = true
 
-[node name="ColumnaFantasmaIzq" parent="SubViewport/Escenario/ColumnasFantasma" instance=ExtResource("4_columna")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.6, 0, -1.2)
+[node name="ColumnaFantasmaIzqExt" parent="SubViewport/Escenario/ColumnasFantasma" instance=ExtResource("4_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2, 0, -1.8)
 
-[node name="ColumnaFantasmaDer" parent="SubViewport/Escenario/ColumnasFantasma" instance=ExtResource("4_columna")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.6, 0, -1.2)
+[node name="ColumnaFantasmaIzqInt" parent="SubViewport/Escenario/ColumnasFantasma" instance=ExtResource("4_columna")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1, 0, -2.5)
+
+[node name="ColumnaFantasmaDerInt" parent="SubViewport/Escenario/ColumnasFantasma" instance=ExtResource("4_columna")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.1, 0, -2.5)
+
+[node name="ColumnaFantasmaDerExt" parent="SubViewport/Escenario/ColumnasFantasma" instance=ExtResource("4_columna")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4.2, 0, -1.8)
 
 [node name="RayoLuz" parent="SubViewport/Escenario" instance=ExtResource("9_rayo")]
-transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, -3.8, 6.5, -2.2)
+transform = Transform3D(0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, -4.2, 7.5, -3.2)
 
 [node name="Polvo" parent="SubViewport/Escenario" instance=ExtResource("8_polvo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
 
 [node name="FiguraNereth" type="Node3D" parent="SubViewport/Escenario"]
 unique_name_in_owner = true
-transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, 0.65, 0.5, -0.1)
+transform = Transform3D(0.819152, 0, -0.573576, 0, 1, 0, 0.573576, 0, 0.819152, 2.3, 0.5, -0.6)
 script = ExtResource("10_figura")

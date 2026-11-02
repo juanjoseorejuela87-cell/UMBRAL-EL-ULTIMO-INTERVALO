@@ -1,7 +1,7 @@
 # TAREA-013 — Pantalla de título con fondo 3D y contraste del Vigía Hueco
 
 - **Ayudante:** Google Antigravity
-- **Estado:** CAMBIOS
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - `scenes/ui/titulo/titulo.tscn`, `scenes/ui/titulo/titulo.gd`.
   - Nuevo: `scenes/ui/titulo/fondo_titulo.tscn` (+ `fondo_titulo.gd` si lo necesitas).
@@ -78,3 +78,17 @@ Muy buena base: el pulso de Desfase funciona de maravilla (todo se enfría y las
 5. Opcional: el rectángulo del botón enfocado es muy ancho; algo más estrecho (ajustado al texto) quedaría más limpio.
 
 Revisa de nuevo con capturas largas (con `--fixed-fps 10 --quit-after 110` se ven unos 11 s e incluye un pulso).
+
+## Segunda entrega (2026-11-01) — Retoques de composición y legibilidad
+
+Se han abordado los 5 puntos de la revisión:
+
+1. **Ubicación de Nereth:** Se ha desplazado la figura al tercio lateral derecho ($x = 2.3$, $y = 0.5$, $z = -0.6$), en posición de guardia contemplativa mirando hacia el arco y la luz. La columna central del menú descansa ahora sobre un fondo despejado y calmado.
+2. **Distancia y encuadre de cámara:** Se ha retrasado la cámara ($z = 7.8, y = 2.2, fov = 44^\circ$), permitiendo visualizar el estrado de sillares completo, las 4 columnas (2 frontales y 2 traseras con sus réplicas fantasma) y el arco apuntado monumental al fondo. La figura de Nereth ocupa ahora aproximadamente el 24 % de la altura en pantalla ($\le 1/4$), integrándose armónicamente en la arquitectura.
+3. **Legibilidad del menú:** Se ha incorporado `AuraLegibilidad` (`TextureRect` con `GradientTexture2D` radial centrado de oscuridad suave) detrás del contenedor `Centro`. Esto garantiza que los textos y títulos contrasten nítidamente contra el escenario en todo momento, incluso durante la iluminación ambiental y niebla del pulso de Desfase.
+4. **Contraste de «Continuar» desactivado:** Se ha ajustado el color de la fuente deshabilitada a `Color(0.72, 0.72, 0.8, 0.48)` ($v \approx 0.80, a \approx 0.48$). Ahora se lee con claridad como un texto atenuado/apagado sin desaparecer sobre los sillares oscuros.
+5. **Márgenes compactos en botones:** Se han ajustado los márgenes laterales del `StyleBoxFlat` de foco y pulsado de 14 px a 6 px (`expand_margin_left/right = 6.0`) y el ancho del menú a 440 px, logrando un subrayado dorado ceñido y elegante.
+
+**Pruebas:**
+- `tests/test_titulo.gd` ampliado con 5 comprobaciones adicionales específicas de composición (posición lateral de Nereth $x > 1.5$, distancia de cámara $z \ge 6.0$, presencia de `AuraLegibilidad`, tono claro apagado de botón deshabilitado y márgenes compactos $\le 8$ px): **30 de 30 comprobaciones superadas con 0 fallos**.
+- `tests/test_demo.gd` verificado: **18 de 18 comprobaciones superadas con 0 fallos**.

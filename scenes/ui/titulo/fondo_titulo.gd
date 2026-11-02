@@ -14,8 +14,8 @@ const DURACION_PULSO_BASE: float = 1.5
 var _tiempo_camara: float = 0.0
 var _tiempo_pulso: float = 0.0
 var _en_pulso: bool = false
-var _pos_camara_base: Vector3 = Vector3(0.0, 1.45, 4.0)
-var _rot_camara_base: Vector3 = Vector3(-0.08, 0.0, 0.0)
+var _pos_camara_base: Vector3 = Vector3(0.0, 2.2, 7.8)
+var _rot_camara_base: Vector3 = Vector3(-0.14, 0.0, 0.0)
 
 var _entorno: Environment
 var _material_fantasma: StandardMaterial3D
@@ -78,11 +78,11 @@ func _actualizar_camara(delta: float) -> void:
 		return
 	_tiempo_camara += delta
 	var fase: float = _tiempo_camara * (TAU / maxf(duracion_ciclo_camara, 1.0))
-	var balanceo_x: float = sin(fase) * 0.35
+	var balanceo_x: float = sin(fase) * 0.4
 	var balanceo_y: float = sin(fase * 1.5) * 0.06
 	camara.position = _pos_camara_base + Vector3(balanceo_x, balanceo_y, 0.0)
-	camara.rotation.y = _rot_camara_base.y - balanceo_x * 0.04
-	camara.rotation.x = _rot_camara_base.x + sin(fase * 1.2) * 0.012
+	camara.rotation.y = _rot_camara_base.y - balanceo_x * 0.03
+	camara.rotation.x = _rot_camara_base.x + sin(fase * 1.2) * 0.01
 
 
 func _actualizar_pulso(delta: float) -> void:

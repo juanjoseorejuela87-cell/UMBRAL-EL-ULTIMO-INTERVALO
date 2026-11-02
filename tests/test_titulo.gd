@@ -31,6 +31,10 @@ func _ejecutar() -> void:
 	_comprobar(fondo != null, "el título incluye la escena de fondo 3D FondoTitulo")
 	_comprobar(fondo != null and fondo.tiene_camara_activa(), "el fondo 3D tiene una Camera3D activa")
 	_comprobar(fondo != null and fondo.tiene_figura_nereth(), "el estrado 3D incluye la figura de Nereth")
+	_comprobar(fondo != null and fondo.figura_nereth.position.x > 1.5,
+		"la figura de Nereth está desplazada a un tercio lateral (x = %.1f > 1.5) dejando libre el menú" % (fondo.figura_nereth.position.x if fondo and fondo.figura_nereth else 0.0))
+	_comprobar(fondo != null and fondo.camara.position.z >= 6.0,
+		"la cámara está suficientemente alejada (z = %.1f >= 6.0) para mostrar el estrado entero y la arquitectura" % (fondo.camara.position.z if fondo and fondo.camara else 0.0))
 	_comprobar(fondo != null and fondo.simbolo_dais != null, "el estrado cuenta con el símbolo de los Arquitectos")
 	_comprobar(fondo != null and fondo.columnas_fantasma != null and fondo.columnas_fantasma.get_child_count() >= 2,
 		"existen columnas fantasma preparadas para el pulso de Desfase")
@@ -44,7 +48,12 @@ func _ejecutar() -> void:
 	_comprobar(GestorFase.global().en_desfase() == false, "el pulso visual de Desfase NO cambia el estado global de Fase")
 
 	# 3. Estilo de interfaz y botones del título
+	var aura: Node = titulo.get_node_or_null("AuraLegibilidad")
+	_comprobar(aura != null and aura is TextureRect, "existe un degradado/aura suave detrás del menú para legibilidad")
 	_comprobar(titulo.boton_continuar != null and titulo.boton_continuar.disabled, "sin partida guardada, «Continuar» está desactivado")
+	var color_desactivado: Color = titulo.boton_continuar.get_theme_color("font_disabled_color")
+	_comprobar(color_desactivado.v >= 0.65 and color_desactivado.a >= 0.45,
+		"«Continuar» desactivado tiene tono claro apagado y legible (v = %.2f, a = %.2f)" % [color_desactivado.v, color_desactivado.a])
 	_comprobar(titulo.boton_nueva != null and not titulo.boton_nueva.disabled, "«Nueva partida» está activo")
 	_comprobar(titulo.boton_salir != null and not titulo.boton_salir.disabled, "«Salir» está activo")
 
@@ -53,6 +62,9 @@ func _ejecutar() -> void:
 	var estilo_foco: StyleBox = titulo.boton_nueva.get_theme_stylebox("focus")
 	_comprobar(estilo_foco is StyleBoxFlat and (estilo_foco as StyleBoxFlat).border_width_bottom > 0,
 		"los botones tienen subrayado/borde inferior dorado en foco")
+	if estilo_foco is StyleBoxFlat:
+		_comprobar((estilo_foco as StyleBoxFlat).expand_margin_left <= 8.0,
+			"el botón enfocado tiene márgenes compactos ajustados al texto (<= 8 px)")
 
 	# 4. Navegación a Nueva Partida
 	titulo.nueva_partida()

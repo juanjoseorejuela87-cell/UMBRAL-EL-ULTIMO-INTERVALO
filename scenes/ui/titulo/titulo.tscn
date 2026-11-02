@@ -3,6 +3,16 @@
 [ext_resource type="Script" path="res://scenes/ui/titulo/titulo.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/titulo/fondo_titulo.tscn" id="2_fondo"]
 
+[sub_resource type="Gradient" id="Gradiente_aura_menu"]
+offsets = PackedFloat32Array(0, 0.55, 1)
+colors = PackedColorArray(0.015, 0.012, 0.025, 0.72, 0.015, 0.012, 0.025, 0.5, 0.015, 0.012, 0.025, 0)
+
+[sub_resource type="GradientTexture2D" id="Textura_aura_menu"]
+gradient = SubResource("Gradiente_aura_menu")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.85, 0.5)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_boton_normal"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boton_foco"]
@@ -12,10 +22,10 @@ border_width_bottom = 2
 border_color = Color(0.96, 0.82, 0.44, 0.9)
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-expand_margin_left = 12.0
-expand_margin_top = 4.0
-expand_margin_right = 12.0
-expand_margin_bottom = 4.0
+expand_margin_left = 6.0
+expand_margin_top = 2.0
+expand_margin_right = 6.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boton_presionado"]
 bg_color = Color(0.95, 0.8, 0.35, 0.16)
@@ -24,10 +34,10 @@ border_width_bottom = 2
 border_color = Color(1, 0.92, 0.6, 1)
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
-expand_margin_left = 12.0
-expand_margin_top = 4.0
-expand_margin_right = 12.0
-expand_margin_bottom = 4.0
+expand_margin_left = 6.0
+expand_margin_top = 2.0
+expand_margin_right = 6.0
+expand_margin_bottom = 2.0
 
 [node name="Titulo" type="Control"]
 layout_mode = 3
@@ -41,15 +51,21 @@ script = ExtResource("1_script")
 [node name="FondoTitulo" parent="." instance=ExtResource("2_fondo")]
 layout_mode = 1
 
-[node name="Vignette" type="ColorRect" parent="."]
+[node name="AuraLegibilidad" type="TextureRect" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -340.0
+offset_top = -240.0
+offset_right = 340.0
+offset_bottom = 240.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.02, 0.02, 0.04, 0.32)
+texture = SubResource("Textura_aura_menu")
 
 [node name="Centro" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -58,19 +74,19 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -180.0
-offset_right = 280.0
-offset_bottom = 180.0
+offset_left = -220.0
+offset_top = -175.0
+offset_right = 220.0
+offset_bottom = 175.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 14
+theme_override_constants/separation = 12
 
 [node name="Nombre" type="Label" parent="Centro"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.93, 0.91, 0.98, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.75)
-theme_override_colors/font_outline_color = Color(0.08, 0.06, 0.14, 0.95)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_colors/font_outline_color = Color(0.06, 0.04, 0.12, 0.95)
 theme_override_constants/shadow_offset_y = 4
 theme_override_constants/outline_size = 12
 theme_override_font_sizes/font_size = 64
@@ -80,8 +96,8 @@ horizontal_alignment = 1
 [node name="Subtitulo" type="Label" parent="Centro"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.7, 0.76, 0.94, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.6)
-theme_override_colors/font_outline_color = Color(0.06, 0.06, 0.12, 0.9)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7)
+theme_override_colors/font_outline_color = Color(0.05, 0.05, 0.1, 0.9)
 theme_override_constants/shadow_offset_y = 2
 theme_override_constants/outline_size = 6
 theme_override_font_sizes/font_size = 22
@@ -89,18 +105,18 @@ text = "El Último Intervalo"
 horizontal_alignment = 1
 
 [node name="Espacio" type="Control" parent="Centro"]
-custom_minimum_size = Vector2(0, 36)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
 [node name="Continuar" type="Button" parent="Centro"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.96, 0.72, 1)
 theme_override_colors/font_hover_color = Color(0.98, 0.88, 0.5, 1)
 theme_override_colors/font_focus_color = Color(0.98, 0.88, 0.5, 1)
-theme_override_colors/font_disabled_color = Color(0.42, 0.42, 0.48, 0.45)
-theme_override_colors/font_outline_color = Color(0.06, 0.05, 0.1, 0.9)
+theme_override_colors/font_disabled_color = Color(0.72, 0.72, 0.8, 0.48)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 0.9)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxEmpty_boton_normal")
@@ -113,12 +129,12 @@ text = "Continuar"
 [node name="NuevaPartida" type="Button" parent="Centro"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.96, 0.72, 1)
 theme_override_colors/font_hover_color = Color(0.98, 0.88, 0.5, 1)
 theme_override_colors/font_focus_color = Color(0.98, 0.88, 0.5, 1)
-theme_override_colors/font_disabled_color = Color(0.42, 0.42, 0.48, 0.45)
-theme_override_colors/font_outline_color = Color(0.06, 0.05, 0.1, 0.9)
+theme_override_colors/font_disabled_color = Color(0.72, 0.72, 0.8, 0.48)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 0.9)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxEmpty_boton_normal")
@@ -131,12 +147,12 @@ text = "Nueva partida"
 [node name="Salir" type="Button" parent="Centro"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.85, 0.85, 0.9, 1)
+theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
 theme_override_colors/font_pressed_color = Color(1, 0.96, 0.72, 1)
 theme_override_colors/font_hover_color = Color(0.98, 0.88, 0.5, 1)
 theme_override_colors/font_focus_color = Color(0.98, 0.88, 0.5, 1)
-theme_override_colors/font_disabled_color = Color(0.42, 0.42, 0.48, 0.45)
-theme_override_colors/font_outline_color = Color(0.06, 0.05, 0.1, 0.9)
+theme_override_colors/font_disabled_color = Color(0.72, 0.72, 0.8, 0.48)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 0.9)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 22
 theme_override_styles/normal = SubResource("StyleBoxEmpty_boton_normal")
