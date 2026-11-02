@@ -1,7 +1,7 @@
 # TAREA-022 — Primer paquete de piezas 3D del kit (según los artes conceptuales)
 
 - **Ayudante:** Google Antigravity (coordinación de modelos 3D por encargo del director)
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** `assets/modelos/kit/<pieza>/` (nuevo: `.glb`, texturas, imagen de referencia) y `assets/LICENCIAS.md` (añadir filas). Scripts de generación nuevos en `tools/blender/` si los necesitas.
 - **No tocar:** escenas (`scenes/`), `scripts/core/`, `project.godot`. **Claude integra** las piezas en las salas.
 
@@ -39,4 +39,25 @@ Commit `[antigravity] Kit modular 3D, primer paquete (TAREA-022)` solo con los a
 
 ## Resultado
 
-_(lo rellena Antigravity)_
+Entregado el primer paquete de 10 modelos 3D modulares (8 piezas + 2 variantes rotas) en `assets/modelos/kit/`, generados con script procedural en Blender 5.2 (`tools/blender/generar_kit_tarea022.py`) respetando estrictamente el canon de los artes conceptuales y las directrices de `ESPECIFICACION_MODELOS.md` y compatibilidad con Intel UHD 610 (D-017).
+
+### Resumen de piezas generadas y verificadas
+
+| Pieza | Archivo `.glb` | Triángulos (límite 3 000) | Dimensiones (m) [X × Y × Z] | Materiales (≤ 3) | Calibración Compatibility |
+|---|---|---|---|---|---|
+| `puerta_ojival` | `assets/modelos/kit/puerta_ojival/puerta_ojival.glb` | 364 | 3,14 × 6,16 × 0,57 | 3 (`piedra_gotica`, `madera_roble`, `hierro_forjado`) | Piedra arenisca cálida, roble oscuro y forja con metal 0,25 |
+| `mecanismo_engranajes` | `assets/modelos/kit/mecanismo_engranajes/mecanismo_engranajes.glb` | 840 | 4,20 × 4,20 × 3,80 | 2 (`laton_dorado`, `hierro_eje`) | Latón dorado ocre (`Color(0.76, 0.62, 0.28)`), metal 0,25, rugosidad 0,52 |
+| `farola_forja` | `assets/modelos/kit/farola_forja/farola_forja.glb` | 232 | 0,60 × 3,30 × 0,60 | 2 (`hierro_forjado`, `cristal_ambar`) | Forja gris carbón; cristal con emisión cálida ámbar (`Color(1.0, 0.65, 0.22)`), sin luz física |
+| `barandilla_ornamental` | `assets/modelos/kit/barandilla_ornamental/barandilla_ornamental.glb` | 838 | 4,08 × 1,30 × 0,08 | 1 (`hierro_forjado`) | Forja con metal 0,25 y rugosidad 0,55, arquitos ojivales calados |
+| `arcada_primer_plano` | `assets/modelos/kit/arcada_primer_plano/arcada_primer_plano.glb` | 516 | 4,40 × 7,19 × 0,65 | 2 (`piedra_silueta`, `hierro_cadena`) | Silueta de piedra oscura para Z > 3 m con eslabones de cadena colgando |
+| `columna_capitel` | `assets/modelos/kit/columna_capitel/columna_capitel.glb` | 316 | 1,45 × 6,00 × 1,45 | 1 (`piedra_cripta`) | Piedra caliza clara, plinto, toro, fuste y capitel con volutas |
+| `columna_capitel_rota` | `assets/modelos/kit/columna_capitel/columna_capitel_rota.glb` | 272 | 1,96 × 3,03 × 1,96 | 1 (`piedra_cripta`) | Fuste fracturado a 2,6 m con bloques angulosos y escombros caídos al pie |
+| `arco_apuntado_doble` | `assets/modelos/kit/arco_apuntado_doble/arco_apuntado_doble.glb` | 552 | 5,65 × 7,41 × 0,60 | 1 (`piedra_cripta`) | Triple columna, arcada gemela ojival y gran arco envolvente |
+| `arco_apuntado_doble_roto` | `assets/modelos/kit/arco_apuntado_doble/arco_apuntado_doble_roto.glb` | 300 | 5,40 × 7,49 × 0,60 | 1 (`piedra_cripta`) | Columna central quebrada, arco derecho colapsado y dovelas caídas |
+| `brasero_tripode` | `assets/modelos/kit/brasero_tripode/brasero_tripode.glb` | 524 | 0,96 × 1,39 × 0,92 | 2 (`hierro_brasero`, `fuego_emisivo`) | Trípode de forja con garra, cuenco y ascuas/llamas emisivas anaranjadas |
+
+### Verificación y cumplimiento
+- **Triángulos:** Todas las piezas quedan entre 232 y 840 triángulos, muy holgadas respecto al límite de 3 000 por prop de escenario.
+- **Renderizado Compatibility (Intel UHD 610):** Metal restringido a $\le 0,28$ y rugosidad $\ge 0,50$. Ninguna pieza se percibe negra bajo luz neutra ni en penumbra.
+- **Licencias:** Registradas 10 filas nuevas en `assets/LICENCIAS.md` con script propio en Blender 5.2 (GPL-3.0 / propio del proyecto para uso comercial).
+- **Pruebas:** Verificado con `tools/inspeccionar_kit_tarea022.gd` y suite completa `tools/comprobar.ps1` (24 de 24 pruebas superadas con 0 fallos).
