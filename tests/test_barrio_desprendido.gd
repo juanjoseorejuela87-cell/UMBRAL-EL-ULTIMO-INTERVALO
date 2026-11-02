@@ -324,6 +324,46 @@ func _ejecutar() -> void:
 			break
 	_comprobar(siluetas_finas, "todas las siluetas del primer plano son finas (radio <= 0.30 u)")
 
+	# E) TAREA-018: Decorado con el kit gótico ampliado
+	var decorado_kit: Node = _sala.get_node_or_null("DecoradoKit")
+	_comprobar(decorado_kit != null, "existe el nodo contenedor DecoradoKit")
+	if decorado_kit != null:
+		var elems_fase: Array[Node] = decorado_kit.find_children("*", "ElementoFase", true, false)
+		var cuenta_realidad: int = 0
+		var cuenta_desfase: int = 0
+		for ef_node: Node in elems_fase:
+			var ef: ElementoFase = ef_node as ElementoFase
+			if ef.existe_en == ElementoFase.Existencia.REALIDAD:
+				cuenta_realidad += 1
+			elif ef.existe_en == ElementoFase.Existencia.DESFASE:
+				cuenta_desfase += 1
+		var parejas_fase: int = mini(cuenta_realidad, cuenta_desfase)
+		_comprobar(parejas_fase >= 4, "DecoradoKit cuenta con al menos 4 parejas Realidad/Desfase (%d encontradas: %d REALIDAD, %d DESFASE)" % [parejas_fase, cuenta_realidad, cuenta_desfase])
+
+		# Comprobar braseros y presupuesto de luz (como mucho 1 con con_luz = true)
+		var braseros: Array[Node] = decorado_kit.find_children("*", "Brasero", true, false)
+		if braseros.is_empty():
+			braseros = decorado_kit.find_children("*Brasero*", "", true, false)
+		var braseros_con_luz: int = 0
+		for b: Node in braseros:
+			if b.get("con_luz") == true:
+				braseros_con_luz += 1
+		_comprobar(braseros_con_luz <= 1, "DecoradoKit tiene como mucho un brasero con luz puntual (%d con luz)" % braseros_con_luz)
+
+		# Comprobar que ninguna pieza del decorado añade colisión
+		var colision_indebida: bool = false
+		for hijo: Node in decorado_kit.find_children("*", "", true, false):
+			if hijo is CollisionObject3D:
+				colision_indebida = true
+				break
+			if hijo is CollisionShape3D:
+				colision_indebida = true
+				break
+			if hijo is CSGShape3D and (hijo as CSGShape3D).use_collision:
+				colision_indebida = true
+				break
+		_comprobar(not colision_indebida, "ninguna pieza del DecoradoKit añade colisiones al nivel")
+
 	print("RESULTADO: %s (%d fallos)" % ["OK" if _fallos == 0 else "FALLO", _fallos])
 	quit(_fallos)
 
