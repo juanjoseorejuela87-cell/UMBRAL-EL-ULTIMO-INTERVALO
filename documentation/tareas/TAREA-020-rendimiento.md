@@ -1,7 +1,7 @@
 # TAREA-020 — Medir y mejorar el rendimiento de la demo en el equipo modesto
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `tools/medir_rendimiento.gd` (nuevo).
   - Solo para optimizar decorado: nodos dentro de `DecoradoKit` y de los decorados de `camara_despertar.tscn`, `barrio_desprendido.tscn` y `salon_prefecto.tscn` (propiedades de render: `cast_shadow`, `visibility_range_*`, LOD; nunca posiciones, colisiones ni lógica).
@@ -61,3 +61,7 @@ Se implementó `tools/medir_rendimiento.gd` (ejecutable mediante `Godot_console.
 - **Draw Calls:** El pico máximo de llamadas de dibujo se registra en la Plaza del Ancla del Barrio Desprendido durante el Desfase (402 draw calls), perfectamente asumible para el controlador Intel Gen9.5 en Compatibility.
 - **Primitivas:** El número de polígonos por cuadro se mantiene entre 56k y 92k primitivas, bien equilibrado gracias al empaquetado de escombros en MultiMesh y las mallas modulares del kit gótico.
 - **Veredicto:** No es necesario recortar ni reducir decorado. La disciplina de límites de luces dinámicas (máximo 1 activa por sala), el uso de llamas falsas no sombreadas con emisión y los respaldos de muro sólidos garantizan un rendimiento fluido en el hardware de referencia.
+
+## Revisión (Claude, 2026-11-02) — ACEPTADO
+
+Repetí la medición con `tools/medir_rendimiento.gd` y coincide: 60 FPS medios en todas las posiciones con el preajuste Bajo en la Intel UHD 610, y las mismas llamadas de dibujo (pico de 402 en la plaza del Ancla en el Desfase). Dos detalles que no aparecían en el informe: algún mínimo puntual de 25–49 FPS al cargar una sala, y cuatro errores del renderizador `Parameter "material" is null` al pasar de las Ruinas al Salón (un material liberado antes que la malla que lo usa). No vienen de la herramienta; los investigo yo.

@@ -46,7 +46,7 @@
 | [TAREA-017](tareas/TAREA-017-triposr-local.md) | Antigravity | ACEPTADO |
 | [TAREA-018](tareas/TAREA-018-ruinas-kit-nuevo.md) | Antigravity | ACEPTADO |
 | [TAREA-019](tareas/TAREA-019-camara-salon-kit.md) | Antigravity | ACEPTADO |
-| [TAREA-020](tareas/TAREA-020-rendimiento.md) | Antigravity | ABIERTO |
+| [TAREA-020](tareas/TAREA-020-rendimiento.md) | Antigravity | ACEPTADO |
 
 ## Notas técnicas
 
@@ -63,6 +63,7 @@
 - Enemigos: `scripts/core/enemigos/enemigo.gd` (`Enemigo`) + escenas en `scenes/enemigos/`. `existe_en` (0 Realidad, 1 Desfase, 2 ambos), `peso` (0 ligero, 1 medio, 2 pesado), `ia_activa` (false = presente pero quieto), ataques como `DatosAtaque` (`parable`, `bloqueable`, `fuerza`). Entran en el grupo `reinicio_descanso`.
 - Anclas: escena `scenes/mundo/ancla/ancla.tscn` (`AnclaContinuidad`, `id` único obligatorio). Autoload `Partida` (`GestorPartida.global()`) guarda en `user://partida.json`. Los nodos del grupo `reinicio_descanso` reciben `reiniciar()` al descansar o reaparecer.
 - Combate: ataques definidos como recursos (`DatosAtaque`) agrupados por arma (`DatosArma`) en `scenes/jugador/armas/`. Capas de física 6 (`dano_enemigo`) y 7 (`dano_jugador`) para cajas de golpe/daño.
+- Rendimiento (TAREA-020): 60 FPS medios en las tres salas con el preajuste Bajo en la Intel UHD 610 (`tools/medir_rendimiento.gd`). Pendiente: errores `material is null` del renderizador al pasar de las Ruinas al Salón.
 - Pendiente para más adelante: plataformas atravesables desde abajo (Godot 3D no tiene colisión de un sentido; requiere solución propia).
 - Capturas sin editor: `tools/captura_sala.gd` (ver cabecera) saca fotogramas PNG de una sala con Nereth en una posición, en Realidad o Desfase.
 - Modelos 3D: Blender 5.2 sin ventana con scripts de `tools/blender/` (D-037); requisitos en `documentation/ESPECIFICACION_MODELOS.md`; revisión con `tools/vista_modelo.gd`.
