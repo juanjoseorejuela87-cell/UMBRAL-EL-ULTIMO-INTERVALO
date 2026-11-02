@@ -1,7 +1,7 @@
 # TAREA-014 — Opciones en el título con un panel de ajustes compartido
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - Nuevos: `scenes/ui/ajustes/panel_ajustes.tscn` y `scenes/ui/ajustes/panel_ajustes.gd`.
   - `scenes/ui/pausa/menu_pausa.tscn`, `scenes/ui/pausa/menu_pausa.gd`.
@@ -34,4 +34,29 @@ Commit `[antigravity] Opciones en el título con panel de ajustes compartido (TA
 
 ## Resultado
 
-_(lo rellena Antigravity)_
+1. **PanelAjustes compartido (`panel_ajustes.tscn` + `panel_ajustes.gd`):**
+   - Creado como `class_name PanelAjustes` extendiendo `VBoxContainer` para layout automático y limpio.
+   - Encapsula las secciones *Sonido* y *Gráficos* completas con la confirmación de reinicio para cambios de renderizador.
+   - API completa implementada: `mostrar_sonido()`, `mostrar_graficos()`, `ocultar_todo()`, `actualizar_deslizadores_sonido()`, `actualizar_selector_graficos()`, `seleccionar_preajuste(p)`, `cancelar_reinicio()`, `confirmar_reinicio()`, y señal `volver_pulsado`.
+   - Utiliza la novedad del núcleo `GestorSonido.global().volumen(bus)` en lugar de conversiones manuales con `db_to_linear`.
+   - Conexión de sonidos de interfaz (`ui_mover`, `ui_aceptar`) sin disparo espurio en el foco inicial (`_foco_inicial_dado`).
+
+2. **Menú de Pausa (`menu_pausa.tscn` + `menu_pausa.gd`):**
+   - Reemplazados los paneles locales por la instancia única `%PanelAjustes`.
+   - `MenuPausa` expone propiedades delegadas (`panel_sonido`, `panel_graficos`, `deslizador_musica`, `selector_calidad`, etc.) manteniendo total compatibilidad con todas las pruebas y código existente.
+   - Conectada la señal `volver_pulsado` para regresar fluidamente al menú principal de opciones de pausa.
+
+3. **Pantalla de Título (`titulo.tscn` + `titulo.gd`):**
+   - Añadido el botón **Opciones** (%Opciones) ubicado entre «Nueva partida» y «Salir», con el estilo refinado de TAREA-013.
+   - Creado el submenú `%MenuOpciones` con los botones «Sonido», «Gráficos» y «Volver».
+   - Instanciado `%PanelAjustes` dentro del contenedor central bajo el aura de legibilidad.
+   - Al pulsar Opciones se muestra el submenú; al pulsar Sonido o Gráficos se abre el panel de ajustes correspondiente; al pulsar Volver en el panel se regresa al submenú de opciones, y al pulsar Volver en el submenú se regresa al menú principal dando foco a Opciones.
+   - El fondo 3D y su pulso de Desfase siguen animándose continuamente detrás sin ninguna interrupción.
+
+4. **Verificación y pruebas:**
+   - `tests/test_pausa.gd`: 15/15 OK (0 fallos).
+   - `tests/test_menu_graficos.gd`: 27/27 OK (0 fallos).
+   - `tests/test_sonido_ui.gd`: 12/12 OK (0 fallos).
+   - `tests/test_titulo.gd`: ampliado de 30 a **38 comprobaciones** (verificación de existencia del botón Opciones, posición entre Nueva partida y Salir, apertura de submenú, apertura de Sonido y Gráficos, cambio de volumen con `GestorSonido.volumen(bus)`, y navegación completa de Volver): **38/38 OK (0 fallos)**.
+   - `tests/test_demo.gd`: 18/18 OK (0 fallos).
+   - `tools/comprobar.ps1`: **Todo correcto (21 de 21 suites pasadas)**.

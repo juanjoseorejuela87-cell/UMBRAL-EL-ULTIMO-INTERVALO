@@ -55,7 +55,13 @@ func _ejecutar() -> void:
 	_comprobar(color_desactivado.v >= 0.65 and color_desactivado.a >= 0.45,
 		"«Continuar» desactivado tiene tono claro apagado y legible (v = %.2f, a = %.2f)" % [color_desactivado.v, color_desactivado.a])
 	_comprobar(titulo.boton_nueva != null and not titulo.boton_nueva.disabled, "«Nueva partida» está activo")
+	_comprobar(titulo.boton_opciones != null and not titulo.boton_opciones.disabled, "«Opciones» está activo")
 	_comprobar(titulo.boton_salir != null and not titulo.boton_salir.disabled, "«Salir» está activo")
+	var idx_nueva: int = titulo.boton_nueva.get_index()
+	var idx_opciones: int = titulo.boton_opciones.get_index()
+	var idx_salir: int = titulo.boton_salir.get_index()
+	_comprobar(idx_opciones == idx_nueva + 1 and idx_salir == idx_opciones + 1,
+		"el botón Opciones está colocado entre Nueva partida y Salir")
 
 	var estilo_normal: StyleBox = titulo.boton_nueva.get_theme_stylebox("normal")
 	_comprobar(estilo_normal is StyleBoxEmpty, "los botones del título no tienen fondo gris por defecto (StyleBoxEmpty)")
@@ -66,7 +72,47 @@ func _ejecutar() -> void:
 		_comprobar((estilo_foco as StyleBoxFlat).expand_margin_left <= 8.0,
 			"el botón enfocado tiene márgenes compactos ajustados al texto (<= 8 px)")
 
-	# 4. Navegación a Nueva Partida
+	# 4. Submenú de Opciones y Panel de Ajustes
+	titulo.mostrar_menu_opciones()
+	await _esperar(2)
+	_comprobar(titulo.menu_opciones.visible and not titulo.menu_principal.visible,
+		"abrir Opciones muestra el submenú y oculta el menú principal")
+
+	titulo.mostrar_sonido()
+	await _esperar(2)
+	_comprobar(titulo.panel_ajustes.visible and titulo.panel_ajustes.panel_sonido.visible and not titulo.menu_opciones.visible,
+		"abrir Sonido muestra el panel de sonido")
+
+	titulo.panel_ajustes.deslizador_musica.value = 0.55
+	await _esperar(2)
+	var vol_m: float = GestorSonido.global().volumen(GestorSonido.BUS_MUSICA)
+	_comprobar(absf(vol_m - 0.55) < 0.02,
+		"mover el deslizador cambia el volumen del bus (GestorSonido.volumen = %.2f)" % vol_m)
+
+	titulo.panel_ajustes.boton_volver_sonido.pressed.emit()
+	await _esperar(2)
+	_comprobar(titulo.menu_opciones.visible and not titulo.panel_ajustes.visible,
+		"Volver desde Sonido regresa al submenú de opciones")
+
+	titulo.mostrar_graficos()
+	await _esperar(2)
+	_comprobar(titulo.panel_ajustes.visible and titulo.panel_ajustes.panel_graficos.visible and not titulo.menu_opciones.visible,
+		"abrir Gráficos muestra el panel de gráficos")
+
+	titulo.panel_ajustes.boton_volver_graficos.pressed.emit()
+	await _esperar(2)
+	_comprobar(titulo.menu_opciones.visible and not titulo.panel_ajustes.visible,
+		"Volver desde Gráficos regresa al submenú de opciones")
+
+	titulo.mostrar_menu_principal()
+	await _esperar(2)
+	_comprobar(titulo.menu_principal.visible and not titulo.menu_opciones.visible,
+		"Volver desde el submenú regresa al menú principal del título")
+
+	# Restaurar volumen
+	GestorSonido.global().fijar_volumen(GestorSonido.BUS_MUSICA, 1.0)
+
+	# 5. Navegación a Nueva Partida
 	titulo.nueva_partida()
 	_comprobar(await _llegar_a(CAMARA), "«Nueva partida» navega correctamente a la Cámara del Despertar")
 

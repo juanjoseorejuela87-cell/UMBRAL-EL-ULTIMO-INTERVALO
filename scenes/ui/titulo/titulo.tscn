@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/ui/titulo/titulo.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/ui/titulo/fondo_titulo.tscn" id="2_fondo"]
+[ext_resource type="PackedScene" path="res://scenes/ui/ajustes/panel_ajustes.tscn" id="3_ajustes"]
 
 [sub_resource type="Gradient" id="Gradiente_aura_menu"]
 offsets = PackedFloat32Array(0, 0.55, 1)
@@ -108,7 +109,12 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 
-[node name="Continuar" type="Button" parent="Centro"]
+[node name="MenuPrincipal" type="VBoxContainer" parent="Centro"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Continuar" type="Button" parent="Centro/MenuPrincipal"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
@@ -126,7 +132,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_boton_normal")
 theme_override_styles/focus = SubResource("StyleBoxFlat_boton_foco")
 text = "Continuar"
 
-[node name="NuevaPartida" type="Button" parent="Centro"]
+[node name="NuevaPartida" type="Button" parent="Centro/MenuPrincipal"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
@@ -144,7 +150,25 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_boton_normal")
 theme_override_styles/focus = SubResource("StyleBoxFlat_boton_foco")
 text = "Nueva partida"
 
-[node name="Salir" type="Button" parent="Centro"]
+[node name="Opciones" type="Button" parent="Centro/MenuPrincipal"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.72, 1)
+theme_override_colors/font_hover_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_focus_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_disabled_color = Color(0.72, 0.72, 0.8, 0.48)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_boton_foco")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_boton_presionado")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_boton_foco")
+text = "Opciones"
+
+[node name="Salir" type="Button" parent="Centro/MenuPrincipal"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
@@ -161,6 +185,71 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_boton_presionado")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_boton_normal")
 theme_override_styles/focus = SubResource("StyleBoxFlat_boton_foco")
 text = "Salir"
+
+[node name="MenuOpciones" type="VBoxContainer" parent="Centro"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="OpcionesSonido" type="Button" parent="Centro/MenuOpciones"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.72, 1)
+theme_override_colors/font_hover_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_focus_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_disabled_color = Color(0.72, 0.72, 0.8, 0.48)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_boton_foco")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_boton_presionado")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_boton_foco")
+text = "Sonido"
+
+[node name="OpcionesGraficos" type="Button" parent="Centro/MenuOpciones"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.72, 1)
+theme_override_colors/font_hover_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_focus_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_disabled_color = Color(0.72, 0.72, 0.8, 0.48)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_boton_foco")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_boton_presionado")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_boton_foco")
+text = "Gráficos"
+
+[node name="OpcionesVolver" type="Button" parent="Centro/MenuOpciones"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.86, 0.92, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.96, 0.72, 1)
+theme_override_colors/font_hover_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_focus_color = Color(0.98, 0.88, 0.5, 1)
+theme_override_colors/font_disabled_color = Color(0.72, 0.72, 0.8, 0.48)
+theme_override_colors/font_outline_color = Color(0.05, 0.04, 0.08, 0.9)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_boton_foco")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_boton_presionado")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_boton_normal")
+theme_override_styles/focus = SubResource("StyleBoxFlat_boton_foco")
+text = "Volver"
+
+[node name="PanelAjustes" parent="Centro" instance=ExtResource("3_ajustes")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 
 [node name="Version" type="Label" parent="."]
 layout_mode = 1
