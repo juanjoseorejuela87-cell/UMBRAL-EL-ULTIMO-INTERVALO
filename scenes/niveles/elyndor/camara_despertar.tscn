@@ -27,6 +27,7 @@
 [ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/escalera.tscn" id="25_escalera"]
 [ext_resource type="Script" path="res://scenes/mundo/kit_gotico/cadena.gd" id="26_cadena"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/eco_memoria/eco_memoria.tscn" id="27_eco"]
+[ext_resource type="Script" path="res://scripts/core/sonido/ambiente_sala.gd" id="28_ambiente"]
 
 [sub_resource type="Environment" id="Entorno"]
 background_mode = 1
@@ -357,6 +358,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
 id = &"elyndor_camara_vigilia"
 titulo = "Eco: la vigilia"
 texto = "La cámara intacta, iluminada. Alguien camina entre los mecanismos y apunta cifras mientras los símbolos de las paredes laten despacio, como una respiración. Junto al lecho de piedra, la figura se detiene y espera."
+
+[node name="AmbienteSala" type="Node" parent="."]
+script = ExtResource("28_ambiente")
+pista = &"elyndor"
 
 [node name="HaciaRuinas" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.5, 2.5, 0)

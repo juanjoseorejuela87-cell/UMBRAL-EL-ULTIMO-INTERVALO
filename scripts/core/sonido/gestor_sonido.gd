@@ -39,6 +39,10 @@ const AMBIENTES: Dictionary = {
 	&"prefecto": [41.2, 0.25, 0.06, 0.4],
 }
 const DURACION_AMBIENTE: float = 4.0
+## Música de fondo de cada ambiente (sin entrada = silencio; el jefe pone la suya).
+const MUSICA_DE_AMBIENTE: Dictionary = {
+	&"elyndor": &"elyndor",
+}
 
 @export var reproductores: int = 12
 ## Volumen de la música en reproducción plena y nivel de silencio de los fundidos.
@@ -91,6 +95,9 @@ func _ready() -> void:
 	_musica = AudioStreamPlayer.new()
 	_musica.bus = BUS_MUSICA
 	add_child(_musica)
+	if DisplayServer.get_name() != "headless":
+		# La música de exploración se compone mientras el jugador está en el título.
+		preparar_musica.call_deferred(&"elyndor")
 
 
 func _exit_tree() -> void:
@@ -114,11 +121,13 @@ func reproducir(nombre: StringName, volumen_db: float = 0.0, variacion: float = 
 	return reproductor
 
 
-## Cambia el ambiente en bucle (&"" lo detiene).
+## Cambia el ambiente en bucle (&"" lo detiene) y la música de fondo que le
+## corresponde (MUSICA_DE_AMBIENTE); en menús, &"" silencia ambas.
 func ambiente(nombre: StringName) -> void:
 	if nombre == _ambiente_actual:
 		return
 	_ambiente_actual = nombre
+	musica(MUSICA_DE_AMBIENTE.get(nombre, &""))
 	if nombre == &"" or not AMBIENTES.has(nombre):
 		_ambiente.stop()
 		return

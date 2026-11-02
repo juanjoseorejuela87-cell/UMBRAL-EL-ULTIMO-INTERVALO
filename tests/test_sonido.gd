@@ -47,9 +47,11 @@ func _ejecutar() -> void:
 	var wav_ambiente: AudioStreamWAV = ambiente.stream as AudioStreamWAV if ambiente else null
 	_comprobar(_sonido.ambiente_actual() == &"elyndor" and ambiente != null and ambiente.playing, "el ambiente de Elyndor suena")
 	_comprobar(wav_ambiente != null and wav_ambiente.loop_mode == AudioStreamWAV.LOOP_FORWARD, "el ambiente está en bucle")
+	_comprobar(_sonido.musica_actual() == &"elyndor", "el ambiente de Elyndor pide su música de exploración")
 	_sonido.ambiente(&"")
 	await _esperar(2)
 	_comprobar(not ambiente.playing, "el ambiente se puede detener")
+	_comprobar(_sonido.musica_actual() == &"", "detener el ambiente (menús) también calla la música")
 
 	# Volumen por bus
 	_sonido.fijar_volumen(GestorSonido.BUS_EFECTOS, 0.5)
@@ -75,6 +77,9 @@ func _ejecutar() -> void:
 	_comprobar(pista.loop_mode == AudioStreamWAV.LOOP_FORWARD and absi(pista.data.size() / 2 - esperado_musica) <= 1 and _tiene_sonido(pista.data),
 		"la música dura %.1f s y está en bucle" % CompositorMusica.duracion(&"prefecto"))
 	_comprobar(_sonido._musica.bus == GestorSonido.BUS_MUSICA, "la música suena por el bus Música")
+	var exploracion: AudioStreamWAV = CompositorMusica.componer(&"elyndor")
+	_comprobar(exploracion.loop_mode == AudioStreamWAV.LOOP_FORWARD and _tiene_sonido(exploracion.data),
+		"la música de exploración de Elyndor se compone en bucle (%.1f s)" % CompositorMusica.duracion(&"elyndor"))
 	_sonido.musica(&"", 0.1)
 	await _esperar(20)
 	_comprobar(not _sonido.musica_sonando() and _sonido.musica_actual() == &"", "la música se apaga con un fundido")

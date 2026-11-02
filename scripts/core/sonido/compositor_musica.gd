@@ -9,7 +9,8 @@ const FRECUENCIA: int = 22050
 
 ## Partituras. Notas en semitonos MIDI (69 = La 440 Hz).
 ## acordes: un acorde por grupo de `compases_por_acorde` compases.
-## bajo: ostinato de corcheas (se repite cada compás, transportado a la raíz del acorde).
+## bajo: ostinato de corcheas (se repite cada compás, transportado a la raíz del acorde);
+##   largo_bajo (opcional): duración de cada nota en corcheas (por defecto 0,9).
 ## percusion: golpes por compás en corcheas (0–7).
 ## campanas: [compás, corchea, nota].
 const PISTAS: Dictionary = {
@@ -22,6 +23,19 @@ const PISTAS: Dictionary = {
 		"percusion": [0, 3, 4, 6],
 		"campanas": [[0, 0, 74], [2, 0, 70], [4, 0, 67], [6, 0, 73], [6, 4, 76]],
 		"volumen": 0.55,
+	},
+	# Exploración de Elyndor: lenta, sin percusión, bajo largo y campanas lejanas
+	# (las campanas que suenan sin que nadie las toque, LORE §4.1).
+	&"elyndor": {
+		"tempo": 56.0,
+		"compases": 8,
+		"compases_por_acorde": 2,
+		"acordes": [[62, 65, 69], [60, 64, 67], [58, 62, 65], [57, 60, 64]],
+		"bajo": [0],
+		"largo_bajo": 8,
+		"percusion": [],
+		"campanas": [[1, 2, 81], [3, 5, 77], [5, 1, 79], [7, 4, 76]],
+		"volumen": 0.4,
 	},
 }
 
@@ -58,8 +72,9 @@ static func componer(nombre: StringName) -> AudioStreamWAV:
 		# Bajo en corcheas sobre la raíz del acorde
 		var raiz: int = acorde[0] - 24
 		var bajo: Array = p["bajo"]
+		var largo_bajo: float = float(p.get("largo_bajo", 0.9)) * negra * 0.5
 		for i: int in bajo.size():
-			_bajo(mezcla, inicio_compas + i * negra * 0.5, negra * 0.45, _hz(raiz + bajo[i]), 0.2)
+			_bajo(mezcla, inicio_compas + i * negra * 0.5, largo_bajo, _hz(raiz + bajo[i]), 0.2)
 		# Percusión grave
 		for golpe: int in p["percusion"]:
 			var fuerte: bool = golpe == 0
@@ -107,7 +122,8 @@ static func _bajo(mezcla: PackedFloat32Array, inicio: float, largo: float, hz: f
 		var t: float = float(i) / FRECUENCIA
 		fase += TAU * hz / FRECUENCIA
 		var s: float = sin(fase) + 0.5 * sin(fase * 2.0) + 0.25 * sin(fase * 3.0)
-		var env: float = minf(t / 0.005, 1.0) * exp(-t * 6.0) * minf((largo - t) / 0.01, 1.0)
+		# La caída se alarga con la nota: las notas largas sostienen.
+		var env: float = minf(t / 0.005, 1.0) * exp(-t * 2.7 / largo) * minf((largo - t) / 0.01, 1.0)
 		mezcla[(desde + i) % n] += s * env * vol
 
 
