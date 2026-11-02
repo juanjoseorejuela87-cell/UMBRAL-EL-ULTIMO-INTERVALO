@@ -52,10 +52,41 @@ def main() -> None:
         if o != obj:
             bpy.data.objects.remove(o, do_unlink=True)
     obj.name = "Modelo"
+    # El importador glTF deja los objetos en modo cuaternión: los giros en Euler no surtirían efecto.
+    obj.rotation_mode = "XYZ"
+
+    # Poner de pie: si el eje más largo no es Z (TripoSR entrega la figura tumbada
+    # a lo largo de X), se gira para que lo sea.
+    bpy.context.view_layer.update()
+    dim = obj.dimensions.copy()
+    print("DIMENSIONES:", tuple(round(v, 3) for v in dim))
+    if dim.x >= dim.y and dim.x > dim.z:
+        obj.rotation_euler = (0.0, math.radians(-90.0), 0.0)
+    elif dim.y > dim.x and dim.y > dim.z:
+        obj.rotation_euler = (math.radians(90.0), 0.0, 0.0)
+    obj.select_set(True)
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.transform_apply(rotation=True)
+    bpy.context.view_layer.update()
+    print("DE PIE:", tuple(round(v, 3) for v in obj.dimensions))
 
     # Giro para mirar a +X
     obj.rotation_euler = (0.0, 0.0, math.radians(giro))
     bpy.ops.object.transform_apply(rotation=True)
+
+    # Colores por vértice (TripoSR) → material que los usa como color base
+    if obj.data.color_attributes and not any(m and m.use_nodes and any(n.type == "TEX_IMAGE" for n in m.node_tree.nodes)
+                                             for m in obj.data.materials):
+        mat = bpy.data.materials.new("color_vertices")
+        mat.use_nodes = True
+        nodos = mat.node_tree.nodes
+        atributo = nodos.new("ShaderNodeVertexColor")
+        atributo.layer_name = obj.data.color_attributes[0].name
+        bsdf = nodos["Principled BSDF"]
+        bsdf.inputs["Roughness"].default_value = 0.8
+        mat.node_tree.links.new(atributo.outputs["Color"], bsdf.inputs["Base Color"])
+        obj.data.materials.clear()
+        obj.data.materials.append(mat)
 
     # Escala y pies en el suelo
     esquinas = [obj.matrix_world @ Vector(c) for c in obj.bound_box]

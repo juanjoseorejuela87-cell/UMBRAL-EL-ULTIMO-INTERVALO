@@ -37,6 +37,22 @@ const ESCENA_ECO: PackedScene = preload("res://scenes/enemigos/eco_rezagado/eco_
 ## Se abre (desaparece) al derrotar al Prefecto.
 @export var puerta_salida: Node3D
 
+@export_group("Diálogo")
+## Líneas del Prefecto (documentation/propuestas/elyndor_textos.md, TAREA-001).
+@export var nombre_dialogo: String = "El Prefecto de las Puertas"
+@export var lineas_inicio: PackedStringArray = [
+	"Las órdenes son precisas: nadie cruzará los umbrales de Elyndor.",
+	"Algo en ti no encaja, criatura. Eres un peligro para lo que guardo.",
+]
+@export var linea_fase_2: String = "La piedra guarda la orden. Aunque el mundo olvide, la puerta seguirá cerrada."
+@export var linea_fase_3: String = "¡No hay paso! Mi deber es el muro… lo único que permanece."
+@export var lineas_derrota: PackedStringArray = [
+	"Las llaves… se las entregaba a los viajeros para darles paso…",
+	"Olvidé que la puerta… se construyó para ser abierta…",
+]
+
+var _saludo_dicho: bool = false
+
 var fase_actual: int = 1
 var en_travesia: bool = false
 var puerta_entrada: CSGBox3D
@@ -79,6 +95,9 @@ func _exit_tree() -> void:
 
 func _entrar_en_alerta() -> void:
 	super._entrar_en_alerta()
+	if not _saludo_dicho:
+		_saludo_dicho = true
+		_hablar(lineas_inicio)
 	GestorSonido.global().musica(MUSICA)
 
 
@@ -247,6 +266,7 @@ func _entrar_fase(nueva: int) -> void:
 			_cambiar_suelos(ElementoFase.Existencia.DESFASE)
 			_tiempo_cierre = intervalo_cierre * 0.5
 	_indice_ataque = 0
+	_hablar(PackedStringArray([linea_fase_2 if nueva == 2 else linea_fase_3]))
 	fase_cambiada.emit(nueva)
 
 
@@ -295,6 +315,7 @@ func _morir() -> void:
 	_abrir_salida()
 	GestorPartida.global().registrar_evento(EVENTO_DERROTA)
 	GestorSonido.global().musica(&"", 3.0)
+	_hablar(lineas_derrota)
 	derrotado_definitivamente.emit()
 
 
@@ -317,3 +338,8 @@ func reiniciar() -> void:
 	super.reiniciar()
 	_actualizar_marca()
 	GestorSonido.global().musica(&"", 1.0)
+
+
+func _hablar(lineas: PackedStringArray) -> void:
+	if not lineas.is_empty() and is_inside_tree():
+		Subtitulo.mostrar(get_tree(), nombre_dialogo, lineas)

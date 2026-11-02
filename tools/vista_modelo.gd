@@ -30,6 +30,12 @@ func _preparar() -> void:
 		primera = false
 		for s: int in mi.mesh.get_surface_count():
 			var arrays: Array = mi.mesh.surface_get_arrays(s)
+			# Modelos con color por vértice (TripoSR): mostrarlo como color base
+			if arrays[Mesh.ARRAY_COLOR] != null and (arrays[Mesh.ARRAY_COLOR] as PackedColorArray).size() > 0:
+				var mat: StandardMaterial3D = StandardMaterial3D.new()
+				mat.vertex_color_use_as_albedo = true
+				mat.roughness = 0.8
+				mi.set_surface_override_material(s, mat)
 			var indices: PackedInt32Array = arrays[Mesh.ARRAY_INDEX]
 			triangulos += (indices.size() if indices.size() > 0 else (arrays[Mesh.ARRAY_VERTEX] as PackedVector3Array).size()) / 3
 	print("Tamaño: %s  Centro: %s  Triángulos: %d" % [caja.size, caja.get_center(), triangulos])
