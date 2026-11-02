@@ -12,6 +12,10 @@ extends Node3D
 @export var modelo_animable: PackedScene
 ## Giro de la espada respecto al hueso de la mano (el hueso apunta hacia abajo).
 @export var giro_espada_mano: Vector3 = Vector3(PI, 0.0, 0.0)
+## Metal máximo de los materiales del modelo (ver _cargar_modelo_animable).
+@export var metal_maximo: float = 0.2
+## Intensidad de la luz de borde en los modelos con textura (0 = sin ella).
+@export var luz_borde: float = 0.8
 ## Modelo por piezas de Nereth y de la Espada del Umbral (opcionales).
 @export var modelo: PackedScene
 @export var espada: PackedScene
@@ -96,10 +100,23 @@ func _cargar_modelo_animable() -> void:
 	_torso = _pivote(self, Vector3.ZERO, "PivoteTorso")
 	_brazo_libre = _pivote(self, Vector3.ZERO, "PivoteBrazoLibre")
 	_brazo_espada = _pivote(self, Vector3.ZERO, "PivoteBrazoEspada")
-	# Color por vértice de TripoSR como color base
+	# Color por vértice de TripoSR como color base; materiales con textura (TRELLIS)
+	# con el metal atenuado: sin reflejos (Compatibility) el metal se ve negro.
 	for nodo: Node in instancia.find_children("*", "MeshInstance3D", true, false):
 		var mi: MeshInstance3D = nodo as MeshInstance3D
 		for s: int in mi.mesh.get_surface_count():
+			var original: BaseMaterial3D = mi.get_active_material(s) as BaseMaterial3D
+			if original and original.albedo_texture:
+				var ajustado: BaseMaterial3D = original.duplicate() as BaseMaterial3D
+				if ajustado.metallic > metal_maximo:
+					ajustado.metallic = metal_maximo
+					ajustado.metallic_texture = null
+					ajustado.roughness = maxf(ajustado.roughness, 0.6)
+				# Luz de borde: separa la silueta oscura (ropa negra) del fondo
+				ajustado.rim_enabled = true
+				ajustado.rim = luz_borde
+				ajustado.rim_tint = 0.35
+				mi.set_surface_override_material(s, ajustado)
 			var colores: Variant = mi.mesh.surface_get_arrays(s)[Mesh.ARRAY_COLOR]
 			if colores != null and (colores as PackedColorArray).size() > 0:
 				var mat: StandardMaterial3D = StandardMaterial3D.new()
