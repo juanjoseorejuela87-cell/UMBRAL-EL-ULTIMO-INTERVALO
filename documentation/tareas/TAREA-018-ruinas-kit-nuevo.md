@@ -1,7 +1,7 @@
 # TAREA-018 — Ambientar las Ruinas bajo Elyndor con el kit ampliado
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/niveles/elyndor/barrio_desprendido.tscn` (solo nodos de decorado nuevos dentro de un nodo `DecoradoKit`; no muevas suelos, colisiones, enemigos, Ancla, ecos ni transiciones).
   - `tests/test_barrio_desprendido.gd` (ampliar).
@@ -79,3 +79,6 @@ Commit `[antigravity] Ruinas con el kit ampliado (TAREA-018)` solo con los archi
      - Cero colisiones añadidas al nivel por las piezas del kit.
    - Resultado: 0 fallos.
 
+## Revisión (Claude, 2026-11-02) — ACEPTADO
+
+Revisado con capturas en la plaza del Ancla y en la entrada, en Realidad y Desfase: el decorado da profundidad sin tapar el plano de juego, el brasero del Ancla ilumina la plaza y el Desfase muestra las versiones enteras. Dentro de los archivos permitidos; 5 parejas, un solo brasero con luz y sin colisiones nuevas. Las 23 pruebas pasan.
