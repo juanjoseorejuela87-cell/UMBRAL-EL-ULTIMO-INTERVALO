@@ -7,6 +7,11 @@ extends Node3D
 ## Segmento0…, Fragmento0…). Sin modelo, construye una versión con primitivas.
 ## Debe ser hija del nodo Visual de Nereth (Visual voltea con scale.x).
 
+## Modelo con esqueleto (assets/modelos/nereth/nereth_animable.glb, generado con
+## TripoSR y tools/blender/esqueleto.py). Tiene prioridad sobre `modelo`.
+@export var modelo_animable: PackedScene
+## Giro de la espada respecto al hueso de la mano (el hueso apunta hacia abajo).
+@export var giro_espada_mano: Vector3 = Vector3(PI, 0.0, 0.0)
 ## Modelo por piezas de Nereth y de la Espada del Umbral (opcionales).
 @export var modelo: PackedScene
 @export var espada: PackedScene
@@ -53,13 +58,17 @@ var _fragmentos: Array[Node3D] = []
 var _base_fragmentos: Array[Vector3] = []
 var _centro_fragmentos: Vector3 = Vector3.ZERO
 var _giro_fragmentos: float = 0.0
+var _esqueleto: Skeleton3D
+var _huesos: Dictionary = {}
 
 
 func _ready() -> void:
 	_nereth = owner as Nereth
 	if _nereth == null and get_parent():
 		_nereth = get_parent().get_parent() as Nereth
-	if modelo:
+	if modelo_animable:
+		_cargar_modelo_animable()
+	elif modelo:
 		_cargar_modelo()
 	else:
 		_construir()
@@ -72,6 +81,66 @@ func _ready() -> void:
 
 
 # --- Construcción -----------------------------------------------------------
+
+## Modelo con esqueleto: la animación de siempre se calcula sobre pivotes
+## invisibles y luego se copia a los huesos (_aplicar_esqueleto).
+func _cargar_modelo_animable() -> void:
+	var instancia: Node3D = modelo_animable.instantiate() as Node3D
+	add_child(instancia)
+	_raiz = instancia
+	_esqueleto = instancia.find_children("*", "Skeleton3D", true, false)[0] as Skeleton3D
+	for i: int in _esqueleto.get_bone_count():
+		_huesos[_esqueleto.get_bone_name(i)] = i
+	_pierna_delante = _pivote(self, Vector3.ZERO, "PivotePiernaDelante")
+	_pierna_detras = _pivote(self, Vector3.ZERO, "PivotePiernaDetras")
+	_torso = _pivote(self, Vector3.ZERO, "PivoteTorso")
+	_brazo_libre = _pivote(self, Vector3.ZERO, "PivoteBrazoLibre")
+	_brazo_espada = _pivote(self, Vector3.ZERO, "PivoteBrazoEspada")
+	# Color por vértice de TripoSR como color base
+	for nodo: Node in instancia.find_children("*", "MeshInstance3D", true, false):
+		var mi: MeshInstance3D = nodo as MeshInstance3D
+		for s: int in mi.mesh.get_surface_count():
+			var colores: Variant = mi.mesh.surface_get_arrays(s)[Mesh.ARRAY_COLOR]
+			if colores != null and (colores as PackedColorArray).size() > 0:
+				var mat: StandardMaterial3D = StandardMaterial3D.new()
+				mat.vertex_color_use_as_albedo = true
+				mat.roughness = 0.75
+				mi.set_surface_override_material(s, mat)
+	if espada and _huesos.has("Mano.R"):
+		var enganche := BoneAttachment3D.new()
+		_esqueleto.add_child(enganche)
+		enganche.bone_name = "Mano.R"
+		var hoja: Node3D = espada.instantiate() as Node3D
+		enganche.add_child(hoja)
+		hoja.rotation = giro_espada_mano
+
+
+## Gira un hueso alrededor del eje Z del modelo (el de la cámara), como los pivotes.
+func _rotar_hueso(nombre: String, angulo: float) -> void:
+	if not _huesos.has(nombre):
+		return
+	var indice: int = _huesos[nombre]
+	var padre: int = _esqueleto.get_bone_parent(indice)
+	var base_padre: Basis = _esqueleto.get_bone_global_rest(padre).basis if padre >= 0 else Basis()
+	var giro := Basis(Vector3.BACK, angulo)
+	var local: Basis = (base_padre.inverse() * giro * base_padre) * _esqueleto.get_bone_rest(indice).basis
+	_esqueleto.set_bone_pose_rotation(indice, local.get_rotation_quaternion())
+
+
+func _aplicar_esqueleto() -> void:
+	var muslo_r: float = _pierna_delante.rotation.z
+	var muslo_l: float = _pierna_detras.rotation.z
+	_rotar_hueso("Muslo.R", muslo_r)
+	_rotar_hueso("Muslo.L", muslo_l)
+	# La rodilla se dobla cuando el muslo va hacia atrás
+	_rotar_hueso("Pierna.R", -maxf(0.0, -muslo_r) * 1.3 - 0.05)
+	_rotar_hueso("Pierna.L", -maxf(0.0, -muslo_l) * 1.3 - 0.05)
+	_rotar_hueso("BrazoSup.L", _brazo_libre.rotation.z)
+	_rotar_hueso("BrazoSup.R", _brazo_espada.rotation.z)
+	_rotar_hueso("Antebrazo.L", 0.25)
+	_rotar_hueso("Antebrazo.R", 0.35)
+	_rotar_hueso("Columna", _torso.rotation.z * 0.6)
+	_rotar_hueso("Pecho", _torso.rotation.z * 0.4)
 
 func _cargar_modelo() -> void:
 	var instancia: Node3D = modelo.instantiate() as Node3D
@@ -310,6 +379,8 @@ func _process(delta: float) -> void:
 	_raiz.rotation.z = giro if e == Nereth.Estado.ESQUIVA else lerp_angle(_raiz.rotation.z, 0.0, suave)
 	_animar_capa(delta, rapidez, vel.y)
 	_animar_fragmentos(delta)
+	if _esqueleto:
+		_aplicar_esqueleto()
 
 
 ## Ataque: el brazo sube (preparación), cae en arco (activo) y vuelve.

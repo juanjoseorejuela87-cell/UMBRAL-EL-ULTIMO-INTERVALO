@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://scenes/jugador/figura_nereth.gd" id="11_figura"]
 [ext_resource type="PackedScene" path="res://assets/modelos/nereth/nereth.glb" id="12_modelo"]
 [ext_resource type="PackedScene" path="res://assets/modelos/nereth/espada_umbral.glb" id="13_espada"]
+[ext_resource type="PackedScene" path="res://assets/modelos/nereth/nereth_animable.glb" id="14_animable"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cuerpo"]
 radius = 0.35
@@ -35,6 +36,7 @@ shape = SubResource("CapsuleShape3D_cuerpo")
 
 [node name="Figura" type="Node3D" parent="Visual"]
 script = ExtResource("11_figura")
+modelo_animable = ExtResource("14_animable")
 modelo = ExtResource("12_modelo")
 espada = ExtResource("13_espada")
 
