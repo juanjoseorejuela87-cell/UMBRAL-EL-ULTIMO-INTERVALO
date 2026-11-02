@@ -30,3 +30,5 @@ _(lo rellena la IA de modelado)_
 
 - Modelo **provisional por piezas** hecho en Blender (`tools/blender/nereth.py` → `assets/modelos/nereth/`), 1 284 triángulos, integrado en `FiguraNereth` con los fragmentos del hombro orbitando (más rápido en el Desfase). Funciona, pero es una figura geométrica: el director lo considera insuficiente.
 - Siguiente paso acordado: generar una base detallada con **TRELLIS.2** (MIT) a partir de `assets/modelos/nereth/referencia/nereth_frontal.png` (o de la hoja original en alta resolución), y luego limpiarla, reducirla a ≤ 15 000 triángulos y orientarla en Blender.
+- `tools/trellis_cliente.py`: cliente propio (solo biblioteca estándar) de la demo pública de TRELLIS.2; sube la imagen, genera y descarga el `.glb`. Probado hasta el paso de preparar la imagen: la cuota anónima de GPU (ZeroGPU) se agota; necesita `HF_TOKEN` (cuenta gratuita de Hugging Face) en `.env`, que Git ignora.
+- `tools/blender/preparar_modelo.py`: escala a 1,82 m, pies en el suelo, orienta a +X, reduce a ≤ 15 000 triángulos y texturas a 1K.
