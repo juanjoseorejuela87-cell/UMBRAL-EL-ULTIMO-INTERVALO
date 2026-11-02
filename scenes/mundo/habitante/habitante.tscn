@@ -1,0 +1,184 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/mundo/habitante/habitante.gd" id="1_script"]
+
+[sub_resource type="CylinderShape3D" id="Cylinder_zona"]
+height = 2.5
+radius = 2.0
+
+[sub_resource type="StandardMaterial3D" id="Mat_ropa"]
+albedo_color = Color(0.28, 0.25, 0.22, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_piel"]
+albedo_color = Color(0.7, 0.65, 0.6, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="Mat_capucha"]
+albedo_color = Color(0.22, 0.2, 0.18, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Mat_pantalon"]
+albedo_color = Color(0.18, 0.17, 0.16, 1)
+roughness = 0.9
+
+[sub_resource type="StandardMaterial3D" id="Mat_metal_linterna"]
+albedo_color = Color(0.18, 0.16, 0.15, 1)
+metallic = 0.5
+roughness = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_llama"]
+albedo_color = Color(1, 0.85, 0.4, 1)
+emission_enabled = true
+emission = Color(1, 0.65, 0.2, 1)
+emission_energy_multiplier = 1.6
+
+[sub_resource type="StandardMaterial3D" id="Mat_manto"]
+albedo_color = Color(0.42, 0.38, 0.35, 1)
+roughness = 0.95
+
+[sub_resource type="StandardMaterial3D" id="Mat_llave"]
+albedo_color = Color(0.45, 0.35, 0.28, 1)
+metallic = 0.6
+roughness = 0.5
+
+[sub_resource type="CapsuleMesh" id="Mesh_torso"]
+material = SubResource("Mat_ropa")
+radius = 0.2
+height = 0.65
+radial_segments = 8
+rings = 2
+
+[sub_resource type="SphereMesh" id="Mesh_cabeza"]
+material = SubResource("Mat_piel")
+radius = 0.14
+height = 0.28
+radial_segments = 8
+rings = 4
+
+[sub_resource type="SphereMesh" id="Mesh_capucha"]
+material = SubResource("Mat_capucha")
+radius = 0.17
+height = 0.26
+radial_segments = 8
+rings = 4
+
+[sub_resource type="BoxMesh" id="Mesh_piernas"]
+material = SubResource("Mat_pantalon")
+size = Vector3(0.34, 0.75, 0.22)
+
+[sub_resource type="CapsuleMesh" id="Mesh_brazo"]
+material = SubResource("Mat_ropa")
+radius = 0.065
+height = 0.42
+radial_segments = 6
+rings = 2
+
+[sub_resource type="SphereMesh" id="Mesh_mano"]
+material = SubResource("Mat_piel")
+radius = 0.055
+height = 0.11
+radial_segments = 6
+rings = 2
+
+[sub_resource type="BoxMesh" id="Mesh_carcasa_linterna"]
+material = SubResource("Mat_metal_linterna")
+size = Vector3(0.12, 0.18, 0.12)
+
+[sub_resource type="SphereMesh" id="Mesh_cristal_linterna"]
+material = SubResource("Mat_llama")
+radius = 0.045
+height = 0.09
+radial_segments = 6
+rings = 3
+
+[sub_resource type="BoxMesh" id="Mesh_manto_brazos"]
+material = SubResource("Mat_manto")
+size = Vector3(0.34, 0.16, 0.22)
+
+[sub_resource type="BoxMesh" id="Mesh_llave_jubon"]
+material = SubResource("Mat_llave")
+size = Vector3(0.03, 0.14, 0.03)
+
+[node name="Habitante" type="Area3D"]
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+script = ExtResource("1_script")
+
+[node name="Zona" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("Cylinder_zona")
+
+[node name="Aviso" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95, 0)
+billboard = 1
+text = "[E] Hablar"
+font_size = 28
+outline_size = 6
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Torso" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 0.9968, -0.0799, 0, 0.0799, 0.9968, 0, 0.75, 0)
+
+[node name="MallaTorso" type="MeshInstance3D" parent="Visual/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, 0)
+mesh = SubResource("Mesh_torso")
+
+[node name="Cabeza" type="MeshInstance3D" parent="Visual/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.72, 0.04)
+mesh = SubResource("Mesh_cabeza")
+
+[node name="Capucha" type="MeshInstance3D" parent="Visual/Torso"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78, 0.02)
+mesh = SubResource("Mesh_capucha")
+
+[node name="Piernas" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.38, 0)
+mesh = SubResource("Mesh_piernas")
+
+[node name="BrazoDerecho" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24, 1.15, 0)
+
+[node name="MallaBrazo" type="MeshInstance3D" parent="Visual/BrazoDerecho"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21, 0)
+mesh = SubResource("Mesh_brazo")
+
+[node name="Mano" type="MeshInstance3D" parent="Visual/BrazoDerecho"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, 0.04)
+mesh = SubResource("Mesh_mano")
+
+[node name="BrazoIzquierdo" type="Node3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.24, 1.15, 0)
+
+[node name="MallaBrazo" type="MeshInstance3D" parent="Visual/BrazoIzquierdo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.21, 0)
+mesh = SubResource("Mesh_brazo")
+
+[node name="Mano" type="MeshInstance3D" parent="Visual/BrazoIzquierdo"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.42, 0.04)
+mesh = SubResource("Mesh_mano")
+
+[node name="Props" type="Node3D" parent="Visual"]
+
+[node name="Linterna" type="Node3D" parent="Visual/Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.24, 0.7, 0.16)
+
+[node name="Carcasa" type="MeshInstance3D" parent="Visual/Props/Linterna"]
+mesh = SubResource("Mesh_carcasa_linterna")
+
+[node name="Cristal" type="MeshInstance3D" parent="Visual/Props/Linterna"]
+mesh = SubResource("Mesh_cristal_linterna")
+
+[node name="Manto" type="Node3D" parent="Visual/Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88, 0.24)
+
+[node name="MallaManto" type="MeshInstance3D" parent="Visual/Props/Manto"]
+mesh = SubResource("Mesh_manto_brazos")
+
+[node name="Llave" type="Node3D" parent="Visual/Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.98, 0.15)
+
+[node name="MallaLlave" type="MeshInstance3D" parent="Visual/Props/Llave"]
+mesh = SubResource("Mesh_llave_jubon")

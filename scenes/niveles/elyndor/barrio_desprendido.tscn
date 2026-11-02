@@ -45,6 +45,7 @@
 [ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/brasero.tscn" id="48_brasero"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/brasero_apagado.tscn" id="49_brasero_apagado"]
 [ext_resource type="PackedScene" path="res://scenes/mundo/kit_gotico/reja.tscn" id="50_reja"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/habitante/habitante.tscn" id="51_habitante"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_silueta"]
 albedo_color = Color(0.02, 0.018, 0.022, 1)
@@ -867,3 +868,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5, 0, -1.4)
 
 [node name="RejaPaso" parent="DecoradoKit" instance=ExtResource("50_reja")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 4.5, -3.5)
+
+[node name="Habitantes" type="Node3D" parent="."]
+
+[node name="Aldous" parent="Habitantes" instance=ExtResource("51_habitante")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.5, 0)
+nombre = "Aldous"
+lineas = PackedStringArray("Entrad, la cena está servida. El calor del hogar nos aguarda.", "¿Por qué la puerta huele a polvo seco y piedra fría?", "Volveré a encender la llama. Seguro que pronto regresan.")
+gesto = &"linterna"
+
+[node name="Elspeth" parent="Habitantes" instance=ExtResource("51_habitante")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.8, 1.5, 0)
+nombre = "Elspeth"
+lineas = PackedStringArray("Duerme, mi pequeño. Las campanas de la torre ya han callado.", "Ayer tenías mis ojos… pero hoy no recuerdo tu nombre.", "Si me quedo aquí meciendo, el tiempo no te borrará.")
+gesto = &"manto"
+
+[node name="Gowan" parent="Habitantes" instance=ExtResource("51_habitante")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 83.5, 4.5, 0)
+nombre = "Gowan"
+lineas = PackedStringArray("Tengo la llave de la gran plaza. Mañana abriremos el mercado.", "Esta casa no estaba aquí esta mañana… ¿o era mi casa?", "Debo limpiar el hierro. El sello de la autoridad debe brillar.")
+gesto = &"llave"

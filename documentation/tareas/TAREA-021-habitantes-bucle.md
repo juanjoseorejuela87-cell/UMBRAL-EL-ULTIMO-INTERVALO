@@ -1,7 +1,7 @@
 # TAREA-021 — Habitantes atrapados en bucles (Aldous, Elspeth y Gowan)
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:**
   - Nuevos: `scenes/mundo/habitante/habitante.tscn` y `scenes/mundo/habitante/habitante.gd` (`class_name Habitante`), y si hace falta una figura por habitante en esa carpeta.
   - `scenes/niveles/elyndor/barrio_desprendido.tscn` (solo añadir los tres habitantes, dentro de un nodo `Habitantes`).
@@ -39,4 +39,36 @@ Commit `[antigravity] Habitantes en bucle de Elyndor (TAREA-021)` solo con los a
 
 ## Resultado
 
-_(lo rellena Antigravity)_
+### 1. Implementación de `Habitante` (`scenes/mundo/habitante/`)
+- Se implementó `scenes/mundo/habitante/habitante.gd` (`class_name Habitante extends Area3D`) y `habitante.tscn`.
+- **Detección e Interacción:** El nodo actúa como un `Area3D` con `collision_layer = 0`, `collision_mask = 8` y `monitorable = false`. No tiene colisiones físicas sólidas ni bloquea a Nereth ni a los enemigos, y es inmune a ataques de combate. Detecta a Nereth a ~2.0 u y muestra un aviso `[E] Hablar`. Al pulsar `&"interactuar"` llama a `Subtitulo.mostrar(get_tree(), nombre, lineas)`. Si se vuelve a pulsar, repite el mismo diálogo en bucle.
+- **Aspecto estilizado:** Malla con proporciones de ciudadano corriente (altura ~1.60 m, hombros caídos y leve curvatura en el torso), vestido con túnica y ropajes rústicos apagados en tonos tierra sin armadura metálica ni brillos.
+- **Gestos en bucle por código:**
+  - **Aldous (`gesto = &"linterna"`):** La llama de la linterna modula su emisión entre 0.0 y 2.2 con ciclo sinusoidal suave, con leve cabeceo y balanceo de la mano. **Cero nodos `OmniLight3D`**.
+  - **Elspeth (`gesto = &"manto"`):** Mece rítmicamente un manto de tela doblada entre ambos brazos con oscilación lateral del torso (`sin(t * 1.8)`).
+  - **Gowan (`gesto = &"llave"`):** Frota rápidamente una llave de hierro contra su jubón en el pecho (`sin(t * 7.5)`).
+
+### 2. Ubicación en las Ruinas bajo Elyndor (`scenes/niveles/elyndor/barrio_desprendido.tscn`)
+Agrupados bajo el nodo contenedor `Habitantes: Node3D`, en zonas seguras y tranquilas, alejadas de enemigos, Anclas y Ecos:
+- **Aldous:** `x = -1.5, y = 1.5, z = 0.0`, ante los muros derruidos de las viviendas de la calle de entrada (a 9.5 u de `EcoCampana`).
+- **Elspeth:** `x = 2.8, y = 1.5, z = 0.0`, al borde del foso de la calle antes de la fractura del puente (a 32 u del Ancla).
+- **Gowan:** `x = 83.5, y = 4.5, z = 0.0`, en el rellano alto tras superar el foso de puntadas, antes de la reja ornamental (a 10.5 u del Guardián y a 18.5 u de `EcoArchivista`).
+
+### 3. Verificación Visual (`tools/captura_sala.gd`)
+Se capturaron fotogramas individuales con Nereth frente a cada personaje:
+- `captura_aldous`: Se observa a Nereth a la izquierda de Aldous frente a la fachada en ruinas, con el indicador `[E] Hablar` visible.
+- `captura_elspeth2`: Se observa a Elspeth al borde del abismo con la barandilla rota, meciendo el manto vacío.
+- `captura_gowan`: Se observa a Gowan en el rellano superior con la reja ornamental de fondo.
+
+### 4. Pruebas Unitarias y Salida de Consola
+- Se creó `tests/test_habitantes.gd` cubriendo:
+  1. Instanciación y presencia de los tres habitantes en el nodo `Habitantes`.
+  2. Nombres, 3 líneas canónicas y gestos correspondientes.
+  3. Cero nodos `OmniLight3D` en todos los habitantes.
+  4. Ausencia total de colisiones físicas bloqueantes (`collision_layer == 0`, sin `StaticBody3D` ni `AnimatableBody3D`).
+  5. Con Nereth lejos, no se activan subtítulos al pulsar interactuar.
+  6. Con Nereth cerca de cada habitante, se despliega la primera línea de diálogo.
+  7. Repetición del bucle de diálogo al interactuar de nuevo.
+- Resultado: **20 comprobaciones unitarias superadas con 0 fallos**.
+- **Avisos de consola:** Durante la ejecución en modo headless no se emitió ningún error de script ni parseo. Solo se registra el aviso habitual de salida del motor: `WARNING: 2 ObjectDB instances were leaked at exit (run with --verbose for details)`.
+- **Suite global:** `tools/comprobar.ps1` superado con **24 pruebas automáticas correctas (0 fallos)**.
