@@ -44,6 +44,8 @@ const DURACION_AMBIENTE: float = 4.0
 ## Volumen de la música en reproducción plena y nivel de silencio de los fundidos.
 @export var volumen_musica_db: float = -4.0
 @export var silencio_db: float = -40.0
+## Los volúmenes se guardan junto a la calidad gráfica (ver ConfiguracionGrafica).
+var ruta_ajustes: String = "user://ajustes.cfg"
 ## Sustitutos con grabación real: nombre -> AudioStream.
 @export var archivos: Dictionary = {}
 
@@ -71,8 +73,12 @@ static func global() -> GestorSonido:
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	if DisplayServer.get_name() == "headless":
+		# Las pruebas no tocan los ajustes reales del jugador.
+		ruta_ajustes = "user://ajustes_pruebas.cfg"
 	for bus: StringName in [BUS_MUSICA, BUS_EFECTOS, BUS_AMBIENTE]:
 		_asegurar_bus(bus)
+	cargar_volumenes()
 	for i: int in reproductores:
 		var reproductor := AudioStreamPlayer.new()
 		reproductor.bus = BUS_EFECTOS
@@ -189,11 +195,31 @@ func _clave_musica(nombre: StringName) -> StringName:
 	return StringName("musica_" + String(nombre))
 
 
-## Volumen lineal (0–1) de un bus.
-func fijar_volumen(bus: StringName, lineal: float) -> void:
+## Volumen lineal (0–1) de un bus. Se guarda salvo que `guardar` sea false.
+func fijar_volumen(bus: StringName, lineal: float, guardar: bool = true) -> void:
 	var indice: int = AudioServer.get_bus_index(bus)
-	if indice >= 0:
-		AudioServer.set_bus_volume_db(indice, linear_to_db(clampf(lineal, 0.0, 1.0)))
+	if indice < 0:
+		return
+	AudioServer.set_bus_volume_db(indice, linear_to_db(clampf(lineal, 0.0, 1.0)))
+	if guardar:
+		var archivo := ConfigFile.new()
+		archivo.load(ruta_ajustes)
+		archivo.set_value("sonido", String(bus), clampf(lineal, 0.0, 1.0))
+		archivo.save(ruta_ajustes)
+
+
+func volumen(bus: StringName) -> float:
+	var indice: int = AudioServer.get_bus_index(bus)
+	return db_to_linear(AudioServer.get_bus_volume_db(indice)) if indice >= 0 else 0.0
+
+
+func cargar_volumenes() -> void:
+	var archivo := ConfigFile.new()
+	if archivo.load(ruta_ajustes) != OK:
+		return
+	for bus: StringName in [BUS_MUSICA, BUS_EFECTOS, BUS_AMBIENTE]:
+		if archivo.has_section_key("sonido", String(bus)):
+			fijar_volumen(bus, float(archivo.get_value("sonido", String(bus))), false)
 
 
 func obtener(nombre: StringName) -> AudioStream:

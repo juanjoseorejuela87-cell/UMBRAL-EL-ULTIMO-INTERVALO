@@ -55,6 +55,12 @@ func _ejecutar() -> void:
 	_sonido.fijar_volumen(GestorSonido.BUS_EFECTOS, 0.5)
 	var db: float = AudioServer.get_bus_volume_db(AudioServer.get_bus_index(GestorSonido.BUS_EFECTOS))
 	_comprobar(absf(db - linear_to_db(0.5)) < 0.01, "se puede ajustar el volumen de cada bus")
+	var copia: ConfigFile = ConfigFile.new()
+	copia.load(_sonido.ruta_ajustes)
+	_comprobar(absf(float(copia.get_value("sonido", "Efectos", -1.0)) - 0.5) < 0.001, "el volumen se guarda en los ajustes")
+	_sonido.fijar_volumen(GestorSonido.BUS_EFECTOS, 0.2, false)
+	_sonido.cargar_volumenes()
+	_comprobar(absf(_sonido.volumen(GestorSonido.BUS_EFECTOS) - 0.5) < 0.01, "el volumen guardado se recupera al cargar")
 	_sonido.fijar_volumen(GestorSonido.BUS_EFECTOS, 1.0)
 
 	# Música sintetizada: se compone en segundo plano, en bucle y con fundidos

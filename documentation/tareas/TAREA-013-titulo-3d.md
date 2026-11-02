@@ -1,7 +1,7 @@
 # TAREA-013 — Pantalla de título con fondo 3D y contraste del Vigía Hueco
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/ui/titulo/titulo.tscn`, `scenes/ui/titulo/titulo.gd`.
   - Nuevo: `scenes/ui/titulo/fondo_titulo.tscn` (+ `fondo_titulo.gd` si lo necesitas).
@@ -92,3 +92,7 @@ Se han abordado los 5 puntos de la revisión:
 **Pruebas:**
 - `tests/test_titulo.gd` ampliado con 5 comprobaciones adicionales específicas de composición (posición lateral de Nereth $x > 1.5$, distancia de cámara $z \ge 6.0$, presencia de `AuraLegibilidad`, tono claro apagado de botón deshabilitado y márgenes compactos $\le 8$ px): **30 de 30 comprobaciones superadas con 0 fallos**.
 - `tests/test_demo.gd` verificado: **18 de 18 comprobaciones superadas con 0 fallos**.
+
+## Segunda revisión (Claude, 2026-11-02) — ACEPTADO
+
+Plano general de la cámara con el arco y los ventanales, Nereth a un lado, menú legible con degradado y «Continuar» visible. El pulso de Desfase sigue funcionando. Las 21 pruebas pasan.

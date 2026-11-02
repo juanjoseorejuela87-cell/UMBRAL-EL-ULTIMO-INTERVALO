@@ -39,18 +39,19 @@
 | [TAREA-010](tareas/TAREA-010-ruinas-bajo-elyndor.md) | Antigravity | ACEPTADO |
 | [TAREA-011](tareas/TAREA-011-menu-graficos.md) | Antigravity | ACEPTADO |
 | [TAREA-012](tareas/TAREA-012-figuras-enemigos.md) | Antigravity | ACEPTADO |
-| [TAREA-013](tareas/TAREA-013-titulo-3d.md) | Antigravity | CAMBIOS |
+| [TAREA-013](tareas/TAREA-013-titulo-3d.md) | Antigravity | ACEPTADO |
+| [TAREA-014](tareas/TAREA-014-opciones-compartidas.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
 - Controles (teclado): A/D o flechas mover, Espacio saltar, Shift o L esquivar, J o clic izquierdo ataque ligero, K o clic derecho ataque pesado (mantener para cargar), E interactuar. Mando: stick izquierdo/cruceta, A saltar, B esquivar, X ligero, RB pesado, Y interactuar.
-- Arranque: `main.tscn` → pantalla de título (`scenes/ui/titulo/`): Continuar (último Ancla), Nueva partida (borra `user://partida.json`, pide confirmación; **empieza en la Cámara del Despertar**) y Salir. Recorrido: Cámara del Despertar → Ruinas bajo Elyndor (antes «Barrio Desprendido») → Salón del Prefecto → fin de la demo. La salida del Salón del Prefecto lleva a `scenes/ui/fin_demo/`.
+- Arranque: `main.tscn` → pantalla de título (`scenes/ui/titulo/`, fondo 3D animado con pulso de Desfase): Continuar (último Ancla), Nueva partida (borra `user://partida.json`, pide confirmación; **empieza en la Cámara del Despertar**) y Salir. Recorrido: Cámara del Despertar → Ruinas bajo Elyndor (antes «Barrio Desprendido») → Salón del Prefecto → fin de la demo. La salida del Salón del Prefecto lleva a `scenes/ui/fin_demo/`.
 - Salas: autoload `Salas` (`GestorSalas.global()`), `PuntoEntrada` y `TransicionSala` en `scripts/core/mundo/`.
 - Desfase: Q / I o LB. Autoload `Fase` (`GestorFase`); en código usar `GestorFase.global()`. Geometría de cada estado en capa 2 (Realidad) o 3 (Desfase) mediante un nodo hijo `ElementoFase`; Nereth solo cambia su `collision_mask`. Las cajas CSG con `ElementoFase` reciben automáticamente una colisión convexa.
 - Costura: F / O o gatillo derecho (mantener, desde el Desfase). `ElementoCosible` (hijo `Node3D` de un elemento con `ElementoFase`): Puntada (`tipo = 0`, temporal, 25 de Resonancia, una activa) o Remiendo (`tipo = 1`, permanente, `id` + `ancla_requerida`, se guarda en `Partida.remiendos`).
 - Atmósfera: `AtmosferaFase` (sustituye al WorldEnvironment de una sala) funde niebla, luz ambiental, brillo y saturación entre Realidad y Desfase. Efectos aditivos (rayos, polvo): en Compatibility la mezcla aditiva ignora la transparencia, así que la intensidad va en el color. Guía visual: `documentation/GUIA_ARTE.md`.
 - Arte (D-032): texturas CC0 de Poly Haven en `assets/texturas/` (1K), materiales PBR triplanares en `assets/materiales/` y kit gótico modular en `scenes/mundo/kit_gotico/` (muro, columna, arco). Muestra: `scenes/niveles/pruebas/sala_kit_gotico.tscn`. Todo recurso externo se anota en `assets/LICENCIAS.md`.
-- Sonido: autoload `Sonido` (`GestorSonido.global()`): `reproducir(nombre)`, `ambiente(pista)`, `fijar_volumen(bus, lineal)`. Efectos **sintetizados por código** (no hay archivos de audio); se sustituyen por grabaciones con `GestorSonido.archivos`. Escucha previa en `builds/sonidos_provisionales/`.
+- Sonido: autoload `Sonido` (`GestorSonido.global()`): `reproducir(nombre)`, `ambiente(pista)`, `fijar_volumen(bus, lineal)` (se guarda en `user://ajustes.cfg` junto a la calidad gráfica), `volumen(bus)`, `musica(pista)`. Efectos **sintetizados por código** (no hay archivos de audio); se sustituyen por grabaciones con `GestorSonido.archivos`. Escucha previa en `builds/sonidos_provisionales/`.
 - Impactos: autoload `Impactos` (`DirectorImpactos.global()`): `golpe()`, `parry()`, `herida()`, `sacudir()`. La parada de impacto se desactiva sin pantalla; `CamaraLateral.escala_temblor = 0` quita el temblor (accesibilidad).
 - Defensa: U / C o gatillo izquierdo = guardia (los primeros 0,15 s son parry). La guardia no cubre la espalda; sin resistencia se rompe.
 - Enemigos: `scripts/core/enemigos/enemigo.gd` (`Enemigo`) + escenas en `scenes/enemigos/`. `existe_en` (0 Realidad, 1 Desfase, 2 ambos), `peso` (0 ligero, 1 medio, 2 pesado), `ia_activa` (false = presente pero quieto), ataques como `DatosAtaque` (`parable`, `bloqueable`, `fuerza`). Entran en el grupo `reinicio_descanso`.
