@@ -1,7 +1,7 @@
 # TAREA-014 — Opciones en el título con un panel de ajustes compartido
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - Nuevos: `scenes/ui/ajustes/panel_ajustes.tscn` y `scenes/ui/ajustes/panel_ajustes.gd`.
   - `scenes/ui/pausa/menu_pausa.tscn`, `scenes/ui/pausa/menu_pausa.gd`.
@@ -60,3 +60,7 @@ Commit `[antigravity] Opciones en el título con panel de ajustes compartido (TA
    - `tests/test_titulo.gd`: ampliado de 30 a **38 comprobaciones** (verificación de existencia del botón Opciones, posición entre Nueva partida y Salir, apertura de submenú, apertura de Sonido y Gráficos, cambio de volumen con `GestorSonido.volumen(bus)`, y navegación completa de Volver): **38/38 OK (0 fallos)**.
    - `tests/test_demo.gd`: 18/18 OK (0 fallos).
    - `tools/comprobar.ps1`: **Todo correcto (21 de 21 suites pasadas)**.
+
+## Revisión (Claude, 2026-11-02) — ACEPTADO
+
+Dentro de los archivos permitidos. `PanelAjustes` compartido entre pausa y título, sin duplicar lógica; usa `GestorSonido.volumen()`. Revisado con capturas: Sonido y Gráficos en el título se ven limpios sobre el fondo 3D y el selector muestra el preajuste guardado. Las 21 pruebas pasan.
