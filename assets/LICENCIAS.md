@@ -31,8 +31,9 @@ El juego se va a **vender** (D-032). Solo se admiten recursos cuya licencia perm
 | Archivo | Origen | Licencia | Notas |
 |---|---|---|---|
 | `assets/modelos/nereth/nereth.glb`, `espada_umbral.glb` | Creados por Claude con Blender 5.2 (`tools/blender/nereth.py`) | Propios del proyecto | Provisionales por piezas; se sustituirán por un modelo con más detalle |
-| `assets/modelos/nereth/referencia/nereth_frontal.png` | Recorte de la hoja de personaje del director | Del director | **Pendiente:** el director debe indicar con qué herramienta se generó la hoja para registrar su licencia |
+| `documentation/arte/nereth_hoja_personaje.png` | Hoja de personaje de Nereth generada por el director con **ChatGPT (DALL-E 3)** de OpenAI, cuenta gratuita (2026-11) | Términos de Uso de OpenAI, §3 «Contenido»: OpenAI cede al usuario sus derechos sobre el contenido generado; uso comercial permitido | Hecho con IA: declararlo en Steam. En algunas jurisdicciones el contenido solo generado por IA puede no tener derechos de autor propios |
+| `assets/modelos/nereth/referencia/nereth_frontal.png` | Recorte de la hoja de personaje del director | Igual que la hoja (DALL-E 3, OpenAI) | Entrada de TripoSR |
 | `assets/modelos/nereth/fuente/nereth_triposr.glb` | Generado con TripoSR local (CPU) a partir de `nereth_frontal.png` | MIT / Propio del proyecto | Modelo base generado localmente sin conexión (TAREA-017) |
 | `assets/modelos/prueba_kit/fuente/prueba_kit_triposr.glb` | Generado con TripoSR local (CPU) a partir de pieza de kit gótico | MIT / Propio del proyecto | Objeto de escenario de prueba generado localmente (TAREA-017) |
 | `assets/modelos/nereth/nereth_tsr.glb` | `nereth_triposr.glb` preparado por Claude en Blender (`tools/blender/preparar_modelo.py`: de pie, 1,82 m, mirando a +X, 14 520 triángulos, color por vértice) | MIT / Propio del proyecto | Base para el modelo jugable; falta esqueleto |
-| `assets/modelos/nereth/fuente/nereth_sin_fondo.png` | Recorte de `nereth_frontal.png` sin fondo con rembg `u2netp` (Apache 2.0) | Del director | Entrada de TripoSR |
+| `assets/modelos/nereth/fuente/nereth_sin_fondo.png` | Recorte de `nereth_frontal.png` sin fondo con rembg `u2netp` (Apache 2.0) | Igual que la hoja (DALL-E 3, OpenAI) | Entrada de TripoSR |
