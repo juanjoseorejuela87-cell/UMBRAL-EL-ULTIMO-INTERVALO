@@ -45,7 +45,8 @@
 | [TAREA-016](tareas/TAREA-016-modelo-nereth.md) | Claude (Blender) | ABIERTO |
 | [TAREA-017](tareas/TAREA-017-triposr-local.md) | Antigravity | ACEPTADO |
 | [TAREA-018](tareas/TAREA-018-ruinas-kit-nuevo.md) | Antigravity | ACEPTADO |
-| [TAREA-019](tareas/TAREA-019-camara-salon-kit.md) | Antigravity | ABIERTO |
+| [TAREA-019](tareas/TAREA-019-camara-salon-kit.md) | Antigravity | ACEPTADO |
+| [TAREA-020](tareas/TAREA-020-rendimiento.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 

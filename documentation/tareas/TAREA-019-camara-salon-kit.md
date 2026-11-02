@@ -1,7 +1,7 @@
 # TAREA-019 — Kit ampliado en la Cámara del Despertar y el Salón del Prefecto
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - `scenes/niveles/elyndor/camara_despertar.tscn` y `scenes/niveles/elyndor/salon_prefecto.tscn` (solo nodos nuevos dentro de un nodo `DecoradoKit` en cada sala).
   - `tests/test_camara_despertar.gd` y `tests/test_prefecto.gd` (solo añadir comprobaciones del decorado).
@@ -68,3 +68,6 @@ Commit `[antigravity] Cámara y Salón con el kit ampliado (TAREA-019)` solo con
    - Ampliado [`tests/test_prefecto.gd`](file:///d:/UMBRAL/tests/test_prefecto.gd) con validaciones análogas sobre el Salón del Prefecto (superado, 0 fallos).
    - Verificados `test_eco_memoria.gd` y `test_dialogo.gd` (todos en verde).
 
+## Revisión (Claude, 2026-11-02) — ACEPTADO
+
+Revisado con capturas en Realidad y Desfase: en la Cámara la vidriera rota pasa a entera con el símbolo y la estatua aparece junto al estrado; en el Salón los braseros flanquean la salida sin tapar la vista del reino ni las puertas. Dentro de los archivos permitidos. Las 23 pruebas pasan.
