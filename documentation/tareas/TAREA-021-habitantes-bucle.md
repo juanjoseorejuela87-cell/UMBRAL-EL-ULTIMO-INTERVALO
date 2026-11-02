@@ -1,7 +1,7 @@
 # TAREA-021 — Habitantes atrapados en bucles (Aldous, Elspeth y Gowan)
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - Nuevos: `scenes/mundo/habitante/habitante.tscn` y `scenes/mundo/habitante/habitante.gd` (`class_name Habitante`), y si hace falta una figura por habitante en esa carpeta.
   - `scenes/niveles/elyndor/barrio_desprendido.tscn` (solo añadir los tres habitantes, dentro de un nodo `Habitantes`).
@@ -72,3 +72,7 @@ Se capturaron fotogramas individuales con Nereth frente a cada personaje:
 - Resultado: **20 comprobaciones unitarias superadas con 0 fallos**.
 - **Avisos de consola:** Durante la ejecución en modo headless no se emitió ningún error de script ni parseo. Solo se registra el aviso habitual de salida del motor: `WARNING: 2 ObjectDB instances were leaked at exit (run with --verbose for details)`.
 - **Suite global:** `tools/comprobar.ps1` superado con **24 pruebas automáticas correctas (0 fallos)**.
+
+## Revisión (Claude, 2026-11-02) — ACEPTADO
+
+Dentro de los archivos permitidos; los tres habitantes en las Ruinas con las líneas revisadas de `elyndor_textos.md` §3, sin colisión ni luces y con el aviso «[E] Hablar». Revisado con capturas (posiciones y aviso) y con su prueba (interacción y bucle). Las 24 pruebas pasan. Bien por incluir los avisos de la consola en el informe.
