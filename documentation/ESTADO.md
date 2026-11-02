@@ -41,6 +41,7 @@
 | [TAREA-012](tareas/TAREA-012-figuras-enemigos.md) | Antigravity | ACEPTADO |
 | [TAREA-013](tareas/TAREA-013-titulo-3d.md) | Antigravity | ACEPTADO |
 | [TAREA-014](tareas/TAREA-014-opciones-compartidas.md) | Antigravity | ACEPTADO |
+| [TAREA-015](tareas/TAREA-015-kit-gotico-ampliado.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
