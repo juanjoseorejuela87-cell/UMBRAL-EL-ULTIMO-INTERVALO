@@ -17,3 +17,7 @@ desktop.ini
 .env.*
 *.key
 secretos/
+
+# Modelos locales y entornos de IA (TripoSR, etc.): no subir a Git
+/ia/
+
