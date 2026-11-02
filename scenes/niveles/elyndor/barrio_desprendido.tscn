@@ -34,6 +34,7 @@
 [ext_resource type="Material" path="res://assets/materiales/piedra_remiendo.tres" id="32_piedra_remiendo"]
 [ext_resource type="Texture2D" path="res://assets/texturas/medieval_blocks_02/medieval_blocks_02_color_1k.jpg" id="33_dist_color"]
 [ext_resource type="Texture2D" path="res://assets/texturas/medieval_blocks_02/medieval_blocks_02_normal_1k.jpg" id="34_dist_normal"]
+[ext_resource type="PackedScene" path="res://scenes/mundo/eco_memoria/eco_memoria.tscn" id="40_eco"]
 
 [sub_resource type="StandardMaterial3D" id="Mat_silueta"]
 albedo_color = Color(0.02, 0.018, 0.022, 1)
@@ -701,6 +702,24 @@ objetivo = NodePath("../Nereth")
 objetivo = NodePath("../Nereth")
 
 [node name="MenuPausa" parent="." instance=ExtResource("15_pausa")]
+
+[node name="EcoCampana" parent="." instance=ExtResource("40_eco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.0, 0.0, 0)
+id = &"elyndor_campana_huerfana"
+titulo = "Eco: la campana huérfana"
+texto = "Una muchedumbre se agolpa bajo un campanario. Escuchan, con la mirada alzada, el repique de una campana que ya no existe. En sus rostros, el miedo de un olvido repentino."
+
+[node name="EcoCartografo" parent="." instance=ExtResource("40_eco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.0, 1.5, 0)
+id = &"elyndor_pasaje_borrado"
+titulo = "Eco: el pasaje borrado"
+texto = "Un cartógrafo traza líneas sobre el suelo de piedra. Dibuja una puerta donde hoy solo hay una pared ciega. Antes de desvanecerse, golpea la piedra tres veces."
+
+[node name="EcoArchivista" parent="." instance=ExtResource("40_eco")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 102.0, 4.5, 0)
+id = &"elyndor_carga_archivista"
+titulo = "Eco: la carga del archivista"
+texto = "Un archivista esconde pergaminos en una hornacina y la sella. Busca con la mirada la salida mientras las paredes tiemblan. La tierra se traga su silueta."
 
 [node name="EntradaInicio" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.1, 0)

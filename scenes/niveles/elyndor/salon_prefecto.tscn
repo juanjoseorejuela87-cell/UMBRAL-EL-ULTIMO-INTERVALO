@@ -289,8 +289,8 @@ shape = SubResource("Box_transicion")
 [node name="EcoPuertasAbiertas" parent="." instance=ExtResource("46_eco")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
 id = &"elyndor_puertas_abiertas"
-titulo = "Eco: las puertas abiertas"
-texto = "Las cuatro puertas del salón, abiertas de par en par. Una figura con armadura se aparta para dejar pasar a una fila de habitantes que bajan con faroles hacia las ruinas. Nadie le teme. Inclina la cabeza ante cada uno."
+titulo = "Eco: el paso concedido"
+texto = "El Prefecto alza su alabarda para guiar a una multitud exhausta. Las cuatro puertas se abren de par en par a su gesto. Concede el paso a cada uno con una reverencia solemne."
 
 [node name="AmbienteSala" type="Node" parent="."]
 script = ExtResource("13_ambiente")

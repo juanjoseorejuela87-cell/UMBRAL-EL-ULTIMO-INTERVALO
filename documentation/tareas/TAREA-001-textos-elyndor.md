@@ -1,7 +1,7 @@
 # TAREA-001 — Textos narrativos de la vertical slice de Elyndor
 
-- **Ayudante:** ChatGPT
-- **Estado:** ABIERTO
+- **Ayudante:** ChatGPT → hecho por Claude con Gemini 3.5 Flash (decisión del director, 2026-11-02)
+- **Estado:** ACEPTADO
 - **Entrega:** un único documento Markdown que el director guardará como `documentation/propuestas/elyndor_textos.md`.
 
 ## Encargo (copiar y pegar a ChatGPT)
@@ -27,4 +27,4 @@
 
 ## Resultado
 
-_(Rellenar al entregar.)_
+Entregado en `documentation/propuestas/elyndor_textos.md`: generado con Gemini 3.5 Flash (`tools/gemini_texto.py`, solo con extractos del canon de Elyndor) y revisado por Claude (cinco correcciones de canon y coherencia, listadas en el documento). Los cinco ecos están integrados en la Cámara, las Ruinas y el Salón (`tests/test_eco_memoria.gd` comprueba que los de las Ruinas tienen suelo en el Desfase). El diálogo del Prefecto, los habitantes y los Vestigios quedan como propuesta hasta tener esos sistemas.

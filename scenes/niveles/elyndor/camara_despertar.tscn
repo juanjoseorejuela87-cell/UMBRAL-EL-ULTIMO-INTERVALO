@@ -356,8 +356,8 @@ mirando = -1.0
 [node name="EcoCamara" parent="." instance=ExtResource("27_eco")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0)
 id = &"elyndor_camara_vigilia"
-titulo = "Eco: la vigilia"
-texto = "La cámara intacta, iluminada. Alguien camina entre los mecanismos y apunta cifras mientras los símbolos de las paredes laten despacio, como una respiración. Junto al lecho de piedra, la figura se detiene y espera."
+titulo = "Eco: el crisol inerte"
+texto = "Varios operarios examinan en silencio un mecanismo encendido. Los símbolos de las paredes laten al compás de su pulso. Uno de ellos señala la cavidad central, ahora vacía."
 
 [node name="AmbienteSala" type="Node" parent="."]
 script = ExtResource("28_ambiente")

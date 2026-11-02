@@ -7,6 +7,8 @@ extends SceneTree
 
 const CAMARA: String = "res://scenes/niveles/elyndor/camara_despertar.tscn"
 const SALON: String = "res://scenes/niveles/elyndor/salon_prefecto.tscn"
+const RUINAS: String = "res://scenes/niveles/elyndor/barrio_desprendido.tscn"
+const ECOS_RUINAS: Array[String] = ["EcoCampana", "EcoCartografo", "EcoArchivista"]
 const FRAGMENTO: StringName = &"fragmento_elyndor_prefecto"
 
 var _fallos: int = 0
@@ -64,6 +66,22 @@ func _ejecutar() -> void:
 	_comprobar(await _llegar_a(SALON), "carga el Salón del Prefecto")
 	var eco_salon: EcoMemoria = current_scene.get_node("EcoPuertasAbiertas") as EcoMemoria
 	_comprobar(eco_salon.id != id_camara and eco_salon.texto != "" and not eco_salon.ya_percibido(), "el Salón tiene su propio eco por descubrir")
+
+	# Las Ruinas tienen tres ecos alcanzables en el Desfase (textos de TAREA-001)
+	GestorSalas.global().ir_a_entrada(RUINAS, &"inicio")
+	_comprobar(await _llegar_a(RUINAS), "carga las Ruinas bajo Elyndor")
+	var nereth_ruinas: Nereth = current_scene.get_node("Nereth") as Nereth
+	GestorFase.global().cambiar(GestorFase.Estado.DESFASE)
+	for nombre: String in ECOS_RUINAS:
+		var eco_r: EcoMemoria = current_scene.get_node(nombre) as EcoMemoria
+		nereth_ruinas.resonancia.restaurar()
+		nereth_ruinas.reaparecer(eco_r.global_position + Vector3(-1.5, 0.3, 0))
+		await _esperar(25)
+		var con_suelo: bool = nereth_ruinas.is_on_floor()
+		nereth_ruinas.reaparecer(eco_r.global_position + Vector3(0, 0.3, 0))
+		await _esperar(15)
+		_comprobar(con_suelo and eco_r.texto != "" and eco_r.ya_percibido(),
+			"el eco «%s» tiene suelo en el Desfase y se puede vivir" % eco_r.titulo)
 
 	partida.nueva_partida()
 	GestorFase.global().cambiar(GestorFase.Estado.REALIDAD)
