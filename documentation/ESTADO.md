@@ -44,6 +44,7 @@
 | [TAREA-015](tareas/TAREA-015-kit-gotico-ampliado.md) | Antigravity | ACEPTADO |
 | [TAREA-016](tareas/TAREA-016-modelo-nereth.md) | Claude (Blender) | ABIERTO |
 | [TAREA-017](tareas/TAREA-017-triposr-local.md) | Antigravity | ACEPTADO |
+| [TAREA-018](tareas/TAREA-018-ruinas-kit-nuevo.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
