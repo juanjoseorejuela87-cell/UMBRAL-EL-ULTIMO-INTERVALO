@@ -1,10 +1,15 @@
 class_name FiguraNereth
 extends Node3D
-## Figura provisional estilizada de Nereth (hito 14), hecha con primitivas
-## mientras llega el modelo definitivo: pelo negro, capa por segmentos, espada del
-## Umbral y animación procedural (carrera, salto, esquiva, ataque, guardia).
-## Barata (≈20 mallas, sin huesos); solo lee el estado de Nereth, no lo cambia.
+## Figura de Nereth (hito 14) con animación procedural (carrera, salto, esquiva,
+## ataque, guardia), sin huesos; solo lee el estado de Nereth, no lo cambia.
+## Usa el modelo por piezas de `modelo` (assets/modelos/nereth/, hecho con
+## tools/blender/nereth.py: pivotes Raiz, Torso, Piernas, Brazos, Mano, Capa,
+## Segmento0…, Fragmento0…). Sin modelo, construye una versión con primitivas.
 ## Debe ser hija del nodo Visual de Nereth (Visual voltea con scale.x).
+
+## Modelo por piezas de Nereth y de la Espada del Umbral (opcionales).
+@export var modelo: PackedScene
+@export var espada: PackedScene
 
 @export_group("Colores")
 @export var color_capa: Color = Color(0.07, 0.07, 0.09)
@@ -21,6 +26,10 @@ extends Node3D
 @export var largo_segmento_capa: float = 0.22
 ## Cuánto se levanta la capa con la velocidad (radianes a velocidad máxima).
 @export var vuelo_capa: float = 0.55
+## Giro de los fragmentos del hombro (rad/s): casi quietos en la Realidad,
+## desbordados en el Desfase (hoja de personaje).
+@export var giro_fragmentos_realidad: float = 0.4
+@export var giro_fragmentos_desfase: float = 2.6
 
 var _nereth: Nereth
 var _ciclo: float = 0.0
@@ -40,13 +49,20 @@ var _brazo_espada: Node3D
 var _brazo_libre: Node3D
 var _torso: Node3D
 var _capa: Array[Node3D] = []
+var _fragmentos: Array[Node3D] = []
+var _base_fragmentos: Array[Vector3] = []
+var _centro_fragmentos: Vector3 = Vector3.ZERO
+var _giro_fragmentos: float = 0.0
 
 
 func _ready() -> void:
 	_nereth = owner as Nereth
 	if _nereth == null and get_parent():
 		_nereth = get_parent().get_parent() as Nereth
-	_construir()
+	if modelo:
+		_cargar_modelo()
+	else:
+		_construir()
 	if _nereth:
 		# Las variables @onready de Nereth aún no existen: los hijos se preparan antes.
 		var combate: CombateNereth = _nereth.get_node(^"Combate") as CombateNereth
@@ -56,6 +72,32 @@ func _ready() -> void:
 
 
 # --- Construcción -----------------------------------------------------------
+
+func _cargar_modelo() -> void:
+	var instancia: Node3D = modelo.instantiate() as Node3D
+	add_child(instancia)
+	_raiz = instancia.find_child("Raiz", true, false) as Node3D
+	_pierna_delante = instancia.find_child("PiernaDelante", true, false) as Node3D
+	_pierna_detras = instancia.find_child("PiernaDetras", true, false) as Node3D
+	_torso = instancia.find_child("Torso", true, false) as Node3D
+	_brazo_libre = instancia.find_child("BrazoLibre", true, false) as Node3D
+	_brazo_espada = instancia.find_child("BrazoEspada", true, false) as Node3D
+	for i: int in segmentos_capa:
+		var seg: Node3D = instancia.find_child("Segmento%d" % i, true, false) as Node3D
+		if seg:
+			_capa.append(seg)
+	var mano: Node3D = instancia.find_child("Mano", true, false) as Node3D
+	if espada and mano:
+		mano.add_child(espada.instantiate())
+	for nodo: Node in _torso.get_children():
+		if String(nodo.name).begins_with("Fragmento"):
+			_fragmentos.append(nodo as Node3D)
+			_centro_fragmentos += (nodo as Node3D).position
+	if not _fragmentos.is_empty():
+		_centro_fragmentos /= float(_fragmentos.size())
+		for f: Node3D in _fragmentos:
+			_base_fragmentos.append(f.position - _centro_fragmentos)
+
 
 func _material(color: Color, brillo: float = 0.0) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
@@ -267,6 +309,7 @@ func _process(delta: float) -> void:
 	_raiz.position.y = lerpf(_raiz.position.y, -agacha, suave)
 	_raiz.rotation.z = giro if e == Nereth.Estado.ESQUIVA else lerp_angle(_raiz.rotation.z, 0.0, suave)
 	_animar_capa(delta, rapidez, vel.y)
+	_animar_fragmentos(delta)
 
 
 ## Ataque: el brazo sube (preparación), cae en arco (activo) y vuelve.
@@ -294,3 +337,16 @@ func _animar_capa(delta: float, rapidez: float, vel_y: float) -> void:
 		var onda: float = sin(_tiempo * 6.0 - i * 0.9) * (0.06 + 0.1 * rapidez)
 		var base: float = _giro_capa * 0.6 if i == 0 else _giro_capa * 0.4 / float(_capa.size() - 1)
 		_capa[i].rotation.z = base + onda
+
+
+## Los fragmentos orbitan junto al hombro izquierdo; en el Desfase se aceleran.
+func _animar_fragmentos(delta: float) -> void:
+	if _fragmentos.is_empty():
+		return
+	var desfase: bool = GestorFase.global() != null and GestorFase.global().en_desfase()
+	_giro_fragmentos += delta * (giro_fragmentos_desfase if desfase else giro_fragmentos_realidad)
+	for i: int in _fragmentos.size():
+		var f: Node3D = _fragmentos[i]
+		f.position = _centro_fragmentos + _base_fragmentos[i].rotated(Vector3.FORWARD, _giro_fragmentos)
+		f.position.y += sin(_tiempo * 2.0 + i) * 0.01
+		f.rotation.y += delta * (3.0 if desfase else 0.8)

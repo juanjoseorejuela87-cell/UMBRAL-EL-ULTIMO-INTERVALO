@@ -23,3 +23,10 @@ El juego se va a **vender** (D-032). Solo se admiten recursos cuya licencia perm
 ## Herramientas
 
 - **Blender 5.2** (GPL-3.0-or-later, Blender Foundation): herramienta de modelado. Según la propia Blender Foundation, la licencia GPL no se aplica a las obras creadas con Blender: los modelos que produce son propiedad del autor y pueden usarse comercialmente.
+
+## Modelos 3D
+
+| Archivo | Origen | Licencia | Notas |
+|---|---|---|---|
+| `assets/modelos/nereth/nereth.glb`, `espada_umbral.glb` | Creados por Claude con Blender 5.2 (`tools/blender/nereth.py`) | Propios del proyecto | Provisionales por piezas; se sustituirán por un modelo con más detalle |
+| `assets/modelos/nereth/referencia/nereth_frontal.png` | Recorte de la hoja de personaje del director | Del director | **Pendiente:** el director debe indicar con qué herramienta se generó la hoja para registrar su licencia |
