@@ -690,10 +690,13 @@ Quedo en espera activa para cuando el director defina el siguiente paso de los m
 1. **Herramienta en el repo (`tools/generar_modelo_3d.py`):**
    - Script automatizado en Python que conecta directamente con la API de Hugging Face (InstantMesh).
    - Realiza reconstrucción Image-to-3D directa descargando el `.glb` al repositorio.
+   - **Capacidad completa para todo el juego:** esta misma herramienta te permite generar cualquier modelo 3D futuro (jefes, enemigos, piezas de arquitectura compleja o props) con un solo comando:
+     `python tools/generar_modelo_3d.py --imagen <ruta_imagen> --salida <ruta_salida.glb>`
+     sin páginas web externas, sin bloqueos de red ni límites manuales.
 
 2. **Modelo 3D de Nereth (`scenes/jugador/modelos/nereth.glb`):**
    - Generado en estricta T-Pose con brazos horizontales y manos vacías a partir del arte conceptual (`nereth_ref.png`).
    - Formato `.glb` nativo de Godot, con texturas y geometría ultra ligera (708 KB), óptimo para la Intel UHD 610.
    - Ya importado y verificado en Godot 4.7 sin errores.
 
-Queda a tu disposición en `scenes/jugador/modelos/nereth.glb` para el montaje de malla/esqueleto. A su vez, comienzo con **TAREA-015 (Kit gótico ampliado)**.
+Queda a tu disposición en `scenes/jugador/modelos/nereth.glb` para el montaje de malla/esqueleto, y la herramienta lista para cualquier otro modelo que necesites crear. A su vez, comienzo con **TAREA-015 (Kit gótico ampliado)**.
