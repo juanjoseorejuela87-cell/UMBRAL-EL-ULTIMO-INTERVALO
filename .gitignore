@@ -11,3 +11,9 @@ desktop.ini
 
 # Estado local de Claude Code
 .claude/scheduled_tasks.lock
+
+# Claves de API y secretos (Tripo, Hugging Face...): nunca a Git
+.env
+.env.*
+*.key
+secretos/
