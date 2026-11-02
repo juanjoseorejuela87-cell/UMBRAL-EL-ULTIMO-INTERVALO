@@ -15,7 +15,9 @@ extends Node3D
 ## Metal máximo de los materiales del modelo (ver _cargar_modelo_animable).
 @export var metal_maximo: float = 0.2
 ## Intensidad de la luz de borde en los modelos con textura (0 = sin ella).
-@export var luz_borde: float = 0.8
+@export var luz_borde: float = 1.0
+## Aclarado de la textura: la ropa negra de la hoja se pierde en salas oscuras.
+@export var aclarado: float = 1.8
 ## Modelo por piezas de Nereth y de la Espada del Umbral (opcionales).
 @export var modelo: PackedScene
 @export var espada: PackedScene
@@ -112,6 +114,7 @@ func _cargar_modelo_animable() -> void:
 					ajustado.metallic = metal_maximo
 					ajustado.metallic_texture = null
 					ajustado.roughness = maxf(ajustado.roughness, 0.6)
+				ajustado.albedo_color = Color(aclarado, aclarado, aclarado, 1.0)
 				# Luz de borde: separa la silueta oscura (ropa negra) del fondo
 				ajustado.rim_enabled = true
 				ajustado.rim = luz_borde

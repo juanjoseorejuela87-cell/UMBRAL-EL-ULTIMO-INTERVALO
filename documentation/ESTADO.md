@@ -48,6 +48,7 @@
 | [TAREA-019](tareas/TAREA-019-camara-salon-kit.md) | Antigravity | ACEPTADO |
 | [TAREA-020](tareas/TAREA-020-rendimiento.md) | Antigravity | ACEPTADO |
 | [TAREA-021](tareas/TAREA-021-habitantes-bucle.md) | Antigravity | ACEPTADO |
+| [TAREA-022](tareas/TAREA-022-kit-modular-3d.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
