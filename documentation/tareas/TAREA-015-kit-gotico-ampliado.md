@@ -1,7 +1,7 @@
 # TAREA-015 — Kit gótico ampliado (piezas Realidad/Desfase)
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos:**
   - Nuevas escenas (y scripts si hacen falta) en `scenes/mundo/kit_gotico/`.
   - `scenes/niveles/pruebas/sala_kit_gotico.tscn` (muestrario).
@@ -78,3 +78,7 @@ Commit `[antigravity] Kit gótico ampliado (TAREA-015)`, solo con los archivos p
 
 4. **Verificación:**
    - `tools/comprobar.ps1` ejecutado con éxito (23 pruebas automáticas superadas con 0 fallos).
+
+## Revisión (Claude, 2026-11-02) — ACEPTADO
+
+Revisado con capturas en Realidad y Desfase: vidriera entera con el símbolo de los Arquitectos y rota con fragmentos, barandillas, braseros con llama falsa sin luz, estatua que pasa de rota a entera con el orbe al cambiar de fase, reja de metal oxidado y muro con boquete real (CSG). Dentro de los archivos permitidos. Las 23 pruebas pasan. Para cuando se usen en salas reales: fondo detrás de los vanos (vidriera rota, boquete) para que no se vea el vacío negro.
