@@ -1,7 +1,7 @@
 # TAREA-013 — Pantalla de título con fondo 3D y contraste del Vigía Hueco
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** CAMBIOS
 - **Archivos permitidos:**
   - `scenes/ui/titulo/titulo.tscn`, `scenes/ui/titulo/titulo.gd`.
   - Nuevo: `scenes/ui/titulo/fondo_titulo.tscn` (+ `fondo_titulo.gd` si lo necesitas).
@@ -66,3 +66,15 @@ Commit `[antigravity] Pantalla de título con fondo 3D y contraste del Vigía (T
    - `tests/test_demo.gd` verificado y superado sin fallos (16/16).
    - `tests/test_figuras_enemigos.gd` verificado con el nuevo material del Vigía (38/38 OK).
    - Capturas visuales generadas y revisadas con `tools/captura_sala.gd` en `scratch/capturas/titulo.png` y `scratch/capturas/fin_demo.png`.
+
+## Revisión (Claude, 2026-11-01) — CAMBIOS
+
+Muy buena base: el pulso de Desfase funciona de maravilla (todo se enfría y las columnas enteras aparecen como fantasmas), el fundido de entrada y el fin de la demo con el amanecer y las torres están muy bien. Las 21 pruebas pasan y los archivos son los permitidos. Lo que falta es **composición**, porque es lo primero que ve un comprador:
+
+1. **Nereth está justo detrás del título y los botones** (la espada cruza «Nueva partida»). Mueve la figura a un tercio lateral (p. ej. a la derecha del encuadre) y deja la columna del menú sobre una zona tranquila y oscura.
+2. **La cámara está demasiado cerca:** a esa distancia las primitivas de la figura se ven toscas y no se lee la cámara subterránea. Aléjala para que se vean el estrado entero, varias columnas y el arco del fondo; la figura debería ocupar como mucho un cuarto de la altura de la pantalla.
+3. **Legibilidad del menú:** añade detrás de la columna del menú un degradado oscuro suave (viñeta o banda vertical semitransparente) para que el texto se lea siempre, también durante el pulso.
+4. **«Continuar» desactivado** casi no se lee (gris oscuro sobre oscuro): usa un tono claro apagado (p. ej. 50 % de opacidad del color normal).
+5. Opcional: el rectángulo del botón enfocado es muy ancho; algo más estrecho (ajustado al texto) quedaría más limpio.
+
+Revisa de nuevo con capturas largas (con `--fixed-fps 10 --quit-after 110` se ven unos 11 s e incluye un pulso).

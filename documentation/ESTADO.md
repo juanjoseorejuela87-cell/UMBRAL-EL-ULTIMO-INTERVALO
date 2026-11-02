@@ -39,7 +39,7 @@
 | [TAREA-010](tareas/TAREA-010-ruinas-bajo-elyndor.md) | Antigravity | ACEPTADO |
 | [TAREA-011](tareas/TAREA-011-menu-graficos.md) | Antigravity | ACEPTADO |
 | [TAREA-012](tareas/TAREA-012-figuras-enemigos.md) | Antigravity | ACEPTADO |
-| [TAREA-013](tareas/TAREA-013-titulo-3d.md) | Antigravity | ABIERTO |
+| [TAREA-013](tareas/TAREA-013-titulo-3d.md) | Antigravity | CAMBIOS |
 
 ## Notas técnicas
 
