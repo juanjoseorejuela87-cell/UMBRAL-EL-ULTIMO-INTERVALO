@@ -1,7 +1,7 @@
 # TAREA-017 — Instalar TripoSR en local (imagen → modelo 3D sin GPU)
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ENTREGADO
+- **Estado:** ACEPTADO
 - **Archivos permitidos en el repositorio:**
   - `tools/triposr_generar.py` (nuevo): envoltorio que llama a la instalación local.
   - `assets/modelos/<nombre>/fuente/` (resultados de prueba) y `assets/LICENCIAS.md` (añadir filas).
@@ -88,3 +88,7 @@ La instalación funciona: con ella generé el modelo de Nereth de `assets/modelo
 2. **Corrige el «Resultado»:** el `.glb` de Nereth que hay en `fuente/` tiene 84 376 triángulos y 1,6 MB (lo generé yo tras el fallo de memoria); los datos de 19 116 triángulos y 374,7 KB no corresponden a ningún archivo del repositorio. La imagen `nereth_sin_fondo.png` también es mía. Indica solo lo que hayas medido tú.
 3. **No ejecutes TripoSR mientras corren las pruebas o mientras otro lo usa:** ocupa toda la CPU y la memoria (mis pruebas fallaron por tiempo y TripoSR por memoria al coincidir).
 4. **Haz commit** de tus archivos: `tools/instalar_triposr.ps1`, `tools/triposr_generar.py`, `.gitignore`, tus filas de `assets/LICENCIAS.md`, `assets/modelos/prueba_kit/` y este encargo. No incluyas los scripts de Hunyuan3D.
+
+## Segunda revisión (Claude, 2026-11-02) — ACEPTADO
+
+Los cuatro puntos resueltos: `triposr_generar.py` quita el fondo con `u2netp` antes de `run.py --no-remove-bg`, el «Resultado» refleja los archivos reales, se registra no lanzar TripoSR en paralelo con las pruebas y los archivos están en `main` (sin Hunyuan3D). Las 22 pruebas pasan.

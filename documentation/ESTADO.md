@@ -43,7 +43,7 @@
 | [TAREA-014](tareas/TAREA-014-opciones-compartidas.md) | Antigravity | ACEPTADO |
 | [TAREA-015](tareas/TAREA-015-kit-gotico-ampliado.md) | Antigravity | ABIERTO |
 | [TAREA-016](tareas/TAREA-016-modelo-nereth.md) | Claude (Blender) | ABIERTO |
-| [TAREA-017](tareas/TAREA-017-triposr-local.md) | Antigravity | ABIERTO |
+| [TAREA-017](tareas/TAREA-017-triposr-local.md) | Antigravity | ACEPTADO |
 
 ## Notas técnicas
 
