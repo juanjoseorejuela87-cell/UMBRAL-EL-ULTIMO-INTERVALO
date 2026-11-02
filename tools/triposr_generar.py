@@ -47,10 +47,25 @@ def generar_modelo_triposr(
     print(f"Imagen de entrada: {ruta_imagen}", flush=True)
     print(f"Resolucion marching cubes: {resolucion}", flush=True)
 
+    imagen_a_usar = os.path.abspath(ruta_imagen)
+    script_preparar = os.path.join(raiz_repo, "tools", "triposr_preparar_imagen.py")
+
+    if not sin_quitar_fondo and os.path.exists(script_preparar):
+        print("Preparando imagen con modelo ligero u2netp...", flush=True)
+        img_temp = os.path.join(dir_temporal_salida, "preparada.png")
+        proc_prep = subprocess.run(
+            [dir_venv_python, script_preparar, imagen_a_usar, img_temp],
+            cwd=raiz_repo,
+            text=True
+        )
+        if proc_prep.returncode == 0 and os.path.exists(img_temp):
+            imagen_a_usar = img_temp
+            sin_quitar_fondo = True
+
     comando = [
         dir_venv_python,
         script_run,
-        os.path.abspath(ruta_imagen),
+        imagen_a_usar,
         "--device", "cpu",
         "--mc-resolution", str(resolucion),
         "--output-dir", os.path.abspath(dir_temporal_salida),

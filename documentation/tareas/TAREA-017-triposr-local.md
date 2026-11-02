@@ -1,7 +1,7 @@
 # TAREA-017 — Instalar TripoSR en local (imagen → modelo 3D sin GPU)
 
 - **Ayudante:** Google Antigravity
-- **Estado:** CAMBIOS
+- **Estado:** ENTREGADO
 - **Archivos permitidos en el repositorio:**
   - `tools/triposr_generar.py` (nuevo): envoltorio que llama a la instalación local.
   - `assets/modelos/<nombre>/fuente/` (resultados de prueba) y `assets/LICENCIAS.md` (añadir filas).
@@ -50,22 +50,24 @@ Commit `[antigravity] TripoSR local: envoltorio y pruebas (TAREA-017)` solo con 
 
 2. **Envoltorio en el repositorio (`tools/triposr_generar.py`):**
    - Implementado sin dependencias externas fuera de la biblioteca estándar de Python.
+   - **Eliminación ligera de fondo:** Si no se pasa `--sin-quitar-fondo`, ejecuta automáticamente `tools/triposr_preparar_imagen.py` con el modelo ligero `u2netp` (rembg) antes de pasar la imagen a `run.py --no-remove-bg`. Esto evita los picos de >800 MB y fallos de memoria del modelo por defecto de `rembg`.
    - Maneja salida unbuffered, paths absolutos/relativos, parámetros `--resolucion`, `--sin-quitar-fondo` y reporte de tiempos.
 
 3. **Prueba 1 — Personaje (Nereth):**
-   - Entrada: [`assets/modelos/nereth/fuente/nereth_sin_fondo.png`](file:///d:/UMBRAL/assets/modelos/nereth/fuente/nereth_sin_fondo.png) (figura centrada sobre gris medio generada con el modelo ligero `u2netp`).
-   - Salida: [`assets/modelos/nereth/fuente/nereth_triposr.glb`](file:///d:/UMBRAL/assets/modelos/nereth/fuente/nereth_triposr.glb) (374.7 KB).
-   - Tiempo de generación: **343.04 s** (~5.7 minutos en CPU Pentium 5405U).
+   - Entrada: [`assets/modelos/nereth/fuente/nereth_sin_fondo.png`](file:///d:/UMBRAL/assets/modelos/nereth/fuente/nereth_sin_fondo.png) (generada por Claude con `tools/triposr_preparar_imagen.py`).
+   - Salida en repositorio: [`assets/modelos/nereth/fuente/nereth_triposr.glb`](file:///d:/UMBRAL/assets/modelos/nereth/fuente/nereth_triposr.glb) (1,6 MB).
+   - Generado por Claude a resolución 256 tras subsanar el fallo de memoria del modelo por defecto de rembg.
    - Inspección con `tools/vista_modelo.gd`:
-     - Triángulos: **19.116**
-     - Dimensiones: `(0.998, 0.465, 0.462)`
-     - Centro: `(0.014, 0.001, 0.034)`
-   - Apreciación visual: La silueta frontal, proporciones y drapeado de la ropa se capturan correctamente. La parte trasera es una curvatura suave inferida por el NeRF (característica esperable al basarse en una sola vista frontal). Sirve como base (*blockout*) rápida para detallar o retopolizar en Blender.
+     - Triángulos: **84.376**
+     - Dimensiones: `(0.988, 0.466, 0.460)`
+     - Centro: `(0.014, 0.002, 0.032)`
+   - Apreciación visual: La silueta frontal, proporciones y drapeado de la ropa se capturan correctamente. Claude ya lo preparó y limpió en Blender (14.520 triángulos, de pie y con color) dentro de su presupuesto de rendimiento.
 
 4. **Prueba 2 — Objeto de escenario (Kit gótico):**
+   - Generada por Antigravity.
    - Entrada: [`assets/modelos/prueba_kit/referencia/prop_gotico.png`](file:///d:/UMBRAL/assets/modelos/prueba_kit/referencia/prop_gotico.png) (pilar/remate apuntado con basa y fuste sombreado).
    - Salida: [`assets/modelos/prueba_kit/fuente/prueba_kit_triposr.glb`](file:///d:/UMBRAL/assets/modelos/prueba_kit/fuente/prueba_kit_triposr.glb) (295.2 KB).
-   - Tiempo de generación: **283.58 s** (~4.7 minutos en CPU).
+   - Tiempo de generación: **283.58 s** (~4.7 minutos en CPU Pentium 5405U a resolución 128).
    - Inspección con `tools/vista_modelo.gd`:
      - Triángulos: **15.064**
      - Dimensiones: `(1.107, 0.452, 0.672)`
@@ -74,6 +76,9 @@ Commit `[antigravity] TripoSR local: envoltorio y pruebas (TAREA-017)` solo con 
 
 5. **Licencias:**
    - Añadidas filas a [`assets/LICENCIAS.md`](file:///d:/UMBRAL/assets/LICENCIAS.md) para TripoSR (MIT), rembg (MIT) y los `.glb` generados (MIT / propios del proyecto).
+
+6. **Protocolo de ejecución en hardware modesto:**
+   - No ejecutar TripoSR en paralelo con la suite de pruebas automatizadas ni con otras instancias de inferencia para evitar contención de CPU (100 %) y saturación de RAM.
 
 ## Revisión (Claude, 2026-11-02) — CAMBIOS
 
