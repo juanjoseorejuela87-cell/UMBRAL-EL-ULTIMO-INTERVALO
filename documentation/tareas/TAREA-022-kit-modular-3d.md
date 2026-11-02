@@ -1,7 +1,7 @@
 # TAREA-022 — Primer paquete de piezas 3D del kit (según los artes conceptuales)
 
 - **Ayudante:** Google Antigravity (coordinación de modelos 3D por encargo del director)
-- **Estado:** ENTREGADO
+- **Estado:** CAMBIOS
 - **Archivos permitidos:** `assets/modelos/kit/<pieza>/` (nuevo: `.glb`, texturas, imagen de referencia) y `assets/LICENCIAS.md` (añadir filas). Scripts de generación nuevos en `tools/blender/` si los necesitas.
 - **No tocar:** escenas (`scenes/`), `scripts/core/`, `project.godot`. **Claude integra** las piezas en las salas.
 
@@ -61,3 +61,17 @@ Entregado el primer paquete de 10 modelos 3D modulares (8 piezas + 2 variantes r
 - **Renderizado Compatibility (Intel UHD 610):** Metal restringido a $\le 0,28$ y rugosidad $\ge 0,50$. Ninguna pieza se percibe negra bajo luz neutra ni en penumbra.
 - **Licencias:** Registradas 10 filas nuevas en `assets/LICENCIAS.md` con script propio en Blender 5.2 (GPL-3.0 / propio del proyecto para uso comercial).
 - **Pruebas:** Verificado con `tools/inspeccionar_kit_tarea022.gd` y suite completa `tools/comprobar.ps1` (24 de 24 pruebas superadas con 0 fallos).
+
+## Revisión (Claude, 2026-11-02) — CAMBIOS: rehacer con TRELLIS a nivel AAA
+
+Revisado con `tools/vista_modelo.gd`. Las medidas y el metal están bien, pero **el nivel no es el del juego**: son primitivas en colores planos, **sin texturas** (la especificación pide PBR), muy lejos de los artes conceptuales. El mecanismo de engranajes es un anillo de cubos sueltos con una barra y el arco doble roto tiene dovelas flotando en el aire. El director quiere **calidad AAA** y que se use **TRELLIS.2**, que ya tienes operativo.
+
+Rehacer las 10 piezas así:
+
+1. **Generar cada pieza con TRELLIS.2** (`tools/generar_trellis.py`) a partir de una **imagen de referencia limpia de esa pieza sola**: recorte del concepto correspondiente, o una vista nueva de la pieza aislada sobre fondo neutro hecha con la misma herramienta que los conceptos. Guarda la imagen en `assets/modelos/kit/<pieza>/referencia/`.
+2. **Preparar en Blender** con `tools/blender/preparar_modelo.py` (ajusta altura y orientación por pieza) a **≤ 3 000 triángulos** y **textura 1K** (2K opcional para Alto/Ultra); la textura de TRELLIS se conserva.
+3. **Metal ≤ 0,3** en los materiales finales (si TRELLIS trae metal alto, se ve negro en Compatibility); rugosidad ≥ 0,5.
+4. Las variantes **rotas** deben ser piezas coherentes (sin bloques flotando): pueden salir de una referencia de la versión rota o de cortar la entera en Blender.
+5. Revisa cada pieza con `tools/vista_modelo.gd` **y** dentro de una sala con `tools/captura_sala.gd` (en Realidad y Desfase) antes de entregar. El listón son los artes conceptuales: si una pieza no lo alcanza, se repite.
+6. **Licencias:** herramienta exacta de cada imagen de referencia y TRELLIS.2 (MIT) en `assets/LICENCIAS.md`. Para los conceptos, la respuesta «nano banana / Midjourney / Niji» no vale: indica una sola herramienta y plan, o lo confirmo con el director.
+7. Sin TripoSR ni TRELLIS mientras corren las pruebas; nada se publica fuera de los repositorios privados (D-043).
