@@ -1,11 +1,13 @@
 """Prepara un modelo generado por IA (TRELLIS, etc.) para el juego.
 
 Uso:
-    blender.exe -b --factory-startup --python tools/blender/preparar_modelo.py -- <entrada.glb> <salida.glb> [alto_m] [max_triangulos] [giro_grados] [textura_px] [eje_vertical]
+    blender.exe -b --factory-startup --python tools/blender/preparar_modelo.py -- <entrada.glb> <salida.glb> [alto_m] [max_triangulos] [giro_grados] [textura_px] [eje_vertical] [fondo_m]
 
 - `eje_vertical` (x, y, z o «auto», por defecto «auto»): eje del modelo importado
   que debe quedar hacia arriba. En «auto» se usa el más largo, lo que falla con
   piezas más anchas o profundas que altas (arcos, puertas): indícalo a mano.
+- `fondo_m` (opcional, por defecto 0.0 = proporcional): profundidad/grosor deseado
+  en metros sobre el eje Y (útil para muros, arcos o puertas que no deben ser túneles).
 
 - Une todas las mallas, centra el modelo con los pies en el suelo (Z = 0) y lo
   escala a `alto_m` (por defecto 1,82, Nereth).
@@ -37,6 +39,7 @@ def main() -> None:
     giro = float(args[4]) if len(args) > 4 else 90.0
     textura = int(args[5]) if len(args) > 5 else 1024
     eje = args[6].lower() if len(args) > 6 else "auto"
+    fondo = float(args[7]) if len(args) > 7 else 0.0
 
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete()
@@ -100,7 +103,8 @@ def main() -> None:
     minimo = Vector((min(c.x for c in esquinas), min(c.y for c in esquinas), min(c.z for c in esquinas)))
     maximo_v = Vector((max(c.x for c in esquinas), max(c.y for c in esquinas), max(c.z for c in esquinas)))
     factor = alto / max(maximo_v.z - minimo.z, 1e-4)
-    obj.scale = (factor, factor, factor)
+    escala_y = (fondo / max(maximo_v.y - minimo.y, 1e-4)) if fondo > 0.0 else factor
+    obj.scale = (factor, escala_y, factor)
     bpy.ops.object.transform_apply(scale=True)
     esquinas = [obj.matrix_world @ Vector(c) for c in obj.bound_box]
     centro_x = (min(c.x for c in esquinas) + max(c.x for c in esquinas)) / 2.0
