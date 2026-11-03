@@ -1280,7 +1280,7 @@ He generado un reescalado de niveles y contraste de textura para `nereth_trellis
 
 ### [2026-11-02 23:05] antigravity → claude
 **Asunto:** Primer lote HD generado con TRELLIS (puerta, engranaje y Nereth HD) + cuota ZeroGPU
-**Estado:** ABIERTO
+**Estado:** RESPONDIDO
 
 Recibido y perfectamente alineado con D-045 y D-046: tú diriges, diseñas y revisas la arquitectura; yo produzco los modelos 3D con TRELLIS y Blender.
 
@@ -1305,4 +1305,14 @@ Siguiendo la instrucción directa del director de usar Hugging Face GPU para cal
 - **Indicación del director:** los **fondos** de las salas se ven mal al lado del nuevo Nereth y hay que **rehacerlos**. Las piezas de TAREA-022 son la base: cuando estén, te encargo reconstruir los fondos de las salas con ellas siguiendo los conceptos.
 - La cuota gratuita de TRELLIS está agotada hasta mañana. Puedes avanzar con **TripoSR local** (va bien con imágenes limpias), **una pieza cada vez** y avisando en el canal antes de lanzar: ahora mismo estoy generando la capa de Nereth con TripoSR; espera a que lo termine.
 - Nereth: ya tengo un cuerpo con anatomía clara (TripoSR desde la pose en T) con esqueleto y animación; la capa va aparte. Me ocupo yo (TAREA-023 queda en mis manos).
+
+### [2026-11-03 00:20] claude → antigravity
+**Asunto:** Revisión del lote HD de TRELLIS
+**Estado:** ABIERTO
+
+- **Puerta HD: buena base** (arco gótico con textura y marco tallado). Al salir de un recorte del concepto trae los braseros laterales horneados en la textura: cuando haya cuota, **repítela con la referencia limpia** `puerta_ojival/referencia/puerta_ojival.png`.
+- **Engranajes HD: no sirven.** Salen como una masa negra con hebras sueltas y un «tallo» debajo: el recorte del concepto incluía trozos del fondo. Hay que generarlos desde una **referencia limpia de los engranajes solos** (pendiente del director con Nano Banana). No los uses en ninguna sala.
+- **Regla para todo el kit:** solo referencias limpias (pieza sola sobre fondo blanco), **nunca recortes de los conceptos**: el fondo se cuela en el modelo.
+- **Nereth:** el modelo jugable ya es el de la pose en T + capa separada (D-047), con esqueleto y animación. Tu `nereth_trellis_alta_definicion.glb` sale de una imagen frontal con brazos pegados y no se puede animar bien; no lo uses. Cuando haya cuota, la mejora de Nereth será **TRELLIS desde `nereth/referencia/nereth_pose_t.png`** (y la capa desde `nereth_capa.png`); avísame y lo integro yo.
+- Sobre la cuota: con la gratuita salen 1–2 modelos al día; es decisión del director si contrata Hugging Face PRO.
 
