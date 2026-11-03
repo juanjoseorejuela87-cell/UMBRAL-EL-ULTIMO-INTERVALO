@@ -15,7 +15,7 @@ signal guardia_rota
 ## Nereth ha sido recolocado de golpe (la cámara debe saltar, no deslizarse).
 signal reaparecido
 
-enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO, GUARDIA }
+enum Estado { SUELO, AIRE, ESQUIVA, ACCION, ATURDIDO, GUARDIA, CURANDO }
 
 const GRUPO: StringName = &"jugador"
 
@@ -88,6 +88,7 @@ var _tiempo_guardia: float = 0.0
 @onready var combate: CombateNereth = $Combate
 @onready var fase: FaseNereth = $Fase
 @onready var costura: CosturaNereth = $Costura
+@onready var esencias: EsenciasNereth = $Esencias
 @onready var _visual: Node3D = $Visual
 @onready var _caja_dano: CajaDano = $CajaDano
 
@@ -113,6 +114,7 @@ func _physics_process(delta: float) -> void:
 	_actualizar_temporizadores(delta)
 	fase.procesar(delta)
 	costura.procesar(delta)
+	esencias.procesar(delta)
 	combate.procesar(delta)
 	match estado:
 		Estado.ESQUIVA:
@@ -123,6 +125,8 @@ func _physics_process(delta: float) -> void:
 			_procesar_aturdido(delta)
 		Estado.GUARDIA:
 			_procesar_guardia(delta)
+		Estado.CURANDO:
+			_procesar_curando(delta)
 		_:
 			_procesar_movimiento(delta)
 	velocity.z = 0.0
@@ -136,6 +140,7 @@ func _physics_process(delta: float) -> void:
 ## Deja a Nereth sin control durante un tiempo (Rechazo, golpes fuertes).
 func aturdir(duracion: float) -> void:
 	combate.interrumpir()
+	esencias.interrumpir()
 	invulnerable_esquiva = false
 	_aturdimiento = duracion
 	estado = Estado.ATURDIDO
@@ -153,6 +158,7 @@ func reaparecer(posicion: Vector3) -> void:
 func restaurar() -> void:
 	combate.interrumpir()
 	costura.cancelar()
+	esencias.rellenar()
 	vida.restaurar()
 	resistencia.restaurar()
 	resonancia.restaurar()
@@ -204,6 +210,19 @@ func _procesar_movimiento(delta: float) -> void:
 	elif Input.is_action_pressed(&"guardia") and is_on_floor() and estado == Estado.SUELO:
 		estado = Estado.GUARDIA
 		_tiempo_guardia = 0.0
+	elif Input.is_action_just_pressed(&"curar") and is_on_floor() and estado == Estado.SUELO 			and esencias.intentar_curar():
+		estado = Estado.CURANDO
+
+
+## Bebiendo una Esencia: quieto, sin girarse ni actuar (EsenciasNereth decide cuándo acaba).
+func _procesar_curando(delta: float) -> void:
+	velocity.x = move_toward(velocity.x, 0.0, friccion_accion * delta)
+	_aplicar_gravedad(delta)
+
+
+func terminar_curacion() -> void:
+	if estado == Estado.CURANDO:
+		estado = Estado.SUELO if is_on_floor() else Estado.AIRE
 
 
 func _procesar_guardia(delta: float) -> void:
@@ -226,6 +245,10 @@ func en_ventana_parry() -> bool:
 ## Golpe enemigo que ha alcanzado la caja de daño (ya descontada la
 ## invulnerabilidad): parry, bloqueo, guardia rota o daño.
 func _al_recibir_golpe(info: InfoGolpe) -> void:
+	# Curarse deja vulnerable: el golpe corta la curación y la carga se pierde.
+	if estado == Estado.CURANDO:
+		esencias.interrumpir()
+		estado = Estado.SUELO if is_on_floor() else Estado.AIRE
 	var de_frente: bool = not is_equal_approx(info.direccion, mirando)
 	if estado == Estado.GUARDIA and de_frente:
 		if info.parable and en_ventana_parry():

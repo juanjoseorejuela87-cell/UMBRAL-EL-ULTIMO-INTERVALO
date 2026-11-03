@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://scenes/jugador/fase_nereth.gd" id="8_fase"]
 [ext_resource type="PackedScene" path="res://scenes/efectos/efecto_desfase/efecto_desfase.tscn" id="9_efecto"]
 [ext_resource type="Script" path="res://scenes/jugador/costura_nereth.gd" id="10_costura"]
+[ext_resource type="Script" path="res://scenes/jugador/esencias_nereth.gd" id="16_esencias"]
 [ext_resource type="Script" path="res://scenes/jugador/figura_nereth.gd" id="11_figura"]
 [ext_resource type="PackedScene" path="res://assets/modelos/nereth/nereth.glb" id="12_modelo"]
 [ext_resource type="PackedScene" path="res://assets/modelos/nereth/espada_umbral.glb" id="13_espada"]
@@ -60,6 +61,9 @@ script = ExtResource("8_fase")
 
 [node name="Costura" type="Node" parent="."]
 script = ExtResource("10_costura")
+
+[node name="Esencias" type="Node" parent="."]
+script = ExtResource("16_esencias")
 
 [node name="Combate" type="Node" parent="."]
 script = ExtResource("4_combate")

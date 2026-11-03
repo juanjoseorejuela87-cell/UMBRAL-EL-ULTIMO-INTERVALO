@@ -415,6 +415,14 @@ func _process(delta: float) -> void:
 			brazo_a = -0.6
 			brazo_espada = -0.9
 			inclinacion = 0.35
+		Nereth.Estado.CURANDO:
+			# Lleva la Esencia al pecho con el brazo libre, ligeramente encogido
+			pierna_a = 0.1
+			pierna_b = -0.1
+			brazo_a = 1.3
+			brazo_espada = -0.4
+			agacha = 0.06
+			inclinacion = 0.08
 		Nereth.Estado.ACCION:
 			pierna_a = 0.45
 			pierna_b = -0.4

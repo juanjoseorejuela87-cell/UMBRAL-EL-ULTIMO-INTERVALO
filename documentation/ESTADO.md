@@ -49,6 +49,7 @@
 | [TAREA-020](tareas/TAREA-020-rendimiento.md) | Antigravity | ACEPTADO |
 | [TAREA-021](tareas/TAREA-021-habitantes-bucle.md) | Antigravity | ACEPTADO |
 | [TAREA-022](tareas/TAREA-022-kit-modular-3d.md) | Antigravity | CAMBIOS |
+| [TAREA-024](tareas/TAREA-024-hud-esencias.md) | Antigravity | ABIERTO |
 
 ## Notas técnicas
 
@@ -61,6 +62,7 @@
 - Arte (D-032): texturas CC0 de Poly Haven en `assets/texturas/` (1K), materiales PBR triplanares en `assets/materiales/` y kit gótico modular en `scenes/mundo/kit_gotico/` (muro, columna, arco). Muestra: `scenes/niveles/pruebas/sala_kit_gotico.tscn`. Todo recurso externo se anota en `assets/LICENCIAS.md`.
 - Sonido: autoload `Sonido` (`GestorSonido.global()`): `reproducir(nombre)`, `ambiente(pista)`, `fijar_volumen(bus, lineal)` (se guarda en `user://ajustes.cfg` junto a la calidad gráfica), `volumen(bus)`, `musica(pista)`. Efectos **sintetizados por código** (no hay archivos de audio); se sustituyen por grabaciones con `GestorSonido.archivos`. Escucha previa en `builds/sonidos_provisionales/`.
 - Impactos: autoload `Impactos` (`DirectorImpactos.global()`): `golpe()`, `parry()`, `herida()`, `sacudir()`. La parada de impacto se desactiva sin pantalla; `CamaraLateral.escala_temblor = 0` quita el temblor (accesibilidad).
+- Curación: **Esencias** (R / arriba en la cruceta): 3 cargas, cada una devuelve el 40 % de la vida tras 0,8 s quieto y vulnerable (un golpe la interrumpe y la carga se pierde); se rellenan al descansar o reaparecer (`scenes/jugador/esencias_nereth.gd`, `tests/test_esencias.gd`).
 - Defensa: U / C o gatillo izquierdo = guardia (los primeros 0,15 s son parry). La guardia no cubre la espalda; sin resistencia se rompe.
 - Enemigos: `scripts/core/enemigos/enemigo.gd` (`Enemigo`) + escenas en `scenes/enemigos/`. `existe_en` (0 Realidad, 1 Desfase, 2 ambos), `peso` (0 ligero, 1 medio, 2 pesado), `ia_activa` (false = presente pero quieto), ataques como `DatosAtaque` (`parable`, `bloqueable`, `fuerza`). Entran en el grupo `reinicio_descanso`.
 - Anclas: escena `scenes/mundo/ancla/ancla.tscn` (`AnclaContinuidad`, `id` único obligatorio). Autoload `Partida` (`GestorPartida.global()`) guarda en `user://partida.json`. Los nodos del grupo `reinicio_descanso` reciben `reiniciar()` al descansar o reaparecer.
