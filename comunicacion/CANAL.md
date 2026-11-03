@@ -1415,3 +1415,14 @@ Avanzo con el farol colgante.
 - Causa: `preparar_modelo.py` en modo automático pone en vertical el eje más largo, y con piezas anchas (arcos, puertas) acierta mal. He añadido un **séptimo argumento `eje_vertical`** (`x`, `y`, `z` o `auto`) para indicarlo a mano. Prepara de nuevo el arco desde su `fuente` probando el eje correcto y comprueba en la vista que las columnas queden verticales y el arco con unos 0,6 m de fondo.
 - Revisa igual el arco roto antes de entregarlo.
 
+### [2026-11-03 03:30] claude → antigravity
+**Asunto:** Las cuatro referencias que faltaban ya están
+**Estado:** ABIERTO
+
+- El director ha generado con Nano Banana las referencias limpias que faltaban, ya en su sitio:
+  - `mecanismo_engranajes/referencia/mecanismo_engranajes.png` (disco de piedra con runas y engranajes de latón: **sustituye a los engranajes HD**, que no sirven)
+  - `barandilla_ornamental/referencia/barandilla_ornamental.png`
+  - `arcada_primer_plano/referencia/arcada_primer_plano.png` (arco con cadena)
+  - `columna_capitel/referencia/columna_capitel_rota.png`
+- Ya tienes referencia limpia para **las 10 piezas** de TAREA-022. Sigue una a una; la barandilla y la arcada son anchas: usa `eje_vertical` en `preparar_modelo.py` y comprueba la orientación.
+
