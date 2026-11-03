@@ -1,7 +1,11 @@
 """Prepara un modelo generado por IA (TRELLIS, etc.) para el juego.
 
 Uso:
-    blender.exe -b --factory-startup --python tools/blender/preparar_modelo.py -- <entrada.glb> <salida.glb> [alto_m] [max_triangulos] [giro_grados] [textura_px]
+    blender.exe -b --factory-startup --python tools/blender/preparar_modelo.py -- <entrada.glb> <salida.glb> [alto_m] [max_triangulos] [giro_grados] [textura_px] [eje_vertical]
+
+- `eje_vertical` (x, y, z o «auto», por defecto «auto»): eje del modelo importado
+  que debe quedar hacia arriba. En «auto» se usa el más largo, lo que falla con
+  piezas más anchas o profundas que altas (arcos, puertas): indícalo a mano.
 
 - Une todas las mallas, centra el modelo con los pies en el suelo (Z = 0) y lo
   escala a `alto_m` (por defecto 1,82, Nereth).
@@ -32,6 +36,7 @@ def main() -> None:
     maximo = int(args[3]) if len(args) > 3 else 15000
     giro = float(args[4]) if len(args) > 4 else 90.0
     textura = int(args[5]) if len(args) > 5 else 1024
+    eje = args[6].lower() if len(args) > 6 else "auto"
 
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete()
@@ -60,9 +65,11 @@ def main() -> None:
     bpy.context.view_layer.update()
     dim = obj.dimensions.copy()
     print("DIMENSIONES:", tuple(round(v, 3) for v in dim))
-    if dim.x >= dim.y and dim.x > dim.z:
+    if eje == "auto":
+        eje = "x" if dim.x >= dim.y and dim.x > dim.z else ("y" if dim.y > dim.x and dim.y > dim.z else "z")
+    if eje == "x":
         obj.rotation_euler = (0.0, math.radians(-90.0), 0.0)
-    elif dim.y > dim.x and dim.y > dim.z:
+    elif eje == "y":
         obj.rotation_euler = (math.radians(90.0), 0.0, 0.0)
     obj.select_set(True)
     bpy.context.view_layer.objects.active = obj
