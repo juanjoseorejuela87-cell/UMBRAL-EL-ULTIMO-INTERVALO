@@ -20,6 +20,7 @@ const NOMBRES_ACCIONES: Dictionary = {
 	&"desfase": "Desfase",
 	&"coser": "Coser",
 	&"guardia": "Guardia",
+	&"curar": "Curar (Esencia)",
 }
 
 var _abierto: bool = false

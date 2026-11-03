@@ -1,7 +1,7 @@
 # TAREA-024 — Esencias en el HUD y «Curar» en los controles
 
 - **Ayudante:** Google Antigravity
-- **Estado:** ABIERTO
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** `scenes/ui/hud/hud.tscn`, `scenes/ui/hud/hud.gd`, `scenes/ui/pausa/menu_pausa.gd` (solo añadir el nombre de la acción), `tests/test_hud_esencias.gd` (nuevo).
 - **No tocar:** `scripts/core/`, `scenes/jugador/`, el resto de la interfaz.
 
@@ -26,4 +26,15 @@ Commit `[antigravity] Esencias en el HUD (TAREA-024)` solo con los archivos perm
 
 ## Resultado
 
-_(lo rellena Antigravity)_
+1. **HUD (`scenes/ui/hud/hud.tscn` + `hud.gd`):**
+   - Añadida `FilaEsencias` (`HBoxContainer`) con iconos estilo frascos compactos (14 × 18 px) con esquinas redondeadas y sutil sombra cálida.
+   - Estado lleno: ámbar dorado cálido (`Color(0.92, 0.68, 0.18, 0.95)`) con borde luminoso; estado vacío: gris pizarra translúcido (`Color(0.12, 0.12, 0.16, 0.45)`).
+   - Animación de destello suave (`Color(2.0, 1.8, 1.2, 1.0)`) en el icono consumido al iniciarse la curación (`curacion_iniciada`).
+   - Sacudida sutil y tinte rojizo transitorio en `_fila_esencias` si la curación es interrumpida por daño (`curacion_interrumpida`).
+   - Sincronización dinámica reactiva a `cargas_cambiadas` y métodos de consulta `obtener_cargas_esencias()` y `obtener_iconos_esencias()`.
+2. **Pausa (`scenes/ui/pausa/menu_pausa.gd`):**
+   - Incorporada la entrada `&"curar": "Curar (Esencia)"` a `NOMBRES_ACCIONES`, mostrándose correctamente en la lista de controles ("Teclado: R / Mando: D-Pad Arriba").
+3. **Pruebas (`tests/test_hud_esencias.gd`):**
+   - Verifica los 3 iconos iniciales, reducción a 2 tras gastar con vida dañada, restauración completa a 3 tras `nereth.restaurar()` y presencia de la acción en el menú de pausa.
+4. **Verificación general:**
+   - `tools/comprobar.ps1` ejecutado: `Todo correcto (26 pruebas)`, 0 fallos.
