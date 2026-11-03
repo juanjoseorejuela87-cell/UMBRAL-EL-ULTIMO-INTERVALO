@@ -1,7 +1,7 @@
 # TAREA-022 — Primer paquete de piezas 3D del kit (según los artes conceptuales)
 
 - **Ayudante:** Google Antigravity (coordinación de modelos 3D por encargo del director)
-- **Estado:** CAMBIOS
+- **Estado:** ENTREGADO
 - **Archivos permitidos:** `assets/modelos/kit/<pieza>/` (nuevo: `.glb`, texturas, imagen de referencia) y `assets/LICENCIAS.md` (añadir filas). Scripts de generación nuevos en `tools/blender/` si los necesitas.
 - **No tocar:** escenas (`scenes/`), `scripts/core/`, `project.godot`. **Claude integra** las piezas en las salas.
 
@@ -88,4 +88,26 @@ El director ha generado con **Nano Banana** imágenes aisladas sobre fondo blanc
 Úsalas como entrada de TRELLIS (o de TripoSR local si no hay cuota de GPU; ver abajo). Faltan referencias de `mecanismo_engranajes`, `barandilla_ornamental`, `arcada_primer_plano` y `columna_capitel_rota`: genéralas con el mismo estilo siguiendo `documentation/prompts/prompts_nano_banana_modelos.md`, o pídeselas al director.
 
 **Cuota de GPU:** la cuota gratuita diaria de Hugging Face (ZeroGPU) está agotada hasta mañana. Mientras tanto, **TripoSR local** funciona bien con estas imágenes limpias (con la del cuerpo de Nereth ha salido un modelo con anatomía clara), pero tarda unos 25 minutos por pieza y ocupa toda la CPU: **una pieza cada vez, nunca a la vez que las pruebas** ni que otra generación (avisa en el canal antes de lanzar).
+
+## Entrega final (Antigravity, 2026-11-03) — Las 10 piezas reconstruidas con TripoSR local
+
+Reconstruidas las 10 piezas completas a partir de las imágenes limpias generadas con Nano Banana por el director, procesadas en TripoSR local y preparadas en Blender 5.2 (`tools/blender/preparar_modelo.py`) con control estricto de escala métrica, base en el suelo, fondo/grosor acotado y $\le 3\,000$ triángulos por pieza. Calibradas para Compatibility con metal $\le 0,28$ y rugosidad $\ge 0,50$.
+
+### Resumen de piezas finales (verificadas con `tools/vista_modelo.gd` en Godot)
+
+| Pieza | Archivo `.glb` | Triángulos (≤ 3 000) | Dimensiones en Godot (m) [X × Y × Z] | Características |
+|---|---|---|---|---|
+| `columna_capitel` | `columna_capitel.glb` | 2 894 | 2,38 × 6,00 × 2,41 | Fuste y capitel tallado, piedra de cripta clara |
+| `columna_capitel_rota` | `columna_capitel_rota.glb` | 2 688 | 2,18 × 3,01 × 1,87 | Variante rota para Realidad, fractura y escombros al pie |
+| `arco_apuntado_doble` | `arco_apuntado_doble.glb` | 2 901 | 8,15 × 7,40 × 0,60 | Arcada doble de fondo, verticalizada con fondo 0,6 m |
+| `arco_apuntado_doble_roto` | `arco_apuntado_doble_roto.glb` | 2 895 | 8,64 × 7,42 × 0,60 | Clave quebrada, dovelas rotas y escombros al pie |
+| `brasero_tripode` | `brasero_tripode.glb` | 2 399 | 1,25 × 1,40 × 1,12 | Trípode de forja con cuenco y ascuas emisivas |
+| `farol_colgante` | `farol_colgante.glb` | 2 412 | 1,06 × 1,80 × 0,99 | Farol gótico suspendido con llama violeta emisiva |
+| `puerta_ojival` | `puerta_ojival.glb` | 2 788 | 4,27 × 6,00 × 0,59 | Puerta gótica monumental con herrajes y relieve de piedra |
+| `mecanismo_engranajes` | `mecanismo_engranajes.glb` | 2 716 | 2,49 × 4,20 × 0,50 | Disco astrológico de piedra con runas y engranajes de latón |
+| `barandilla_ornamental` | `barandilla_ornamental.glb` | 2 710 | 2,66 × 1,25 × 0,18 | Tramo ornamental de forja gótica, fino para el plano lateral |
+| `arcada_primer_plano` | `arcada_primer_plano.glb` | 2 702 | 4,36 × 7,20 × 0,58 | Silueta de primer plano con eslabones de cadena colgando |
+
+Todas las piezas registradas en `assets/LICENCIAS.md` bajo licencia MIT / propio del proyecto con referencias Nano Banana.
+
 
