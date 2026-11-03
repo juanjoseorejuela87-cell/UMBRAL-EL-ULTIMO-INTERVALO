@@ -10,8 +10,21 @@ extends Node3D
 ## Modelo con esqueleto (assets/modelos/nereth/nereth_animable.glb, generado con
 ## TripoSR y tools/blender/esqueleto.py). Tiene prioridad sobre `modelo`.
 @export var modelo_animable: PackedScene
+## Capa separada (assets/modelos/nereth/nereth_capa.glb): cuelga de los hombros
+## por detrás y se levanta con la velocidad.
+@export var modelo_capa: PackedScene
+## Posición de los hombros (punto de cuelgue) respecto al hueso del pecho, y
+## escala de la capa (aplanada de delante atrás: TripoSR la genera maciza).
+@export var cuelgue_capa: Vector3 = Vector3(-0.12, 0.24, 0.0)
+@export var escala_capa: Vector3 = Vector3(0.55, 1.0, 1.0)
 ## Giro de la espada respecto al hueso de la mano (el hueso apunta hacia abajo).
 @export var giro_espada_mano: Vector3 = Vector3(PI, 0.0, 0.0)
+## El modelo animable está en pose en T: los brazos se bajan a los costados antes
+## de aplicar la animación (ángulo de bajada en radianes).
+@export var brazos_en_pose_t: bool = false
+@export var bajada_brazos: float = 0.9
+## Multiplicador del color por vértice (TripoSR aclara la ropa negra de la hoja).
+@export var tinte_vertices: Color = Color(0.42, 0.42, 0.46)
 ## Metal máximo de los materiales del modelo (ver _cargar_modelo_animable).
 @export var metal_maximo: float = 0.2
 ## Intensidad de la luz de borde en los modelos con textura (0 = sin ella).
@@ -65,6 +78,7 @@ var _base_fragmentos: Array[Vector3] = []
 var _centro_fragmentos: Vector3 = Vector3.ZERO
 var _giro_fragmentos: float = 0.0
 var _esqueleto: Skeleton3D
+var _pivote_capa: Node3D
 var _huesos: Dictionary = {}
 
 
@@ -102,9 +116,32 @@ func _cargar_modelo_animable() -> void:
 	_torso = _pivote(self, Vector3.ZERO, "PivoteTorso")
 	_brazo_libre = _pivote(self, Vector3.ZERO, "PivoteBrazoLibre")
 	_brazo_espada = _pivote(self, Vector3.ZERO, "PivoteBrazoEspada")
-	# Color por vértice de TripoSR como color base; materiales con textura (TRELLIS)
-	# con el metal atenuado: sin reflejos (Compatibility) el metal se ve negro.
-	for nodo: Node in instancia.find_children("*", "MeshInstance3D", true, false):
+	_ajustar_materiales(instancia)
+	if modelo_capa and _huesos.has("Pecho"):
+		var hombros := BoneAttachment3D.new()
+		_esqueleto.add_child(hombros)
+		hombros.bone_name = "Pecho"
+		_pivote_capa = _pivote(hombros, cuelgue_capa, "PivoteCapa")
+		var capa: Node3D = modelo_capa.instantiate() as Node3D
+		_pivote_capa.add_child(capa)
+		capa.scale = escala_capa
+		# El modelo tiene la base en el origen: se baja para colgar desde arriba.
+		capa.position = Vector3(0.0, -1.3 * escala_capa.y, 0.0)
+		_ajustar_materiales(capa)
+	if espada and _huesos.has("Mano.R"):
+		var enganche := BoneAttachment3D.new()
+		_esqueleto.add_child(enganche)
+		enganche.bone_name = "Mano.R"
+		var hoja: Node3D = espada.instantiate() as Node3D
+		enganche.add_child(hoja)
+		hoja.rotation = giro_espada_mano
+
+
+## Color por vértice de TripoSR como color base (teñido); materiales con textura
+## (TRELLIS) aclarados y con el metal atenuado (sin reflejos, en Compatibility el
+## metal se ve negro). Luz de borde en ambos casos.
+func _ajustar_materiales(raiz: Node) -> void:
+	for nodo: Node in raiz.find_children("*", "MeshInstance3D", true, false):
 		var mi: MeshInstance3D = nodo as MeshInstance3D
 		for s: int in mi.mesh.get_surface_count():
 			var original: BaseMaterial3D = mi.get_active_material(s) as BaseMaterial3D
@@ -124,25 +161,23 @@ func _cargar_modelo_animable() -> void:
 			if colores != null and (colores as PackedColorArray).size() > 0:
 				var mat: StandardMaterial3D = StandardMaterial3D.new()
 				mat.vertex_color_use_as_albedo = true
+				mat.albedo_color = tinte_vertices
 				mat.roughness = 0.75
+				mat.rim_enabled = true
+				mat.rim = luz_borde
+				mat.rim_tint = 0.35
 				mi.set_surface_override_material(s, mat)
-	if espada and _huesos.has("Mano.R"):
-		var enganche := BoneAttachment3D.new()
-		_esqueleto.add_child(enganche)
-		enganche.bone_name = "Mano.R"
-		var hoja: Node3D = espada.instantiate() as Node3D
-		enganche.add_child(hoja)
-		hoja.rotation = giro_espada_mano
 
 
-## Gira un hueso alrededor del eje Z del modelo (el de la cámara), como los pivotes.
-func _rotar_hueso(nombre: String, angulo: float) -> void:
+## Gira un hueso alrededor del eje Z del modelo (el de la cámara), como los pivotes;
+## `previo` se aplica antes (p. ej. bajar un brazo de la pose en T).
+func _rotar_hueso(nombre: String, angulo: float, previo: Basis = Basis()) -> void:
 	if not _huesos.has(nombre):
 		return
 	var indice: int = _huesos[nombre]
 	var padre: int = _esqueleto.get_bone_parent(indice)
 	var base_padre: Basis = _esqueleto.get_bone_global_rest(padre).basis if padre >= 0 else Basis()
-	var giro := Basis(Vector3.BACK, angulo)
+	var giro := Basis(Vector3.BACK, angulo) * previo
 	var local: Basis = (base_padre.inverse() * giro * base_padre) * _esqueleto.get_bone_rest(indice).basis
 	_esqueleto.set_bone_pose_rotation(indice, local.get_rotation_quaternion())
 
@@ -155,8 +190,11 @@ func _aplicar_esqueleto() -> void:
 	# La rodilla se dobla cuando el muslo va hacia atrás
 	_rotar_hueso("Pierna.R", -maxf(0.0, -muslo_r) * 1.3 - 0.05)
 	_rotar_hueso("Pierna.L", -maxf(0.0, -muslo_l) * 1.3 - 0.05)
-	_rotar_hueso("BrazoSup.L", _brazo_libre.rotation.z)
-	_rotar_hueso("BrazoSup.R", _brazo_espada.rotation.z)
+	# Brazo izquierdo hacia -Z (lejos de la cámara), derecho hacia +Z: se bajan girando en X.
+	var bajar_l: Basis = Basis(Vector3.RIGHT, -bajada_brazos) if brazos_en_pose_t else Basis()
+	var bajar_r: Basis = Basis(Vector3.RIGHT, bajada_brazos) if brazos_en_pose_t else Basis()
+	_rotar_hueso("BrazoSup.L", _brazo_libre.rotation.z, bajar_l)
+	_rotar_hueso("BrazoSup.R", _brazo_espada.rotation.z, bajar_r)
 	_rotar_hueso("Antebrazo.L", 0.25)
 	_rotar_hueso("Antebrazo.R", 0.35)
 	_rotar_hueso("Columna", _torso.rotation.z * 0.6)
@@ -401,6 +439,9 @@ func _process(delta: float) -> void:
 	_animar_fragmentos(delta)
 	if _esqueleto:
 		_aplicar_esqueleto()
+	if _pivote_capa:
+		# Misma lógica que la capa por segmentos: atrás con la velocidad, arriba al caer
+		_pivote_capa.rotation.z = lerp_angle(_pivote_capa.rotation.z, _giro_capa * 0.7, 1.0 - exp(-delta * 8.0))
 
 
 ## Ataque: el brazo sube (preparación), cae en arco (activo) y vuelve.

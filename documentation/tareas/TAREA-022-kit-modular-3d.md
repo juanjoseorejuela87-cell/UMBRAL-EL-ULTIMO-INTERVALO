@@ -75,3 +75,17 @@ Rehacer las 10 piezas así:
 5. Revisa cada pieza con `tools/vista_modelo.gd` **y** dentro de una sala con `tools/captura_sala.gd` (en Realidad y Desfase) antes de entregar. El listón son los artes conceptuales: si una pieza no lo alcanza, se repite.
 6. **Licencias:** herramienta exacta de cada imagen de referencia y TRELLIS.2 (MIT) en `assets/LICENCIAS.md`. Para los conceptos, la respuesta «nano banana / Midjourney / Niji» no vale: indica una sola herramienta y plan, o lo confirmo con el director.
 7. Sin TripoSR ni TRELLIS mientras corren las pruebas; nada se publica fuera de los repositorios privados (D-043).
+
+## Referencias limpias del director (2026-11-02, noche)
+
+El director ha generado con **Nano Banana** imágenes aisladas sobre fondo blanco, ya guardadas:
+- `puerta_ojival/referencia/puerta_ojival.png`
+- `columna_capitel/referencia/columna_capitel.png`
+- `arco_apuntado_doble/referencia/arco_apuntado_doble.png` y `arco_apuntado_doble_roto.png`
+- `brasero_tripode/referencia/brasero_tripode.png`
+- `farol_colgante/referencia/farol_colgante.png` (farol gótico colgante con llama violeta: **sustituye a la farola de pie**)
+
+Úsalas como entrada de TRELLIS (o de TripoSR local si no hay cuota de GPU; ver abajo). Faltan referencias de `mecanismo_engranajes`, `barandilla_ornamental`, `arcada_primer_plano` y `columna_capitel_rota`: genéralas con el mismo estilo siguiendo `documentation/prompts/prompts_nano_banana_modelos.md`, o pídeselas al director.
+
+**Cuota de GPU:** la cuota gratuita diaria de Hugging Face (ZeroGPU) está agotada hasta mañana. Mientras tanto, **TripoSR local** funciona bien con estas imágenes limpias (con la del cuerpo de Nereth ha salido un modelo con anatomía clara), pero tarda unos 25 minutos por pieza y ocupa toda la CPU: **una pieza cada vez, nunca a la vez que las pruebas** ni que otra generación (avisa en el canal antes de lanzar).
+

@@ -1297,4 +1297,12 @@ Siguiendo la instrucción directa del director de usar Hugging Face GPU para cal
 - Tras procesar estos tres modelos de alta resolución, la cuota gratuita de ZeroGPU de la cuenta del director ha alcanzado el límite diario (restan ~21 h para recarga, a menos que se use cuenta Pro).
 - Tenemos registradas las referencias en `referencia/` y la guía de prompts en `documentation/prompts/prompts_nano_banana_modelos.md` lista para el resto de piezas.
 
+### [2026-11-02 23:40] claude → antigravity
+**Asunto:** Referencias limpias listas para TAREA-022; el director quiere rehacer los fondos
+**Estado:** ABIERTO
+
+- El director ha generado con Nano Banana referencias limpias de la **puerta, la columna, el arco doble (entero y roto), el brasero y un farol colgante** (este sustituye a la farola de pie). Están en las carpetas `referencia/` de cada pieza; detalle en TAREA-022.
+- **Indicación del director:** los **fondos** de las salas se ven mal al lado del nuevo Nereth y hay que **rehacerlos**. Las piezas de TAREA-022 son la base: cuando estén, te encargo reconstruir los fondos de las salas con ellas siguiendo los conceptos.
+- La cuota gratuita de TRELLIS está agotada hasta mañana. Puedes avanzar con **TripoSR local** (va bien con imágenes limpias), **una pieza cada vez** y avisando en el canal antes de lanzar: ahora mismo estoy generando la capa de Nereth con TripoSR; espera a que lo termine.
+- Nereth: ya tengo un cuerpo con anatomía clara (TripoSR desde la pose en T) con esqueleto y animación; la capa va aparte. Me ocupo yo (TAREA-023 queda en mis manos).
 

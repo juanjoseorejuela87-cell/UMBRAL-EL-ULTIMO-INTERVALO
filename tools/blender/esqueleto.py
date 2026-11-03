@@ -2,7 +2,10 @@
 (de pie, 1,82 m, mirando a +X, pies en Z = 0) y lo exporta con piel (skin).
 
 Uso:
-    blender.exe -b --factory-startup --python tools/blender/esqueleto.py -- <entrada.glb> <salida.glb>
+    blender.exe -b --factory-startup --python tools/blender/esqueleto.py -- <entrada.glb> <salida.glb> [pose_t]
+
+Con «pose_t» los brazos del esqueleto son horizontales (modelos generados en
+pose en T) y no se aplica la regla del abrigo (la capa va aparte).
 
 Los huesos se colocan por proporciones humanas (no hace falta ajustar a mano).
 Los pesos se calculan por cercanía a cada hueso (más robusto que el «calor de
@@ -41,6 +44,20 @@ for lado, s in (("L", 1.0), ("R", -1.0)):
     ]
 PIERNAS = {"Muslo.L", "Pierna.L", "Pie.L", "Muslo.R", "Pierna.R", "Pie.R"}
 
+# Variante para modelos en pose en T (brazos horizontales, piernas algo
+# abiertas). Medidas tomadas de la referencia nereth_pose_t.png (1,82 m).
+HUESOS_POSE_T = [h for h in HUESOS if not h[0].split(".")[0] in ("BrazoSup", "Antebrazo", "Mano", "Muslo", "Pierna", "Pie")]
+for lado, s in (("L", 1.0), ("R", -1.0)):
+    HUESOS_POSE_T += [
+        # TripoSR deja los brazos ~40° por debajo de la horizontal (pose en A)
+        ("BrazoSup." + lado, (0.0, s * 0.16, 1.48), (0.0, s * 0.4, 1.3), "Pecho"),
+        ("Antebrazo." + lado, (0.0, s * 0.4, 1.3), (0.0, s * 0.6, 1.14), "BrazoSup." + lado),
+        ("Mano." + lado, (0.0, s * 0.6, 1.14), (0.0, s * 0.68, 1.07), "Antebrazo." + lado),
+        ("Muslo." + lado, (0.0, s * 0.09, 0.96), (0.0, s * 0.11, 0.54), "Cadera"),
+        ("Pierna." + lado, (0.0, s * 0.11, 0.54), (0.0, s * 0.14, 0.1), "Muslo." + lado),
+        ("Pie." + lado, (0.0, s * 0.14, 0.1), (0.14, s * 0.14, 0.02), "Pierna." + lado),
+    ]
+
 
 def distancia_segmento(p: Vector, a: Vector, b: Vector) -> float:
     ab = b - a
@@ -51,6 +68,8 @@ def distancia_segmento(p: Vector, a: Vector, b: Vector) -> float:
 def main() -> None:
     args = sys.argv[sys.argv.index("--") + 1:]
     entrada, salida = args[0], args[1]
+    huesos = HUESOS_POSE_T if "pose_t" in args[2:] else HUESOS
+    sin_abrigo = "pose_t" in args[2:]
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.object.delete()
     bpy.ops.import_scene.gltf(filepath=entrada)
@@ -65,7 +84,7 @@ def main() -> None:
     bpy.context.view_layer.objects.active = esqueleto
     bpy.ops.object.mode_set(mode="EDIT")
     segmentos = {}
-    for nombre, cabeza, cola, padre in HUESOS:
+    for nombre, cabeza, cola, padre in huesos:
         hueso = datos.edit_bones.new(nombre)
         hueso.head = Vector(cabeza) * escala
         hueso.tail = Vector(cola) * escala
@@ -75,7 +94,7 @@ def main() -> None:
     bpy.ops.object.mode_set(mode="OBJECT")
 
     # Pesos por cercanía: los 3 huesos más cercanos, 1/d^4, y abrigo a la cadera
-    grupos = {nombre: malla.vertex_groups.new(name=nombre) for nombre, *_ in HUESOS}
+    grupos = {nombre: malla.vertex_groups.new(name=nombre) for nombre, *_ in huesos}
     mundo = malla.matrix_world
     for v in malla.data.vertices:
         p = mundo @ v.co
@@ -83,7 +102,7 @@ def main() -> None:
         cercanos = distancias[:3]
         pesos = {n: 1.0 / (d ** 4 + 1e-6) for d, n in cercanos}
         dist_pierna = min(d for d, n in distancias if n in PIERNAS)
-        if p.z < 0.95 * escala and dist_pierna > 0.12 * escala:
+        if not sin_abrigo and p.z < 0.95 * escala and dist_pierna > 0.12 * escala:
             # Faldones del abrigo: casi todo a la cadera, un poco a la pierna cercana
             pierna = min(((d, n) for d, n in distancias if n in PIERNAS))[1]
             pesos = {"Cadera": 0.8, pierna: 0.2}
@@ -98,7 +117,7 @@ def main() -> None:
     bpy.ops.object.select_all(action="SELECT")
     bpy.ops.export_scene.gltf(filepath=salida, export_format="GLB", export_yup=True, export_skins=True,
                               export_animations=False)
-    print("EXPORTADO:", salida, "huesos:", len(HUESOS), "vertices:", len(malla.data.vertices))
+    print("EXPORTADO:", salida, "huesos:", len(huesos), "vertices:", len(malla.data.vertices))
 
 
 if __name__ == "__main__":
