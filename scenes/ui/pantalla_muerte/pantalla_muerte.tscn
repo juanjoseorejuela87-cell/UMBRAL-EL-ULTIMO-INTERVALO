@@ -1,0 +1,140 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/pantalla_muerte/pantalla_muerte.gd" id="1_script"]
+[ext_resource type="Shader" path="res://shaders/ui/fondo_muerte.gdshader" id="2_fondo"]
+[ext_resource type="Theme" path="res://assets/ui/tema_umbral.tres" id="3_tema"]
+[ext_resource type="FontFile" path="res://assets/fonts/Cinzel.ttf" id="4_cinzel"]
+[ext_resource type="FontFile" path="res://assets/fonts/CormorantGaramond.ttf" id="5_cormorant"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fondo"]
+shader = ExtResource("2_fondo")
+shader_parameter/color_carmesi = Color(0.42, 0.02, 0.05, 1)
+shader_parameter/intensidad = 1.0
+
+[sub_resource type="FontVariation" id="FontVariation_titulo"]
+base_font = ExtResource("4_cinzel")
+variation_opentype = {2003265652: 500}
+spacing_glyph = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_titulo"]
+font = SubResource("FontVariation_titulo")
+font_size = 44
+font_color = Color(0.82, 0.12, 0.14, 1)
+outline_size = 2
+outline_color = Color(0.25, 0.02, 0.03, 1)
+shadow_size = 14
+shadow_color = Color(0.6, 0.02, 0.05, 0.45)
+
+[sub_resource type="FontVariation" id="FontVariation_detalle"]
+base_font = ExtResource("5_cormorant")
+variation_opentype = {2003265652: 500}
+
+[sub_resource type="LabelSettings" id="LabelSettings_detalle"]
+font = SubResource("FontVariation_detalle")
+font_size = 21
+font_color = Color(0.72, 0.64, 0.54, 1)
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_linea"]
+bg_color = Color(0.55, 0.12, 0.12, 0.85)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+shadow_color = Color(0.6, 0.05, 0.05, 0.4)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rombo"]
+bg_color = Color(0.1, 0.02, 0.03, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.18, 0.18, 1)
+shadow_color = Color(0.7, 0.05, 0.05, 0.5)
+shadow_size = 6
+
+[node name="PantallaMuerte" type="CanvasLayer"]
+process_mode = 3
+layer = 80
+script = ExtResource("1_script")
+
+[node name="Fondo" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_fondo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Centro" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_tema")
+
+[node name="Columna" type="VBoxContainer" parent="Centro"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="OrnamentoSup" type="HBoxContainer" parent="Centro/Columna"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 14
+
+[node name="LineaIzq" type="Panel" parent="Centro/Columna/OrnamentoSup"]
+custom_minimum_size = Vector2(200, 2)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_linea")
+
+[node name="Rombo" type="Panel" parent="Centro/Columna/OrnamentoSup"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 2
+size_flags_vertical = 4
+rotation = 0.785398
+pivot_offset = Vector2(5, 5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_rombo")
+
+[node name="LineaDer" type="Panel" parent="Centro/Columna/OrnamentoSup"]
+custom_minimum_size = Vector2(200, 2)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_linea")
+
+[node name="Titulo" type="Label" parent="Centro/Columna"]
+layout_mode = 2
+text = "EL INTERVALO SE HA CERRADO"
+label_settings = SubResource("LabelSettings_titulo")
+horizontal_alignment = 1
+
+[node name="OrnamentoInf" type="HBoxContainer" parent="Centro/Columna"]
+layout_mode = 2
+alignment = 1
+
+[node name="Linea" type="Panel" parent="Centro/Columna/OrnamentoInf"]
+custom_minimum_size = Vector2(440, 1)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_linea")
+
+[node name="Detalle" type="VBoxContainer" parent="Centro/Columna"]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="Frase" type="Label" parent="Centro/Columna/Detalle"]
+layout_mode = 2
+text = "La continuidad te devuelve al último Altar."
+label_settings = SubResource("LabelSettings_detalle")
+horizontal_alignment = 1
+
+[node name="BotonReaparecer" type="Button" parent="Centro/Columna/Detalle"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Reaparecer en el Altar"

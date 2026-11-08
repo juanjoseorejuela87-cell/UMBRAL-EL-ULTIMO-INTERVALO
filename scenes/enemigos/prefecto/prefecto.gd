@@ -11,6 +11,10 @@ extends Enemigo
 signal fase_cambiada(fase: int)
 signal atrapado
 signal derrotado_definitivamente
+## Nereth ha sido detectada: empieza (o se reanuda) el combate. La usa la barra de jefe.
+signal combate_iniciado
+## El combate vuelve a empezar de cero tras una derrota de Nereth.
+signal combate_reiniciado
 
 const EVENTO_DERROTA: StringName = &"prefecto_derrotado"
 const MUSICA: StringName = &"prefecto"
@@ -99,6 +103,7 @@ func _entrar_en_alerta() -> void:
 		_saludo_dicho = true
 		_hablar(lineas_inicio)
 	GestorSonido.global().musica(MUSICA)
+	combate_iniciado.emit()
 
 
 func puede_desgarrarse() -> bool:
@@ -338,6 +343,7 @@ func reiniciar() -> void:
 	super.reiniciar()
 	_actualizar_marca()
 	GestorSonido.global().musica(&"", 1.0)
+	combate_reiniciado.emit()
 
 
 func _hablar(lineas: PackedStringArray) -> void:

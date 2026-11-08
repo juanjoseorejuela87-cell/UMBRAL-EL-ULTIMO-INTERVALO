@@ -1,199 +1,175 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://scenes/ui/hud/hud.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/componentes/barra_ornamental.tscn" id="2_barra"]
+[ext_resource type="Shader" path="res://shaders/ui/medidor_resonancia.gdshader" id="3_medidor"]
+[ext_resource type="Script" path="res://scenes/ui/componentes/icono_vial.gd" id="4_vial"]
+[ext_resource type="FontFile" path="res://assets/fonts/Cinzel.ttf" id="5_cinzel"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pantalla_muerte/pantalla_muerte.tscn" id="6_muerte"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fondo_vida"]
-bg_color = Color(0.1, 0.1, 0.12, 0.85)
-corner_radius_top_left = 2
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_placa"]
+bg_color = Color(0, 0, 0, 0.14)
+corner_radius_top_left = 4
+corner_radius_top_right = 60
+corner_radius_bottom_right = 60
+corner_radius_bottom_left = 60
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 40
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_medidor"]
+resource_local_to_scene = true
+shader = ExtResource("3_medidor")
+shader_parameter/valor = 1.0
+shader_parameter/limite = 0.3
+shader_parameter/amenaza = 0.0
+shader_parameter/desfase = 0.0
+shader_parameter/destello = 0.0
+shader_parameter/color_destello = Color(1, 0.3, 0.2, 1)
+shader_parameter/color_calma = Color(0.52, 0.36, 0.95, 1)
+shader_parameter/color_amenaza = Color(0.92, 0.22, 0.3, 1)
+shader_parameter/color_oro = Color(0.72, 0.56, 0.28, 1)
+shader_parameter/color_hierro = Color(0.075, 0.07, 0.08, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_filigrana"]
+bg_color = Color(0.62, 0.48, 0.24, 0.9)
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_transparente"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_relleno_dano"]
-bg_color = Color(0.85, 0.48, 0.38, 0.9)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_relleno_vida"]
-bg_color = Color(0.72, 0.18, 0.18, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fondo_res"]
-bg_color = Color(0.1, 0.1, 0.12, 0.85)
-corner_radius_top_left = 1
-corner_radius_top_right = 1
-corner_radius_bottom_right = 1
-corner_radius_bottom_left = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_relleno_res"]
-bg_color = Color(0.58, 0.68, 0.22, 1)
-corner_radius_top_left = 1
-corner_radius_top_right = 1
-corner_radius_bottom_right = 1
-corner_radius_bottom_left = 1
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fondo_resonancia"]
-bg_color = Color(0.1, 0.1, 0.12, 0.85)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_relleno_resonancia"]
-bg_color = Color(0.38, 0.28, 0.72, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_borde_amenaza"]
-draw_center = false
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0.85, 0.25, 0.2, 0.65)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esencia_llena"]
-bg_color = Color(0.92, 0.68, 0.18, 0.95)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 0.88, 0.55, 0.9)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-shadow_color = Color(0.85, 0.55, 0.1, 0.35)
+shadow_color = Color(0, 0, 0, 0.6)
 shadow_size = 2
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_esencia_vacia"]
-bg_color = Color(0.12, 0.12, 0.16, 0.45)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cartela"]
+bg_color = Color(0.055, 0.05, 0.058, 0.92)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.28, 0.28, 0.32, 0.5)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
+border_color = Color(0.62, 0.48, 0.24, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+content_margin_left = 6.0
+content_margin_right = 6.0
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_contador"]
+font = ExtResource("5_cinzel")
+font_size = 15
+font_color = Color(0.96, 0.84, 0.58, 1)
+outline_size = 4
+outline_color = Color(0.05, 0.03, 0.02, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.7)
 
 [node name="HudJuego" type="CanvasLayer"]
 script = ExtResource("1_script")
-estilo_esencia_llena = SubResource("StyleBoxFlat_esencia_llena")
-estilo_esencia_vacia = SubResource("StyleBoxFlat_esencia_vacia")
 
-[node name="Margen" type="MarginContainer" parent="."]
+[node name="Raiz" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Bloque" type="Control" parent="Raiz"]
+layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 32.0
-offset_top = -116.0
-offset_right = 280.0
-offset_bottom = -28.0
+offset_top = -134.0
+offset_right = 480.0
+offset_bottom = -10.0
 grow_vertical = 0
+mouse_filter = 2
 
-[node name="ContenedorBarras" type="VBoxContainer" parent="Margen"]
-layout_mode = 2
-theme_override_constants/separation = 4
+[node name="Placa" type="Panel" parent="Raiz/Bloque"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 12.0
+offset_right = 470.0
+offset_bottom = 122.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_placa")
 
-[node name="FilaVida" type="MarginContainer" parent="Margen/ContenedorBarras"]
-custom_minimum_size = Vector2(230, 16)
-layout_mode = 2
+[node name="Filigrana" type="Panel" parent="Raiz/Bloque"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 63.0
+offset_right = 130.0
+offset_bottom = 65.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_filigrana")
 
-[node name="BarraDanoReciente" type="ProgressBar" parent="Margen/ContenedorBarras/FilaVida"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_fondo_vida")
-theme_override_styles/fill = SubResource("StyleBoxFlat_relleno_dano")
-step = 0.1
-value = 100.0
-show_percentage = false
+[node name="BarraVida" parent="Raiz/Bloque" instance=ExtResource("2_barra")]
+offset_left = 128.0
+offset_top = 36.0
+offset_right = 448.0
+offset_bottom = 54.0
+color_relleno = Color(0.6, 0.05, 0.08, 1)
+color_rezagado = Color(0.96, 0.6, 0.16, 1)
 
-[node name="BarraVida" type="ProgressBar" parent="Margen/ContenedorBarras/FilaVida"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxEmpty_transparente")
-theme_override_styles/fill = SubResource("StyleBoxFlat_relleno_vida")
-step = 0.1
-value = 100.0
-show_percentage = false
+[node name="BarraEstamina" parent="Raiz/Bloque" instance=ExtResource("2_barra")]
+offset_left = 128.0
+offset_top = 62.0
+offset_right = 388.0
+offset_bottom = 73.0
+color_relleno = Color(0.16, 0.56, 0.38, 1)
+color_rezagado = Color(0.7, 0.86, 0.58, 1)
+espera_rezagado = 0.15
+duracion_rezagado = 0.4
 
-[node name="FilaResonancia" type="MarginContainer" parent="Margen/ContenedorBarras"]
-custom_minimum_size = Vector2(230, 12)
-layout_mode = 2
+[node name="Medallon" type="ColorRect" parent="Raiz/Bloque"]
+material = SubResource("ShaderMaterial_medidor")
+layout_mode = 0
+offset_left = 18.0
+offset_top = 14.0
+offset_right = 114.0
+offset_bottom = 110.0
+pivot_offset = Vector2(48, 48)
+mouse_filter = 2
 
-[node name="BarraResonancia" type="ProgressBar" parent="Margen/ContenedorBarras/FilaResonancia"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_fondo_resonancia")
-theme_override_styles/fill = SubResource("StyleBoxFlat_relleno_resonancia")
-step = 0.1
-value = 100.0
-show_percentage = false
+[node name="FilaEsencias" type="HBoxContainer" parent="Raiz/Bloque"]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 108.0
+mouse_filter = 2
+theme_override_constants/separation = 5
 
-[node name="BordeAmenaza" type="Panel" parent="Margen/ContenedorBarras/FilaResonancia"]
-visible = false
+[node name="IconoEsencia0" type="Panel" parent="Raiz/Bloque/FilaEsencias"]
+custom_minimum_size = Vector2(18, 26)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_borde_amenaza")
+mouse_filter = 2
+script = ExtResource("4_vial")
 
-[node name="MarcaLimite" type="ColorRect" parent="Margen/ContenedorBarras/FilaResonancia"]
-visible = false
-custom_minimum_size = Vector2(2, 0)
+[node name="IconoEsencia1" type="Panel" parent="Raiz/Bloque/FilaEsencias"]
+custom_minimum_size = Vector2(18, 26)
 layout_mode = 2
-size_flags_horizontal = 0
-color = Color(0.9, 0.4, 0.35, 0.9)
+mouse_filter = 2
+script = ExtResource("4_vial")
 
-[node name="IndicadorDesfase" type="ColorRect" parent="Margen/ContenedorBarras/FilaResonancia"]
-custom_minimum_size = Vector2(8, 8)
+[node name="IconoEsencia2" type="Panel" parent="Raiz/Bloque/FilaEsencias"]
+custom_minimum_size = Vector2(18, 26)
 layout_mode = 2
-size_flags_horizontal = 8
+mouse_filter = 2
+script = ExtResource("4_vial")
+
+[node name="CartelaContador" type="PanelContainer" parent="Raiz/Bloque/FilaEsencias"]
+custom_minimum_size = Vector2(32, 22)
+layout_mode = 2
 size_flags_vertical = 4
-color = Color(0.3, 0.25, 0.45, 0.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cartela")
 
-[node name="FilaResistencia" type="MarginContainer" parent="Margen/ContenedorBarras"]
-custom_minimum_size = Vector2(180, 8)
+[node name="Contador" type="Label" parent="Raiz/Bloque/FilaEsencias/CartelaContador"]
 layout_mode = 2
-size_flags_horizontal = 0
+text = "3"
+label_settings = SubResource("LabelSettings_contador")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BarraResistencia" type="ProgressBar" parent="Margen/ContenedorBarras/FilaResistencia"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_styles/background = SubResource("StyleBoxFlat_fondo_res")
-theme_override_styles/fill = SubResource("StyleBoxFlat_relleno_res")
-step = 0.1
-value = 100.0
-show_percentage = false
-
-[node name="FilaEsencias" type="HBoxContainer" parent="Margen/ContenedorBarras"]
-custom_minimum_size = Vector2(0, 18)
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="IconoEsencia0" type="Panel" parent="Margen/ContenedorBarras/FilaEsencias"]
-custom_minimum_size = Vector2(14, 18)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_esencia_llena")
-
-[node name="IconoEsencia1" type="Panel" parent="Margen/ContenedorBarras/FilaEsencias"]
-custom_minimum_size = Vector2(14, 18)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_esencia_llena")
-
-[node name="IconoEsencia2" type="Panel" parent="Margen/ContenedorBarras/FilaEsencias"]
-custom_minimum_size = Vector2(14, 18)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_esencia_llena")
+[node name="PantallaMuerte" parent="." instance=ExtResource("6_muerte")]

@@ -1,30 +1,32 @@
 class_name HudJuego
 extends CanvasLayer
-## HUD de juego para Nereth: barras de vida, daño reciente, resonancia, resistencia y esencias.
+## HUD de juego de Nereth: medallón de Resonancia (arco de 270° con pulso
+## etéreo y gema del Desfase), vida carmesí con barra rezagada ámbar (Tween
+## TRANS_CUBIC + EASE_OUT de 0,6 s), estamina jade que parpadea al agotarse,
+## viales de Esencia con contador y pantalla de muerte.
+
+const COLOR_VIDA_DANO: Color = Color(1.0, 0.85, 0.8)
+const COLOR_CURACION: Color = Color(1.0, 0.82, 0.4)
+const COLOR_ALERTA_ESTAMINA: Color = Color(1.0, 0.32, 0.22)
+## La estamina deja de parpadear al recuperar esta fracción.
+const UMBRAL_FIN_ALERTA: float = 0.35
 
 @export var objetivo: Nereth
-@export var estilo_esencia_llena: StyleBoxFlat
-@export var estilo_esencia_vacia: StyleBoxFlat
 
-@onready var _barra_vida: ProgressBar = $Margen/ContenedorBarras/FilaVida/BarraVida
-@onready var _barra_dano_reciente: ProgressBar = $Margen/ContenedorBarras/FilaVida/BarraDanoReciente
-@onready var _fila_resonancia: MarginContainer = $Margen/ContenedorBarras/FilaResonancia
-@onready var _barra_resonancia: ProgressBar = $Margen/ContenedorBarras/FilaResonancia/BarraResonancia
-@onready var _marca_limite: ColorRect = $Margen/ContenedorBarras/FilaResonancia/MarcaLimite
-@onready var _indicador_desfase: ColorRect = $Margen/ContenedorBarras/FilaResonancia/IndicadorDesfase
-@onready var _borde_amenaza: Panel = $Margen/ContenedorBarras/FilaResonancia/BordeAmenaza
-@onready var _barra_resistencia: ProgressBar = $Margen/ContenedorBarras/FilaResistencia/BarraResistencia
-@onready var _fila_esencias: HBoxContainer = $Margen/ContenedorBarras/FilaEsencias
+@onready var _barra_vida: BarraOrnamental = $Raiz/Bloque/BarraVida
+@onready var _barra_estamina: BarraOrnamental = $Raiz/Bloque/BarraEstamina
+@onready var _medallon: ColorRect = $Raiz/Bloque/Medallon
+@onready var _fila_esencias: HBoxContainer = $Raiz/Bloque/FilaEsencias
+@onready var _contador: Label = $Raiz/Bloque/FilaEsencias/CartelaContador/Contador
+@onready var _pantalla_muerte: PantallaMuerte = $PantallaMuerte
 
-var _tween_dano: Tween
-var _tween_resistencia: Tween
+var _material_medallon: ShaderMaterial
 var _tween_resonancia: Tween
+var _tween_regimen: Tween
+var _tween_fase: Tween
 var _tween_aviso: Tween
 var _tween_esencias: Tween
-var _tween_icono: Tween
-
 var _iconos_esencias: Array[Panel] = []
-var _ultimo_indice_gastado: int = -1
 
 var fila_esencias: HBoxContainer:
 	get: return _fila_esencias
@@ -33,11 +35,7 @@ var iconos_esencias: Array[Panel]:
 
 
 func _ready() -> void:
-	_fila_resonancia.visible = true
-	_marca_limite.visible = false
-	_borde_amenaza.visible = false
-	_indicador_desfase.visible = true
-	_indicador_desfase.color = Color(0.3, 0.25, 0.45, 0.5)
+	_material_medallon = _medallon.material as ShaderMaterial
 	_inicializar_iconos_esencias()
 	if not objetivo:
 		return
@@ -49,50 +47,9 @@ func _ready() -> void:
 
 func _inicializar_iconos_esencias() -> void:
 	_iconos_esencias.clear()
-	if _fila_esencias:
-		for hijo: Node in _fila_esencias.get_children():
-			if hijo is Panel:
-				_iconos_esencias.append(hijo as Panel)
-
-	if not estilo_esencia_llena or not estilo_esencia_vacia:
-		_crear_estilos_esencia_por_defecto()
-
-	for icono: Panel in _iconos_esencias:
-		icono.set_meta("lleno", true)
-		if estilo_esencia_llena:
-			icono.add_theme_stylebox_override("panel", estilo_esencia_llena)
-
-
-func _crear_estilos_esencia_por_defecto() -> void:
-	if not estilo_esencia_llena:
-		var sb := StyleBoxFlat.new()
-		sb.bg_color = Color(0.92, 0.68, 0.18, 0.95)
-		sb.border_width_left = 1
-		sb.border_width_top = 1
-		sb.border_width_right = 1
-		sb.border_width_bottom = 1
-		sb.border_color = Color(1.0, 0.88, 0.55, 0.9)
-		sb.corner_radius_top_left = 3
-		sb.corner_radius_top_right = 3
-		sb.corner_radius_bottom_right = 4
-		sb.corner_radius_bottom_left = 4
-		sb.shadow_color = Color(0.85, 0.55, 0.1, 0.35)
-		sb.shadow_size = 2
-		estilo_esencia_llena = sb
-
-	if not estilo_esencia_vacia:
-		var sb_v := StyleBoxFlat.new()
-		sb_v.bg_color = Color(0.12, 0.12, 0.16, 0.45)
-		sb_v.border_width_left = 1
-		sb_v.border_width_top = 1
-		sb_v.border_width_right = 1
-		sb_v.border_width_bottom = 1
-		sb_v.border_color = Color(0.28, 0.28, 0.32, 0.5)
-		sb_v.corner_radius_top_left = 3
-		sb_v.corner_radius_top_right = 3
-		sb_v.corner_radius_bottom_right = 4
-		sb_v.corner_radius_bottom_left = 4
-		estilo_esencia_vacia = sb_v
+	for hijo: Node in _fila_esencias.get_children():
+		if hijo is IconoVial:
+			_iconos_esencias.append(hijo as Panel)
 
 
 func _conectar_senales() -> void:
@@ -100,6 +57,7 @@ func _conectar_senales() -> void:
 		objetivo.vida.cambiada.connect(_al_cambiar_vida)
 	if objetivo.resistencia:
 		objetivo.resistencia.cambiada.connect(_al_cambiar_resistencia)
+		objetivo.resistencia.agotada.connect(_al_agotar_resistencia)
 	if objetivo.resonancia:
 		objetivo.resonancia.cambiada.connect(_al_cambiar_resonancia)
 		objetivo.resonancia.regimen_cambiado.connect(_al_cambiar_regimen)
@@ -111,6 +69,8 @@ func _conectar_senales() -> void:
 		objetivo.esencias.cargas_cambiadas.connect(_al_cambiar_esencias)
 		objetivo.esencias.curacion_iniciada.connect(_al_iniciar_curacion)
 		objetivo.esencias.curacion_interrumpida.connect(_al_interrumpir_curacion)
+		objetivo.esencias.curacion_completada.connect(_al_completar_curacion)
+	objetivo.derrotado.connect(_al_derrotar_nereth)
 	var gestor: GestorFase = GestorFase.global()
 	if gestor:
 		gestor.cambiada.connect(_al_cambiar_fase)
@@ -118,179 +78,208 @@ func _conectar_senales() -> void:
 
 func _inicializar_valores() -> void:
 	if objetivo.vida:
-		var max_v: float = objetivo.vida.maximo
-		var act_v: float = objetivo.vida.actual
-		_barra_vida.max_value = max_v
-		_barra_vida.value = act_v
-		_barra_dano_reciente.max_value = max_v
-		_barra_dano_reciente.value = act_v
-
-	if objetivo.resonancia:
-		var max_r: float = objetivo.resonancia.maximo
-		var act_r: float = objetivo.resonancia.actual
-		_barra_resonancia.max_value = max_r
-		_barra_resonancia.value = act_r
-		_actualizar_marca_limite(objetivo.resonancia.amenaza())
-
+		_barra_vida.fijar(objetivo.vida.actual, objetivo.vida.maximo, false)
 	if objetivo.resistencia:
-		var max_e: float = objetivo.resistencia.maximo
-		var act_e: float = objetivo.resistencia.actual
-		_barra_resistencia.max_value = max_e
-		_barra_resistencia.value = act_e
-
+		_barra_estamina.fijar(objetivo.resistencia.actual, objetivo.resistencia.maximo, false)
+	if objetivo.resonancia:
+		var r: ComponenteResonancia = objetivo.resonancia
+		_param(&"valor", r.actual / maxf(r.maximo, 0.001))
+		_param(&"limite", r.limite_recuperacion_amenaza)
+		_param(&"amenaza", 1.0 if r.amenaza() else 0.0)
 	if objetivo.esencias:
 		_actualizar_iconos_esencia(objetivo.esencias.cargas, objetivo.esencias.cargas_maximas)
+	var gestor: GestorFase = GestorFase.global()
+	if gestor:
+		_param(&"desfase", 1.0 if gestor.estado == GestorFase.Estado.DESFASE else 0.0)
 
+
+func _param(nombre: StringName, valor: Variant) -> void:
+	if _material_medallon:
+		_material_medallon.set_shader_parameter(nombre, valor)
+
+
+func _leer_param(nombre: StringName) -> float:
+	if _material_medallon:
+		var v: Variant = _material_medallon.get_shader_parameter(nombre)
+		if v != null:
+			return float(v)
+	return 0.0
+
+
+# --- Vida -------------------------------------------------------------------
 
 func _al_cambiar_vida(actual: float, maximo: float) -> void:
-	_barra_vida.max_value = maximo
-	_barra_dano_reciente.max_value = maximo
-
-	var hubo_dano: bool = actual < _barra_vida.value
-	_barra_vida.value = actual
-
-	if _tween_dano and _tween_dano.is_valid():
-		_tween_dano.kill()
-
+	var hubo_dano: bool = actual < _barra_vida.valor
+	var hubo_curacion: bool = actual > _barra_vida.valor
+	_barra_vida.fijar(actual, maximo, true)
 	if hubo_dano:
-		_tween_dano = create_tween()
-		_tween_dano.tween_interval(0.4)
-		_tween_dano.tween_property(_barra_dano_reciente, "value", actual, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	else:
-		_barra_dano_reciente.value = actual
+		_barra_vida.destello(COLOR_VIDA_DANO, 0.25)
+	elif hubo_curacion:
+		_barra_vida.destello(COLOR_CURACION, 0.5)
 
+
+# --- Estamina ---------------------------------------------------------------
 
 func _al_cambiar_resistencia(actual: float, maximo: float) -> void:
-	_barra_resistencia.max_value = maximo
-	if _tween_resistencia and _tween_resistencia.is_valid():
-		_tween_resistencia.kill()
-	_tween_resistencia = create_tween()
-	_tween_resistencia.tween_property(_barra_resistencia, "value", actual, 0.12).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_barra_estamina.fijar(actual, maximo, true)
+	if _barra_estamina.en_alerta() and actual >= maximo * UMBRAL_FIN_ALERTA:
+		_barra_estamina.alerta(false)
 
+
+func _al_agotar_resistencia() -> void:
+	_barra_estamina.alerta(true, COLOR_ALERTA_ESTAMINA)
+
+
+# --- Resonancia -------------------------------------------------------------
 
 func _al_cambiar_resonancia(actual: float, maximo: float) -> void:
-	_barra_resonancia.max_value = maximo
+	var destino: float = actual / maxf(maximo, 0.001)
 	if _tween_resonancia and _tween_resonancia.is_valid():
 		_tween_resonancia.kill()
 	_tween_resonancia = create_tween()
-	_tween_resonancia.tween_property(_barra_resonancia, "value", actual, 0.1).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_tween_resonancia.tween_method(_fijar_valor_resonancia, _leer_param(&"valor"), destino, 0.12) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+
+
+func _fijar_valor_resonancia(v: float) -> void:
+	_param(&"valor", v)
+
+
+func _fijar_amenaza(v: float) -> void:
+	_param(&"amenaza", v)
+
+
+func _fijar_desfase(v: float) -> void:
+	_param(&"desfase", v)
+
+
+func _fijar_destello(v: float) -> void:
+	_param(&"destello", v)
 
 
 func _al_cambiar_regimen(en_amenaza: bool) -> void:
-	_actualizar_marca_limite(en_amenaza)
-
-
-func _actualizar_marca_limite(en_amenaza: bool) -> void:
-	_marca_limite.visible = en_amenaza
-	_borde_amenaza.visible = en_amenaza
-	if en_amenaza and objetivo and objetivo.resonancia:
-		var fraccion: float = objetivo.resonancia.limite_recuperacion_amenaza
-		var ancho_barra: float = _barra_resonancia.size.x if _barra_resonancia.size.x > 0.0 else 230.0
-		_marca_limite.position.x = ancho_barra * fraccion
-		_marca_limite.size.x = 2.0
+	if objetivo and objetivo.resonancia:
+		_param(&"limite", objetivo.resonancia.limite_recuperacion_amenaza)
+	if _tween_regimen and _tween_regimen.is_valid():
+		_tween_regimen.kill()
+	_tween_regimen = create_tween()
+	_tween_regimen.tween_method(_fijar_amenaza, _leer_param(&"amenaza"), 1.0 if en_amenaza else 0.0, 0.4) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
 func _al_cambiar_fase(estado: GestorFase.Estado) -> void:
 	var activo: bool = estado == GestorFase.Estado.DESFASE
-	if activo:
-		_indicador_desfase.color = Color(0.55, 0.45, 0.95, 1.0)
-	else:
-		_indicador_desfase.color = Color(0.3, 0.25, 0.45, 0.5)
+	if _tween_fase and _tween_fase.is_valid():
+		_tween_fase.kill()
+	_tween_fase = create_tween()
+	_tween_fase.tween_method(_fijar_desfase, _leer_param(&"desfase"), 1.0 if activo else 0.0, 0.3) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	# Latido del medallón al cruzar de estado.
+	_tween_fase.parallel().tween_property(_medallon, "scale", Vector2(1.12, 1.12), 0.08)
+	_tween_fase.tween_property(_medallon, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 
 
 func _al_bloquear_cambio() -> void:
-	_destello_barra(Color(0.9, 0.3, 0.2, 0.7), true)
+	_aviso_medallon(Color(0.95, 0.35, 0.2), true)
 
 
 func _al_rechazo() -> void:
-	_destello_barra(Color(0.95, 0.15, 0.1, 0.9), false)
+	_aviso_medallon(Color(1.0, 0.12, 0.1), true)
 
 
 func _al_desfase_preciso() -> void:
-	_destello_barra(Color(0.7, 0.85, 1.0, 0.95), false)
+	_aviso_medallon(Color(0.75, 0.88, 1.0), false)
 
 
-func _destello_barra(color: Color, con_temblor: bool) -> void:
+func _aviso_medallon(color: Color, con_temblor: bool) -> void:
 	if _tween_aviso and _tween_aviso.is_valid():
 		_tween_aviso.kill()
-
+	_param(&"color_destello", color)
 	_tween_aviso = create_tween()
-	var estilo: StyleBoxFlat = _barra_resonancia.get_theme_stylebox("fill") as StyleBoxFlat
-	if estilo:
-		var color_original: Color = Color(0.38, 0.28, 0.72, 1.0)
-		estilo.bg_color = color
-		_tween_aviso.tween_property(estilo, "bg_color", color_original, 0.4).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-
+	_tween_aviso.tween_method(_fijar_destello, 0.9, 0.0, 0.45).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	if con_temblor:
-		var pos_original: float = _fila_resonancia.position.x
-		_tween_aviso.parallel().tween_property(_fila_resonancia, "position:x", pos_original + 4.0, 0.05)
-		_tween_aviso.tween_property(_fila_resonancia, "position:x", pos_original - 3.0, 0.05)
-		_tween_aviso.tween_property(_fila_resonancia, "position:x", pos_original + 2.0, 0.05)
-		_tween_aviso.tween_property(_fila_resonancia, "position:x", pos_original, 0.05)
+		var x0: float = 18.0
+		_tween_aviso.parallel().tween_property(_medallon, "position:x", x0 + 4.0, 0.05)
+		_tween_aviso.tween_property(_medallon, "position:x", x0 - 3.0, 0.05)
+		_tween_aviso.tween_property(_medallon, "position:x", x0 + 2.0, 0.05)
+		_tween_aviso.tween_property(_medallon, "position:x", x0, 0.05)
 
+
+# --- Esencias ---------------------------------------------------------------
 
 func _al_cambiar_esencias(cargas: int, maximo: int) -> void:
 	_actualizar_iconos_esencia(cargas, maximo)
 
 
 func _actualizar_iconos_esencia(cargas: int, maximo: int) -> void:
-	if not estilo_esencia_llena or not estilo_esencia_vacia:
-		_crear_estilos_esencia_por_defecto()
-
 	while _iconos_esencias.size() < maximo:
-		var nuevo_icono := Panel.new()
-		nuevo_icono.custom_minimum_size = Vector2(14, 18)
-		_fila_esencias.add_child(nuevo_icono)
-		_iconos_esencias.append(nuevo_icono)
+		var nuevo: IconoVial = IconoVial.new()
+		_fila_esencias.add_child(nuevo)
+		_fila_esencias.move_child(nuevo, _iconos_esencias.size())
+		_iconos_esencias.append(nuevo)
 	while _iconos_esencias.size() > maximo:
 		var sobrante: Panel = _iconos_esencias.pop_back()
 		if is_instance_valid(sobrante):
 			sobrante.queue_free()
-
 	for i: int in range(_iconos_esencias.size()):
-		var icono: Panel = _iconos_esencias[i]
-		var estaba_lleno: bool = icono.get_meta("lleno", false)
-		var ahora_lleno: bool = i < cargas
-		icono.set_meta("lleno", ahora_lleno)
-		var estilo: StyleBoxFlat = estilo_esencia_llena if ahora_lleno else estilo_esencia_vacia
-		icono.add_theme_stylebox_override("panel", estilo)
-		if estaba_lleno and not ahora_lleno:
-			_ultimo_indice_gastado = i
+		(_iconos_esencias[i] as IconoVial).lleno = i < cargas
+	_contador.text = str(cargas)
+	_contador.modulate = Color.WHITE if cargas > 0 else Color(0.6, 0.45, 0.4)
 
 
 func _al_iniciar_curacion() -> void:
-	var idx: int = _ultimo_indice_gastado
-	if idx >= 0 and idx < _iconos_esencias.size():
-		var icono: Panel = _iconos_esencias[idx]
-		if is_instance_valid(icono):
-			if _tween_icono and _tween_icono.is_valid():
-				_tween_icono.kill()
-			_tween_icono = create_tween()
-			icono.modulate = Color(2.0, 1.8, 1.2, 1.0)
-			_tween_icono.tween_property(icono, "modulate", Color.WHITE, 0.25).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_ultimo_indice_gastado = -1
+	# Destella el último vial vaciado (el primero vacío por la derecha de los llenos).
+	for icono: Panel in _iconos_esencias:
+		if not (icono as IconoVial).lleno:
+			var t: Tween = create_tween()
+			icono.modulate = Color(2.0, 1.7, 1.1)
+			t.tween_property(icono, "modulate", Color.WHITE, 0.4).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+			break
+
+
+func _al_completar_curacion(_cantidad: float) -> void:
+	_barra_vida.destello(COLOR_CURACION, 0.6)
 
 
 func _al_interrumpir_curacion() -> void:
 	if _tween_esencias and _tween_esencias.is_valid():
 		_tween_esencias.kill()
 	_tween_esencias = create_tween()
-	_fila_esencias.modulate = Color(1.0, 0.35, 0.35, 1.0)
-	_tween_esencias.tween_property(_fila_esencias, "modulate", Color.WHITE, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	var pos_original: float = _fila_esencias.position.x
-	_tween_esencias.parallel().tween_property(_fila_esencias, "position:x", pos_original + 3.0, 0.05)
-	_tween_esencias.tween_property(_fila_esencias, "position:x", pos_original - 3.0, 0.05)
-	_tween_esencias.tween_property(_fila_esencias, "position:x", pos_original + 2.0, 0.05)
-	_tween_esencias.tween_property(_fila_esencias, "position:x", pos_original, 0.05)
+	_fila_esencias.modulate = Color(1.0, 0.35, 0.35)
+	_tween_esencias.tween_property(_fila_esencias, "modulate", Color.WHITE, 0.35).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	var x0: float = 132.0
+	_tween_esencias.parallel().tween_property(_fila_esencias, "position:x", x0 + 3.0, 0.05)
+	_tween_esencias.tween_property(_fila_esencias, "position:x", x0 - 3.0, 0.05)
+	_tween_esencias.tween_property(_fila_esencias, "position:x", x0, 0.05)
 
+
+# --- Muerte -----------------------------------------------------------------
+
+func _al_derrotar_nereth() -> void:
+	_pantalla_muerte.mostrar()
+
+
+# --- API pública (pruebas) --------------------------------------------------
 
 func obtener_cargas_esencias() -> int:
 	var total: int = 0
 	for icono: Panel in _iconos_esencias:
-		if is_instance_valid(icono) and icono.get_meta("lleno", false):
+		if is_instance_valid(icono) and icono.get_meta(&"lleno", false):
 			total += 1
 	return total
 
 
 func obtener_iconos_esencias() -> Array[Panel]:
 	return _iconos_esencias.duplicate()
+
+
+func barra_vida() -> BarraOrnamental:
+	return _barra_vida
+
+
+func barra_estamina() -> BarraOrnamental:
+	return _barra_estamina
+
+
+func pantalla_muerte() -> PantallaMuerte:
+	return _pantalla_muerte

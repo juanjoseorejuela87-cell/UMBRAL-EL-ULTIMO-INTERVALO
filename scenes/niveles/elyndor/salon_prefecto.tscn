@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/pausa/menu_pausa.tscn" id="12_pausa"]
 [ext_resource type="Script" path="res://scripts/core/sonido/ambiente_sala.gd" id="13_ambiente"]
 [ext_resource type="Script" path="res://scripts/core/fase/atmosfera_fase.gd" id="30_atmosfera"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud_boss_sekiro/hud_boss_sekiro.tscn" id="31_hud_jefe"]
 [ext_resource type="Material" path="res://assets/materiales/roca_ruinas.tres" id="31_roca"]
 [ext_resource type="Material" path="res://assets/materiales/suelo_monasterio.tres" id="32_suelo"]
 [ext_resource type="Material" path="res://assets/materiales/metal_oxidado.tres" id="33_metal"]
@@ -254,6 +255,13 @@ objetivo = NodePath("../Nereth")
 
 [node name="HudJuego" parent="." node_paths=PackedStringArray("objetivo") instance=ExtResource("4_hud")]
 objetivo = NodePath("../Nereth")
+
+[node name="CapaJefe" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="BarraJefe" parent="CapaJefe" node_paths=PackedStringArray("jefe") instance=ExtResource("31_hud_jefe")]
+jefe = NodePath("../../Prefecto")
+mostrar_al_iniciar = false
 
 [node name="MenuPausa" parent="." instance=ExtResource("12_pausa")]
 

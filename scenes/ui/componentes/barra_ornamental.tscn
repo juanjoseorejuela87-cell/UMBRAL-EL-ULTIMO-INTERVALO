@@ -1,0 +1,79 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/componentes/barra_ornamental.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_marco"]
+bg_color = Color(0.055, 0.05, 0.058, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.62, 0.48, 0.24, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 6
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_interior"]
+bg_color = Color(0.03, 0.022, 0.028, 1)
+border_width_left = 2
+border_width_top = 3
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.9)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_remate"]
+bg_color = Color(0.09, 0.075, 0.07, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.72, 0.56, 0.28, 1)
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 3
+
+[node name="BarraOrnamental" type="Control"]
+custom_minimum_size = Vector2(120, 14)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 16.0
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Marco" type="Panel" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_marco")
+
+[node name="Interior" type="Panel" parent="."]
+clip_contents = true
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_interior")
+
+[node name="Rezagado" type="Panel" parent="Interior"]
+layout_mode = 0
+mouse_filter = 2
+
+[node name="Relleno" type="Panel" parent="Interior"]
+layout_mode = 0
+mouse_filter = 2
+
+[node name="RemateIzq" type="Panel" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_remate")
+
+[node name="RemateDer" type="Panel" parent="."]
+layout_mode = 0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_remate")

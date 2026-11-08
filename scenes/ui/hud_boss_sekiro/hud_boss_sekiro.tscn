@@ -1,0 +1,224 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://scenes/ui/hud_boss_sekiro/hud_boss_sekiro.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/ui/componentes/barra_ornamental.tscn" id="2_barra"]
+[ext_resource type="FontFile" path="res://assets/fonts/Cinzel.ttf" id="3_cinzel"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_velo"]
+bg_color = Color(0, 0, 0, 0.0)
+shadow_color = Color(0, 0, 0, 0.38)
+shadow_size = 48
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+
+[sub_resource type="FontVariation" id="FontVariation_titulo"]
+base_font = ExtResource("3_cinzel")
+variation_opentype = {2003265652: 600}
+spacing_glyph = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_titulo"]
+font = SubResource("FontVariation_titulo")
+font_size = 25
+font_color = Color(0.93, 0.86, 0.7, 1)
+outline_size = 4
+outline_color = Color(0.06, 0.04, 0.03, 1)
+shadow_size = 10
+shadow_color = Color(0.55, 0.36, 0.1, 0.35)
+
+[sub_resource type="LabelSettings" id="LabelSettings_quiebre"]
+font = SubResource("FontVariation_titulo")
+font_size = 20
+font_color = Color(1, 0.86, 0.5, 1)
+outline_size = 5
+outline_color = Color(0.25, 0.05, 0.02, 1)
+shadow_size = 12
+shadow_color = Color(1, 0.5, 0.1, 0.5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_linea"]
+bg_color = Color(0.62, 0.48, 0.24, 0.9)
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rombo"]
+bg_color = Color(0.09, 0.075, 0.07, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.64, 0.32, 1)
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sello"]
+bg_color = Color(0.7, 0.06, 0.08, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.64, 0.32, 1)
+shadow_color = Color(0.8, 0.1, 0.1, 0.45)
+shadow_size = 5
+
+[node name="HUDBossSekiro" type="Control"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 150.0
+grow_horizontal = 2
+mouse_filter = 2
+script = ExtResource("1_script")
+
+[node name="Contenedor" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Velo" type="Panel" parent="Contenedor"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 14.0
+offset_right = 300.0
+offset_bottom = 104.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_velo")
+
+[node name="Columna" type="VBoxContainer" parent="Contenedor"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -330.0
+offset_top = 14.0
+offset_right = 330.0
+offset_bottom = 124.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="FilaNombre" type="HBoxContainer" parent="Contenedor/Columna"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="Sellos" type="HBoxContainer" parent="Contenedor/Columna/FilaNombre"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 12
+
+[node name="Sello1" type="Panel" parent="Contenedor/Columna/FilaNombre/Sellos"]
+custom_minimum_size = Vector2(11, 11)
+layout_mode = 2
+size_flags_vertical = 4
+rotation = 0.785398
+pivot_offset = Vector2(5.5, 5.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sello")
+
+[node name="Sello2" type="Panel" parent="Contenedor/Columna/FilaNombre/Sellos"]
+custom_minimum_size = Vector2(11, 11)
+layout_mode = 2
+size_flags_vertical = 4
+rotation = 0.785398
+pivot_offset = Vector2(5.5, 5.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sello")
+
+[node name="Sello3" type="Panel" parent="Contenedor/Columna/FilaNombre/Sellos"]
+visible = false
+custom_minimum_size = Vector2(11, 11)
+layout_mode = 2
+size_flags_vertical = 4
+rotation = 0.785398
+pivot_offset = Vector2(5.5, 5.5)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sello")
+
+[node name="Nombre" type="Label" parent="Contenedor/Columna/FilaNombre"]
+layout_mode = 2
+text = "EL PREFECTO DE LAS PUERTAS"
+label_settings = SubResource("LabelSettings_titulo")
+horizontal_alignment = 1
+
+[node name="Ornamento" type="HBoxContainer" parent="Contenedor/Columna"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="LineaIzq" type="Panel" parent="Contenedor/Columna/Ornamento"]
+custom_minimum_size = Vector2(220, 1)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_linea")
+
+[node name="Rombo" type="Panel" parent="Contenedor/Columna/Ornamento"]
+custom_minimum_size = Vector2(8, 8)
+layout_mode = 2
+size_flags_vertical = 4
+rotation = 0.785398
+pivot_offset = Vector2(4, 4)
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rombo")
+
+[node name="LineaDer" type="Panel" parent="Contenedor/Columna/Ornamento"]
+custom_minimum_size = Vector2(220, 1)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_linea")
+
+[node name="BarraVida" parent="Contenedor/Columna" instance=ExtResource("2_barra")]
+custom_minimum_size = Vector2(660, 17)
+layout_mode = 2
+color_relleno = Color(0.58, 0.04, 0.07, 1)
+color_rezagado = Color(0.96, 0.6, 0.16, 1)
+espera_rezagado = 0.45
+
+[node name="FilaPostura" type="Control" parent="Contenedor/Columna"]
+custom_minimum_size = Vector2(0, 46)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BarraPostura" parent="Contenedor/Columna/FilaPostura" instance=ExtResource("2_barra")]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 6.0
+offset_right = 200.0
+offset_bottom = 16.0
+grow_horizontal = 2
+color_relleno = Color(0.92, 0.66, 0.2, 1)
+color_rezagado = Color(1, 0.94, 0.78, 1)
+espera_rezagado = 0.6
+duracion_rezagado = 0.6
+desde_centro = true
+fraccion_inicial = 0.0
+
+[node name="Quiebre" type="Label" parent="Contenedor/Columna/FilaPostura"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 18.0
+offset_right = 120.0
+offset_bottom = 46.0
+grow_horizontal = 2
+text = "QUIEBRE"
+label_settings = SubResource("LabelSettings_quiebre")
+horizontal_alignment = 1
+vertical_alignment = 1
